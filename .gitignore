@@ -1,5 +1,15 @@
-/data/
+/data/*/xml/
+/data/*/text/
+/data/reuters/
+/data/models/
+/data/asthma/
+/data/autism/
+/data/leukemia/
+/data/classic3/
+/data/classic4/
+/data/tweets/
 __pycache__
 *.pyc
 *.svg
+*.old
 /dependancies.txt
