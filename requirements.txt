@@ -1,0 +1,9 @@
+coclust==0.2.1
+numpy==1.14.2
+rope==0.10.7
+pyahocorasick==1.1.7
+fuzzywuzzy==0.16.0
+Flask==0.12.2
+gensim==3.4.0
+ahocorasick==0.9
+scikit_learn==0.19.1
