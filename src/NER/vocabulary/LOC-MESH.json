@@ -1,0 +1,3476 @@
+{
+  "South Sudan": {
+    "ids": [
+      "D000068037"
+    ], 
+    "pref_name": "South Sudan"
+  }, 
+  "Beijing": {
+    "ids": [
+      "D000068476"
+    ], 
+    "pref_name": "Beijing"
+  }, 
+  "Peking": {
+    "ids": [
+      "D000068476"
+    ], 
+    "pref_name": "Beijing"
+  }, 
+  "Afghanistan": {
+    "ids": [
+      "D000346"
+    ], 
+    "pref_name": "Afghanistan"
+  }, 
+  "Africa": {
+    "ids": [
+      "D000349"
+    ], 
+    "pref_name": "Africa"
+  }, 
+  "Central Africa": {
+    "ids": [
+      "D000350"
+    ], 
+    "pref_name": "Africa, Central"
+  }, 
+  "Africa, Central": {
+    "ids": [
+      "D000350"
+    ], 
+    "pref_name": "Africa, Central"
+  }, 
+  "British Indian Ocean Territory": {
+    "ids": [
+      "D000351"
+    ], 
+    "pref_name": "Africa, Eastern"
+  }, 
+  "Africa, Eastern": {
+    "ids": [
+      "D000351"
+    ], 
+    "pref_name": "Africa, Eastern"
+  }, 
+  "East Africa": {
+    "ids": [
+      "D000351"
+    ], 
+    "pref_name": "Africa, Eastern"
+  }, 
+  "Eastern Africa": {
+    "ids": [
+      "D000351"
+    ], 
+    "pref_name": "Africa, Eastern"
+  }, 
+  "Africa, Northern": {
+    "ids": [
+      "D000352"
+    ], 
+    "pref_name": "Africa, Northern"
+  }, 
+  "Maghrib": {
+    "ids": [
+      "D000352"
+    ], 
+    "pref_name": "Africa, Northern"
+  }, 
+  "Northern Africa": {
+    "ids": [
+      "D000352"
+    ], 
+    "pref_name": "Africa, Northern"
+  }, 
+  "French Speaking Africa": {
+    "ids": [
+      "D000352"
+    ], 
+    "pref_name": "Africa, Northern"
+  }, 
+  "Africa, French-Speaking": {
+    "ids": [
+      "D000352"
+    ], 
+    "pref_name": "Africa, Northern"
+  }, 
+  "North Africa": {
+    "ids": [
+      "D000352"
+    ], 
+    "pref_name": "Africa, Northern"
+  }, 
+  "Southern Africa": {
+    "ids": [
+      "D000353"
+    ], 
+    "pref_name": "Africa, Southern"
+  }, 
+  "Africa, Southern": {
+    "ids": [
+      "D000353"
+    ], 
+    "pref_name": "Africa, Southern"
+  }, 
+  "Western Africa": {
+    "ids": [
+      "D000354"
+    ], 
+    "pref_name": "Africa, Western"
+  }, 
+  "Africa, Western": {
+    "ids": [
+      "D000354"
+    ], 
+    "pref_name": "Africa, Western"
+  }, 
+  "West Africa": {
+    "ids": [
+      "D000354"
+    ], 
+    "pref_name": "Africa, Western"
+  }, 
+  "Africa, West": {
+    "ids": [
+      "D000354"
+    ], 
+    "pref_name": "Africa, Western"
+  }, 
+  "Alabama": {
+    "ids": [
+      "D000407"
+    ], 
+    "pref_name": "Alabama"
+  }, 
+  "Alaska": {
+    "ids": [
+      "D000413"
+    ], 
+    "pref_name": "Alaska"
+  }, 
+  "Albania": {
+    "ids": [
+      "D000415"
+    ], 
+    "pref_name": "Albania"
+  }, 
+  "Alberta": {
+    "ids": [
+      "D000416"
+    ], 
+    "pref_name": "Alberta"
+  }, 
+  "Algeria": {
+    "ids": [
+      "D000462"
+    ], 
+    "pref_name": "Algeria"
+  }, 
+  "America": {
+    "ids": [
+      "D000569"
+    ], 
+    "pref_name": "Americas"
+  }, 
+  "Americas": {
+    "ids": [
+      "D000569"
+    ], 
+    "pref_name": "Americas"
+  }, 
+  "Andorra": {
+    "ids": [
+      "D000725"
+    ], 
+    "pref_name": "Andorra"
+  }, 
+  "Angola": {
+    "ids": [
+      "D000810"
+    ], 
+    "pref_name": "Angola"
+  }, 
+  "Antarctic Regions": {
+    "ids": [
+      "D000864"
+    ], 
+    "pref_name": "Antarctic Regions"
+  }, 
+  "Antigua and Barbuda": {
+    "ids": [
+      "D000958"
+    ], 
+    "pref_name": "Antigua and Barbuda"
+  }, 
+  "Appalachian Region": {
+    "ids": [
+      "D001061"
+    ], 
+    "pref_name": "Appalachian Region"
+  }, 
+  "Appalachia": {
+    "ids": [
+      "D001061"
+    ], 
+    "pref_name": "Appalachian Region"
+  }, 
+  "Arabia": {
+    "ids": [
+      "D001083"
+    ], 
+    "pref_name": "Arabia"
+  }, 
+  "Arctic Regions": {
+    "ids": [
+      "D001110"
+    ], 
+    "pref_name": "Arctic Regions"
+  }, 
+  "Argentina": {
+    "ids": [
+      "D001118"
+    ], 
+    "pref_name": "Argentina"
+  }, 
+  "Arizona": {
+    "ids": [
+      "D001130"
+    ], 
+    "pref_name": "Arizona"
+  }, 
+  "Arkansas": {
+    "ids": [
+      "D001131"
+    ], 
+    "pref_name": "Arkansas"
+  }, 
+  "Armenian SSR": {
+    "ids": [
+      "D001136"
+    ], 
+    "pref_name": "Armenia"
+  }, 
+  "Armenia": {
+    "ids": [
+      "D001136"
+    ], 
+    "pref_name": "Armenia"
+  }, 
+  "Southern Asia": {
+    "ids": [
+      "D001208"
+    ], 
+    "pref_name": "Asia"
+  }, 
+  "Asia": {
+    "ids": [
+      "D001208"
+    ], 
+    "pref_name": "Asia"
+  }, 
+  "Asia, Central": {
+    "ids": [
+      "D001209"
+    ], 
+    "pref_name": "Asia, Central"
+  }, 
+  "Southeastern Asia": {
+    "ids": [
+      "D001210"
+    ], 
+    "pref_name": "Asia, Southeastern"
+  }, 
+  "Asia, Southeastern": {
+    "ids": [
+      "D001210"
+    ], 
+    "pref_name": "Asia, Southeastern"
+  }, 
+  "Western Asia": {
+    "ids": [
+      "D001211"
+    ], 
+    "pref_name": "Asia, Western"
+  }, 
+  "Asia, Western": {
+    "ids": [
+      "D001211"
+    ], 
+    "pref_name": "Asia, Western"
+  }, 
+  "St. Helena": {
+    "ids": [
+      "D001266"
+    ], 
+    "pref_name": "Atlantic Islands"
+  }, 
+  "Atlantic Islands": {
+    "ids": [
+      "D001266"
+    ], 
+    "pref_name": "Atlantic Islands"
+  }, 
+  "Sao Tome and Principe": {
+    "ids": [
+      "D001266"
+    ], 
+    "pref_name": "Atlantic Islands"
+  }, 
+  "Saint Helena": {
+    "ids": [
+      "D001266"
+    ], 
+    "pref_name": "Atlantic Islands"
+  }, 
+  "Atlantic Ocean": {
+    "ids": [
+      "D001267"
+    ], 
+    "pref_name": "Atlantic Ocean"
+  }, 
+  "Christmas Island": {
+    "ids": [
+      "D001315"
+    ], 
+    "pref_name": "Australia"
+  }, 
+  "Christmas Island (Australia)": {
+    "ids": [
+      "D001315"
+    ], 
+    "pref_name": "Australia"
+  }, 
+  "Canton and Enderbury Islands": {
+    "ids": [
+      "D001315"
+    ], 
+    "pref_name": "Australia"
+  }, 
+  "Australia": {
+    "ids": [
+      "D001315"
+    ], 
+    "pref_name": "Australia"
+  }, 
+  "Austria": {
+    "ids": [
+      "D001317"
+    ], 
+    "pref_name": "Austria"
+  }, 
+  "Azerbaijan SSR": {
+    "ids": [
+      "D001382"
+    ], 
+    "pref_name": "Azerbaijan"
+  }, 
+  "Azerbaijan": {
+    "ids": [
+      "D001382"
+    ], 
+    "pref_name": "Azerbaijan"
+  }, 
+  "Azores": {
+    "ids": [
+      "D001394"
+    ], 
+    "pref_name": "Azores"
+  }, 
+  "Bahamas": {
+    "ids": [
+      "D001444"
+    ], 
+    "pref_name": "Bahamas"
+  }, 
+  "Bahrain": {
+    "ids": [
+      "D001445"
+    ], 
+    "pref_name": "Bahrain"
+  }, 
+  "Baltic States": {
+    "ids": [
+      "D001454"
+    ], 
+    "pref_name": "Baltic States"
+  }, 
+  "Bangladesh": {
+    "ids": [
+      "D001459"
+    ], 
+    "pref_name": "Bangladesh"
+  }, 
+  "Barbados": {
+    "ids": [
+      "D001460"
+    ], 
+    "pref_name": "Barbados"
+  }, 
+  "Bashkiria": {
+    "ids": [
+      "D001486"
+    ], 
+    "pref_name": "Bashkiria"
+  }, 
+  "Belgium": {
+    "ids": [
+      "D001530"
+    ], 
+    "pref_name": "Belgium"
+  }, 
+  "Belize": {
+    "ids": [
+      "D001531"
+    ], 
+    "pref_name": "Belize"
+  }, 
+  "Republic of Benin": {
+    "ids": [
+      "D001541"
+    ], 
+    "pref_name": "Benin"
+  }, 
+  "Benin": {
+    "ids": [
+      "D001541"
+    ], 
+    "pref_name": "Benin"
+  }, 
+  "Berlin": {
+    "ids": [
+      "D001604"
+    ], 
+    "pref_name": "Berlin"
+  }, 
+  "Bermuda": {
+    "ids": [
+      "D001605"
+    ], 
+    "pref_name": "Bermuda"
+  }, 
+  "Bhutan": {
+    "ids": [
+      "D001631"
+    ], 
+    "pref_name": "Bhutan"
+  }, 
+  "Bolivia": {
+    "ids": [
+      "D001838"
+    ], 
+    "pref_name": "Bolivia"
+  }, 
+  "Borneo": {
+    "ids": [
+      "D001893"
+    ], 
+    "pref_name": "Borneo"
+  }, 
+  "Boston": {
+    "ids": [
+      "D001900"
+    ], 
+    "pref_name": "Boston"
+  }, 
+  "Botswana": {
+    "ids": [
+      "D001902"
+    ], 
+    "pref_name": "Botswana"
+  }, 
+  "Brazil": {
+    "ids": [
+      "D001938"
+    ], 
+    "pref_name": "Brazil"
+  }, 
+  "British Columbia": {
+    "ids": [
+      "D001955"
+    ], 
+    "pref_name": "British Columbia"
+  }, 
+  "Brunei": {
+    "ids": [
+      "D002010"
+    ], 
+    "pref_name": "Brunei"
+  }, 
+  "Bulgaria": {
+    "ids": [
+      "D002031"
+    ], 
+    "pref_name": "Bulgaria"
+  }, 
+  "Burkina Faso": {
+    "ids": [
+      "D002050"
+    ], 
+    "pref_name": "Burkina Faso"
+  }, 
+  "Burkina Fasso": {
+    "ids": [
+      "D002050"
+    ], 
+    "pref_name": "Burkina Faso"
+  }, 
+  "Myanmar": {
+    "ids": [
+      "D002052"
+    ], 
+    "pref_name": "Myanmar"
+  }, 
+  "Myanma": {
+    "ids": [
+      "D002052"
+    ], 
+    "pref_name": "Myanmar"
+  }, 
+  "Burundi": {
+    "ids": [
+      "D002063"
+    ], 
+    "pref_name": "Burundi"
+  }, 
+  "Republic of Belarus": {
+    "ids": [
+      "D002094"
+    ], 
+    "pref_name": "Republic of Belarus"
+  }, 
+  "Belorussia": {
+    "ids": [
+      "D002094"
+    ], 
+    "pref_name": "Republic of Belarus"
+  }, 
+  "Belorussian SSR": {
+    "ids": [
+      "D002094"
+    ], 
+    "pref_name": "Republic of Belarus"
+  }, 
+  "Byelorussian SSR": {
+    "ids": [
+      "D002094"
+    ], 
+    "pref_name": "Republic of Belarus"
+  }, 
+  "California": {
+    "ids": [
+      "D002140"
+    ], 
+    "pref_name": "California"
+  }, 
+  "Cambodia": {
+    "ids": [
+      "D002160"
+    ], 
+    "pref_name": "Cambodia"
+  }, 
+  "Cameroon": {
+    "ids": [
+      "D002163"
+    ], 
+    "pref_name": "Cameroon"
+  }, 
+  "United Republic of Cameroon": {
+    "ids": [
+      "D002163"
+    ], 
+    "pref_name": "Cameroon"
+  }, 
+  "Cameroons": {
+    "ids": [
+      "D002163"
+    ], 
+    "pref_name": "Cameroon"
+  }, 
+  "Canada": {
+    "ids": [
+      "D002170"
+    ], 
+    "pref_name": "Canada"
+  }, 
+  "Ubangi-Shari": {
+    "ids": [
+      "D002488"
+    ], 
+    "pref_name": "Central African Republic"
+  }, 
+  "Central African Republic": {
+    "ids": [
+      "D002488"
+    ], 
+    "pref_name": "Central African Republic"
+  }, 
+  "Central America": {
+    "ids": [
+      "D002489"
+    ], 
+    "pref_name": "Central America"
+  }, 
+  "Chad": {
+    "ids": [
+      "D002596"
+    ], 
+    "pref_name": "Chad"
+  }, 
+  "Channel Islands": {
+    "ids": [
+      "D002603"
+    ], 
+    "pref_name": "Channel Islands"
+  }, 
+  "Chicago": {
+    "ids": [
+      "D002641"
+    ], 
+    "pref_name": "Chicago"
+  }, 
+  "Chile": {
+    "ids": [
+      "D002677"
+    ], 
+    "pref_name": "Chile"
+  }, 
+  "Mainland China": {
+    "ids": [
+      "D002681"
+    ], 
+    "pref_name": "China"
+  }, 
+  "China": {
+    "ids": [
+      "D002681"
+    ], 
+    "pref_name": "China"
+  }, 
+  "Cities": {
+    "ids": [
+      "D002947"
+    ], 
+    "pref_name": "Cities"
+  }, 
+  "Colombia": {
+    "ids": [
+      "D003105"
+    ], 
+    "pref_name": "Colombia"
+  }, 
+  "Colorado": {
+    "ids": [
+      "D003120"
+    ], 
+    "pref_name": "Colorado"
+  }, 
+  "Congo (Brazzaville)": {
+    "ids": [
+      "D003223"
+    ], 
+    "pref_name": "Congo"
+  }, 
+  "Congo": {
+    "ids": [
+      "D003223"
+    ], 
+    "pref_name": "Congo"
+  }, 
+  "Connecticut": {
+    "ids": [
+      "D003237"
+    ], 
+    "pref_name": "Connecticut"
+  }, 
+  "Costa Rica": {
+    "ids": [
+      "D003364"
+    ], 
+    "pref_name": "Costa Rica"
+  }, 
+  "Cuba": {
+    "ids": [
+      "D003462"
+    ], 
+    "pref_name": "Cuba"
+  }, 
+  "Cyprus": {
+    "ids": [
+      "D003535"
+    ], 
+    "pref_name": "Cyprus"
+  }, 
+  "Czechoslovakia": {
+    "ids": [
+      "D003604"
+    ], 
+    "pref_name": "Czechoslovakia"
+  }, 
+  "Dagestan": {
+    "ids": [
+      "D003610"
+    ], 
+    "pref_name": "Dagestan"
+  }, 
+  "Delaware": {
+    "ids": [
+      "D003691"
+    ], 
+    "pref_name": "Delaware"
+  }, 
+  "Faroe Islands": {
+    "ids": [
+      "D003718"
+    ], 
+    "pref_name": "Denmark"
+  }, 
+  "Denmark": {
+    "ids": [
+      "D003718"
+    ], 
+    "pref_name": "Denmark"
+  }, 
+  "Washington, DC": {
+    "ids": [
+      "D004219"
+    ], 
+    "pref_name": "District of Columbia"
+  }, 
+  "District of Columbia": {
+    "ids": [
+      "D004219"
+    ], 
+    "pref_name": "District of Columbia"
+  }, 
+  "Dominican Republic": {
+    "ids": [
+      "D004293"
+    ], 
+    "pref_name": "Dominican Republic"
+  }, 
+  "Ecuador": {
+    "ids": [
+      "D004484"
+    ], 
+    "pref_name": "Ecuador"
+  }, 
+  "Egypt": {
+    "ids": [
+      "D004534"
+    ], 
+    "pref_name": "Egypt"
+  }, 
+  "El Salvador": {
+    "ids": [
+      "D004544"
+    ], 
+    "pref_name": "El Salvador"
+  }, 
+  "England": {
+    "ids": [
+      "D004739"
+    ], 
+    "pref_name": "England"
+  }, 
+  "Estonia": {
+    "ids": [
+      "D004957"
+    ], 
+    "pref_name": "Estonia"
+  }, 
+  "Ethiopia": {
+    "ids": [
+      "D005002"
+    ], 
+    "pref_name": "Ethiopia"
+  }, 
+  "Europe": {
+    "ids": [
+      "D005060"
+    ], 
+    "pref_name": "Europe"
+  }, 
+  "Western Europe": {
+    "ids": [
+      "D005060"
+    ], 
+    "pref_name": "Europe"
+  }, 
+  "Southern Europe": {
+    "ids": [
+      "D005060"
+    ], 
+    "pref_name": "Europe"
+  }, 
+  "Northern Europe": {
+    "ids": [
+      "D005060"
+    ], 
+    "pref_name": "Europe"
+  }, 
+  "Eastern Europe": {
+    "ids": [
+      "D005061"
+    ], 
+    "pref_name": "Europe, Eastern"
+  }, 
+  "Europe, Eastern": {
+    "ids": [
+      "D005061"
+    ], 
+    "pref_name": "Europe, Eastern"
+  }, 
+  "Far East": {
+    "ids": [
+      "D005202"
+    ], 
+    "pref_name": "Far East"
+  }, 
+  "Eastern Asia": {
+    "ids": [
+      "D005202"
+    ], 
+    "pref_name": "Far East"
+  }, 
+  "Fiji": {
+    "ids": [
+      "D005367"
+    ], 
+    "pref_name": "Fiji"
+  }, 
+  "Aland Islands": {
+    "ids": [
+      "D005387"
+    ], 
+    "pref_name": "Finland"
+  }, 
+  "Finland": {
+    "ids": [
+      "D005387"
+    ], 
+    "pref_name": "Finland"
+  }, 
+  "\u00c5land Islands": {
+    "ids": [
+      "D005387"
+    ], 
+    "pref_name": "Finland"
+  }, 
+  "Florida": {
+    "ids": [
+      "D005431"
+    ], 
+    "pref_name": "Florida"
+  }, 
+  "St. Pierre and Miquelon": {
+    "ids": [
+      "D005602"
+    ], 
+    "pref_name": "France"
+  }, 
+  "Miquelon and St. Pierre": {
+    "ids": [
+      "D005602"
+    ], 
+    "pref_name": "France"
+  }, 
+  "Miquelon and Saint Pierre": {
+    "ids": [
+      "D005602"
+    ], 
+    "pref_name": "France"
+  }, 
+  "France": {
+    "ids": [
+      "D005602"
+    ], 
+    "pref_name": "France"
+  }, 
+  "French Guiana": {
+    "ids": [
+      "D005616"
+    ], 
+    "pref_name": "French Guiana"
+  }, 
+  "Gabon": {
+    "ids": [
+      "D005681"
+    ], 
+    "pref_name": "Gabon"
+  }, 
+  "Gambia": {
+    "ids": [
+      "D005714"
+    ], 
+    "pref_name": "Gambia"
+  }, 
+  "Republic of the Gambia": {
+    "ids": [
+      "D005714"
+    ], 
+    "pref_name": "Gambia"
+  }, 
+  "Geographic Locations": {
+    "ids": [
+      "D005842"
+    ], 
+    "pref_name": "Geographic Locations"
+  }, 
+  "Georgia": {
+    "ids": [
+      "D005845"
+    ], 
+    "pref_name": "Georgia"
+  }, 
+  "Georgia SSR": {
+    "ids": [
+      "D005846"
+    ], 
+    "pref_name": "Georgia (Republic)"
+  }, 
+  "Georgia (Republic)": {
+    "ids": [
+      "D005846"
+    ], 
+    "pref_name": "Georgia (Republic)"
+  }, 
+  "Republic of Georgia": {
+    "ids": [
+      "D005846"
+    ], 
+    "pref_name": "Georgia (Republic)"
+  }, 
+  "Georgian SSR": {
+    "ids": [
+      "D005846"
+    ], 
+    "pref_name": "Georgia (Republic)"
+  }, 
+  "Georgia (Western Asia)": {
+    "ids": [
+      "D005846"
+    ], 
+    "pref_name": "Georgia (Republic)"
+  }, 
+  "Germany": {
+    "ids": [
+      "D005858"
+    ], 
+    "pref_name": "Germany"
+  }, 
+  "Germany, East": {
+    "ids": [
+      "D005859"
+    ], 
+    "pref_name": "Germany, East"
+  }, 
+  "Germany, West": {
+    "ids": [
+      "D005860"
+    ], 
+    "pref_name": "Germany, West"
+  }, 
+  "Ghana": {
+    "ids": [
+      "D005869"
+    ], 
+    "pref_name": "Ghana"
+  }, 
+  "Republic of Ghana": {
+    "ids": [
+      "D005869"
+    ], 
+    "pref_name": "Ghana"
+  }, 
+  "Gibraltar": {
+    "ids": [
+      "D005876"
+    ], 
+    "pref_name": "Gibraltar"
+  }, 
+  "United Kingdom": {
+    "ids": [
+      "D006113"
+    ], 
+    "pref_name": "United Kingdom"
+  }, 
+  "Great Lakes Region": {
+    "ids": [
+      "D006114"
+    ], 
+    "pref_name": "Great Lakes Region"
+  }, 
+  "Greece": {
+    "ids": [
+      "D006115"
+    ], 
+    "pref_name": "Greece"
+  }, 
+  "Greenland": {
+    "ids": [
+      "D006116"
+    ], 
+    "pref_name": "Greenland"
+  }, 
+  "Guam": {
+    "ids": [
+      "D006141"
+    ], 
+    "pref_name": "Guam"
+  }, 
+  "Guatemala": {
+    "ids": [
+      "D006166"
+    ], 
+    "pref_name": "Guatemala"
+  }, 
+  "Guinea-Bissau, Republic of": {
+    "ids": [
+      "D006169"
+    ], 
+    "pref_name": "Guinea-Bissau"
+  }, 
+  "Republic of Guinea-Bissau": {
+    "ids": [
+      "D006169"
+    ], 
+    "pref_name": "Guinea-Bissau"
+  }, 
+  "Guinea-Bissau": {
+    "ids": [
+      "D006169"
+    ], 
+    "pref_name": "Guinea-Bissau"
+  }, 
+  "Guyana": {
+    "ids": [
+      "D006172"
+    ], 
+    "pref_name": "Guyana"
+  }, 
+  "Haiti": {
+    "ids": [
+      "D006205"
+    ], 
+    "pref_name": "Haiti"
+  }, 
+  "Midway Island": {
+    "ids": [
+      "D006254"
+    ], 
+    "pref_name": "Hawaii"
+  }, 
+  "Hawaii": {
+    "ids": [
+      "D006254"
+    ], 
+    "pref_name": "Hawaii"
+  }, 
+  "Midway Islands": {
+    "ids": [
+      "D006254"
+    ], 
+    "pref_name": "Hawaii"
+  }, 
+  "Hebrides": {
+    "ids": [
+      "D006363"
+    ], 
+    "pref_name": "Hebrides"
+  }, 
+  "Honduras": {
+    "ids": [
+      "D006721"
+    ], 
+    "pref_name": "Honduras"
+  }, 
+  "Hongkong": {
+    "ids": [
+      "D006723"
+    ], 
+    "pref_name": "Hong Kong"
+  }, 
+  "Hong Kong": {
+    "ids": [
+      "D006723"
+    ], 
+    "pref_name": "Hong Kong"
+  }, 
+  "Hungary": {
+    "ids": [
+      "D006814"
+    ], 
+    "pref_name": "Hungary"
+  }, 
+  "Iceland": {
+    "ids": [
+      "D007055"
+    ], 
+    "pref_name": "Iceland"
+  }, 
+  "Idaho": {
+    "ids": [
+      "D007061"
+    ], 
+    "pref_name": "Idaho"
+  }, 
+  "Illinois": {
+    "ids": [
+      "D007087"
+    ], 
+    "pref_name": "Illinois"
+  }, 
+  "India": {
+    "ids": [
+      "D007194"
+    ], 
+    "pref_name": "India"
+  }, 
+  "Cocos (Keeling) Islands": {
+    "ids": [
+      "D007195"
+    ], 
+    "pref_name": "Indian Ocean Islands"
+  }, 
+  "Indian Ocean Islands": {
+    "ids": [
+      "D007195"
+    ], 
+    "pref_name": "Indian Ocean Islands"
+  }, 
+  "Indiana": {
+    "ids": [
+      "D007196"
+    ], 
+    "pref_name": "Indiana"
+  }, 
+  "East Indies": {
+    "ids": [
+      "D007214"
+    ], 
+    "pref_name": "Indonesia"
+  }, 
+  "Indonesia": {
+    "ids": [
+      "D007214"
+    ], 
+    "pref_name": "Indonesia"
+  }, 
+  "Madura": {
+    "ids": [
+      "D007214"
+    ], 
+    "pref_name": "Indonesia"
+  }, 
+  "Iowa": {
+    "ids": [
+      "D007484"
+    ], 
+    "pref_name": "Iowa"
+  }, 
+  "Iran": {
+    "ids": [
+      "D007492"
+    ], 
+    "pref_name": "Iran"
+  }, 
+  "Iraq": {
+    "ids": [
+      "D007493"
+    ], 
+    "pref_name": "Iraq"
+  }, 
+  "Ireland": {
+    "ids": [
+      "D007494"
+    ], 
+    "pref_name": "Ireland"
+  }, 
+  "Israel": {
+    "ids": [
+      "D007557"
+    ], 
+    "pref_name": "Israel"
+  }, 
+  "Italy": {
+    "ids": [
+      "D007558"
+    ], 
+    "pref_name": "Italy"
+  }, 
+  "Republic of Cote diIvoire": {
+    "ids": [
+      "D007560"
+    ], 
+    "pref_name": "Cote d'Ivoire"
+  }, 
+  "Cote d'Ivoire": {
+    "ids": [
+      "D007560"
+    ], 
+    "pref_name": "Cote d'Ivoire"
+  }, 
+  "Jamaica": {
+    "ids": [
+      "D007563"
+    ], 
+    "pref_name": "Jamaica"
+  }, 
+  "Japan": {
+    "ids": [
+      "D007564"
+    ], 
+    "pref_name": "Japan"
+  }, 
+  "Jordan": {
+    "ids": [
+      "D007597"
+    ], 
+    "pref_name": "Jordan"
+  }, 
+  "Kansas": {
+    "ids": [
+      "D007615"
+    ], 
+    "pref_name": "Kansas"
+  }, 
+  "Kazakh SSR": {
+    "ids": [
+      "D007623"
+    ], 
+    "pref_name": "Kazakhstan"
+  }, 
+  "Kazakhstan": {
+    "ids": [
+      "D007623"
+    ], 
+    "pref_name": "Kazakhstan"
+  }, 
+  "Kentucky": {
+    "ids": [
+      "D007629"
+    ], 
+    "pref_name": "Kentucky"
+  }, 
+  "Kenya": {
+    "ids": [
+      "D007630"
+    ], 
+    "pref_name": "Kenya"
+  }, 
+  "Republic of Kenya": {
+    "ids": [
+      "D007630"
+    ], 
+    "pref_name": "Kenya"
+  }, 
+  "Kirghiz SSR": {
+    "ids": [
+      "D007707"
+    ], 
+    "pref_name": "Kyrgyzstan"
+  }, 
+  "Kyrgyzstan": {
+    "ids": [
+      "D007707"
+    ], 
+    "pref_name": "Kyrgyzstan"
+  }, 
+  "Kirghizia": {
+    "ids": [
+      "D007707"
+    ], 
+    "pref_name": "Kyrgyzstan"
+  }, 
+  "Korea": {
+    "ids": [
+      "D007723"
+    ], 
+    "pref_name": "Korea"
+  }, 
+  "Kuwait": {
+    "ids": [
+      "D007730"
+    ], 
+    "pref_name": "Kuwait"
+  }, 
+  "Laos": {
+    "ids": [
+      "D007812"
+    ], 
+    "pref_name": "Laos"
+  }, 
+  "Latin America": {
+    "ids": [
+      "D007843"
+    ], 
+    "pref_name": "Latin America"
+  }, 
+  "Latvia": {
+    "ids": [
+      "D007844"
+    ], 
+    "pref_name": "Latvia"
+  }, 
+  "Lebanon": {
+    "ids": [
+      "D007861"
+    ], 
+    "pref_name": "Lebanon"
+  }, 
+  "Lesotho": {
+    "ids": [
+      "D007927"
+    ], 
+    "pref_name": "Lesotho"
+  }, 
+  "Kingdom of Lesotho": {
+    "ids": [
+      "D007927"
+    ], 
+    "pref_name": "Lesotho"
+  }, 
+  "Liberia": {
+    "ids": [
+      "D007988"
+    ], 
+    "pref_name": "Liberia"
+  }, 
+  "Republic of Liberia": {
+    "ids": [
+      "D007988"
+    ], 
+    "pref_name": "Liberia"
+  }, 
+  "Libya": {
+    "ids": [
+      "D008002"
+    ], 
+    "pref_name": "Libya"
+  }, 
+  "Liechtenstein": {
+    "ids": [
+      "D008015"
+    ], 
+    "pref_name": "Liechtenstein"
+  }, 
+  "Leichtenstein": {
+    "ids": [
+      "D008015"
+    ], 
+    "pref_name": "Liechtenstein"
+  }, 
+  "Lithuania": {
+    "ids": [
+      "D008097"
+    ], 
+    "pref_name": "Lithuania"
+  }, 
+  "London": {
+    "ids": [
+      "D008131"
+    ], 
+    "pref_name": "London"
+  }, 
+  "Louisiana": {
+    "ids": [
+      "D008145"
+    ], 
+    "pref_name": "Louisiana"
+  }, 
+  "Luxemborg": {
+    "ids": [
+      "D008189"
+    ], 
+    "pref_name": "Luxembourg"
+  }, 
+  "Luxemburg": {
+    "ids": [
+      "D008189"
+    ], 
+    "pref_name": "Luxembourg"
+  }, 
+  "Luxembourg": {
+    "ids": [
+      "D008189"
+    ], 
+    "pref_name": "Luxembourg"
+  }, 
+  "Macao": {
+    "ids": [
+      "D008256"
+    ], 
+    "pref_name": "Macau"
+  }, 
+  "Macau": {
+    "ids": [
+      "D008256"
+    ], 
+    "pref_name": "Macau"
+  }, 
+  "Madagascar": {
+    "ids": [
+      "D008270"
+    ], 
+    "pref_name": "Madagascar"
+  }, 
+  "Maine": {
+    "ids": [
+      "D008281"
+    ], 
+    "pref_name": "Maine"
+  }, 
+  "Republic of Malawi": {
+    "ids": [
+      "D008295"
+    ], 
+    "pref_name": "Malawi"
+  }, 
+  "Malawi": {
+    "ids": [
+      "D008295"
+    ], 
+    "pref_name": "Malawi"
+  }, 
+  "Malaysia": {
+    "ids": [
+      "D008296"
+    ], 
+    "pref_name": "Malaysia"
+  }, 
+  "Republic of Mali": {
+    "ids": [
+      "D008302"
+    ], 
+    "pref_name": "Mali"
+  }, 
+  "Mali": {
+    "ids": [
+      "D008302"
+    ], 
+    "pref_name": "Mali"
+  }, 
+  "Malta": {
+    "ids": [
+      "D008319"
+    ], 
+    "pref_name": "Malta"
+  }, 
+  "Manitoba": {
+    "ids": [
+      "D008350"
+    ], 
+    "pref_name": "Manitoba"
+  }, 
+  "Martinique": {
+    "ids": [
+      "D008395"
+    ], 
+    "pref_name": "Martinique"
+  }, 
+  "Maryland": {
+    "ids": [
+      "D008396"
+    ], 
+    "pref_name": "Maryland"
+  }, 
+  "Massachusetts": {
+    "ids": [
+      "D008404"
+    ], 
+    "pref_name": "Massachusetts"
+  }, 
+  "Mauritania": {
+    "ids": [
+      "D008435"
+    ], 
+    "pref_name": "Mauritania"
+  }, 
+  "Mauritius": {
+    "ids": [
+      "D008436"
+    ], 
+    "pref_name": "Mauritius"
+  }, 
+  "Mediterranean Islands": {
+    "ids": [
+      "D008521"
+    ], 
+    "pref_name": "Mediterranean Islands"
+  }, 
+  "Mediterranean Sea": {
+    "ids": [
+      "D008522"
+    ], 
+    "pref_name": "Mediterranean Sea"
+  }, 
+  "Mekong Valley": {
+    "ids": [
+      "D008541"
+    ], 
+    "pref_name": "Mekong Valley"
+  }, 
+  "Norfolk Island": {
+    "ids": [
+      "D008542"
+    ], 
+    "pref_name": "Melanesia"
+  }, 
+  "Melanesia": {
+    "ids": [
+      "D008542"
+    ], 
+    "pref_name": "Melanesia"
+  }, 
+  "British Solomon Islands": {
+    "ids": [
+      "D008542"
+    ], 
+    "pref_name": "Melanesia"
+  }, 
+  "Mexico": {
+    "ids": [
+      "D008800"
+    ], 
+    "pref_name": "Mexico"
+  }, 
+  "Michigan": {
+    "ids": [
+      "D008824"
+    ], 
+    "pref_name": "Michigan"
+  }, 
+  "Northern Mariana Islands": {
+    "ids": [
+      "D008849"
+    ], 
+    "pref_name": "Micronesia"
+  }, 
+  "Pacific Islands (Trust Territory)": {
+    "ids": [
+      "D008849"
+    ], 
+    "pref_name": "Micronesia"
+  }, 
+  "Micronesia, Federated States of": {
+    "ids": [
+      "D008849"
+    ], 
+    "pref_name": "Micronesia"
+  }, 
+  "Micronesia": {
+    "ids": [
+      "D008849"
+    ], 
+    "pref_name": "Micronesia"
+  }, 
+  "Johnston Island": {
+    "ids": [
+      "D008849"
+    ], 
+    "pref_name": "Micronesia"
+  }, 
+  "Mid Atlantic Region": {
+    "ids": [
+      "D008873"
+    ], 
+    "pref_name": "Mid-Atlantic Region"
+  }, 
+  "Mid-Atlantic Region": {
+    "ids": [
+      "D008873"
+    ], 
+    "pref_name": "Mid-Atlantic Region"
+  }, 
+  "Middle East": {
+    "ids": [
+      "D008877"
+    ], 
+    "pref_name": "Middle East"
+  }, 
+  "Gaza Strip (Palestine)": {
+    "ids": [
+      "D008877"
+    ], 
+    "pref_name": "Middle East"
+  }, 
+  "Minnesota": {
+    "ids": [
+      "D008910"
+    ], 
+    "pref_name": "Minnesota"
+  }, 
+  "Mississippi": {
+    "ids": [
+      "D008922"
+    ], 
+    "pref_name": "Mississippi"
+  }, 
+  "Missouri": {
+    "ids": [
+      "D008923"
+    ], 
+    "pref_name": "Missouri"
+  }, 
+  "Moldavian SSR": {
+    "ids": [
+      "D008966"
+    ], 
+    "pref_name": "Moldova"
+  }, 
+  "Moldavia": {
+    "ids": [
+      "D008966"
+    ], 
+    "pref_name": "Moldova"
+  }, 
+  "Moldova": {
+    "ids": [
+      "D008966"
+    ], 
+    "pref_name": "Moldova"
+  }, 
+  "Monaco": {
+    "ids": [
+      "D008984"
+    ], 
+    "pref_name": "Monaco"
+  }, 
+  "Mongolia": {
+    "ids": [
+      "D008986"
+    ], 
+    "pref_name": "Mongolia"
+  }, 
+  "Montana": {
+    "ids": [
+      "D009009"
+    ], 
+    "pref_name": "Montana"
+  }, 
+  "Morocco": {
+    "ids": [
+      "D009018"
+    ], 
+    "pref_name": "Morocco"
+  }, 
+  "Ifni": {
+    "ids": [
+      "D009018"
+    ], 
+    "pref_name": "Morocco"
+  }, 
+  "Moscow": {
+    "ids": [
+      "D009031"
+    ], 
+    "pref_name": "Moscow"
+  }, 
+  "Republic of Mozambique": {
+    "ids": [
+      "D009073"
+    ], 
+    "pref_name": "Mozambique"
+  }, 
+  "Portuguese East Africa": {
+    "ids": [
+      "D009073"
+    ], 
+    "pref_name": "Mozambique"
+  }, 
+  "Mozambique": {
+    "ids": [
+      "D009073"
+    ], 
+    "pref_name": "Mozambique"
+  }, 
+  "Southwest Africa": {
+    "ids": [
+      "D009276"
+    ], 
+    "pref_name": "Namibia"
+  }, 
+  "South West Africa": {
+    "ids": [
+      "D009276"
+    ], 
+    "pref_name": "Namibia"
+  }, 
+  "Namibia": {
+    "ids": [
+      "D009276"
+    ], 
+    "pref_name": "Namibia"
+  }, 
+  "Republic of Namibia": {
+    "ids": [
+      "D009276"
+    ], 
+    "pref_name": "Namibia"
+  }, 
+  "Nebraska": {
+    "ids": [
+      "D009329"
+    ], 
+    "pref_name": "Nebraska"
+  }, 
+  "Nepal": {
+    "ids": [
+      "D009390"
+    ], 
+    "pref_name": "Nepal"
+  }, 
+  "Netherlands": {
+    "ids": [
+      "D009426"
+    ], 
+    "pref_name": "Netherlands"
+  }, 
+  "Curacao": {
+    "ids": [
+      "D009426"
+    ], 
+    "pref_name": "Netherlands"
+  }, 
+  "Aruba": {
+    "ids": [
+      "D009426"
+    ], 
+    "pref_name": "Netherlands"
+  }, 
+  "Kingdom of the Netherlands": {
+    "ids": [
+      "D009426"
+    ], 
+    "pref_name": "Netherlands"
+  }, 
+  "Sint Maarten": {
+    "ids": [
+      "D009426"
+    ], 
+    "pref_name": "Netherlands"
+  }, 
+  "Holland": {
+    "ids": [
+      "D009426"
+    ], 
+    "pref_name": "Netherlands"
+  }, 
+  "Netherlands Antilles": {
+    "ids": [
+      "D009427"
+    ], 
+    "pref_name": "Netherlands Antilles"
+  }, 
+  "Nevada": {
+    "ids": [
+      "D009505"
+    ], 
+    "pref_name": "Nevada"
+  }, 
+  "New Brunswick": {
+    "ids": [
+      "D009509"
+    ], 
+    "pref_name": "New Brunswick"
+  }, 
+  "New Caledonia": {
+    "ids": [
+      "D009510"
+    ], 
+    "pref_name": "New Caledonia"
+  }, 
+  "New England": {
+    "ids": [
+      "D009511"
+    ], 
+    "pref_name": "New England"
+  }, 
+  "New Guinea": {
+    "ids": [
+      "D009512"
+    ], 
+    "pref_name": "New Guinea"
+  }, 
+  "New Hampshire": {
+    "ids": [
+      "D009513"
+    ], 
+    "pref_name": "New Hampshire"
+  }, 
+  "Vanuatu": {
+    "ids": [
+      "D009514"
+    ], 
+    "pref_name": "Vanuatu"
+  }, 
+  "New Jersey": {
+    "ids": [
+      "D009515"
+    ], 
+    "pref_name": "New Jersey"
+  }, 
+  "New Mexico": {
+    "ids": [
+      "D009516"
+    ], 
+    "pref_name": "New Mexico"
+  }, 
+  "New South Wales": {
+    "ids": [
+      "D009517"
+    ], 
+    "pref_name": "New South Wales"
+  }, 
+  "New York": {
+    "ids": [
+      "D009518"
+    ], 
+    "pref_name": "New York"
+  }, 
+  "New York City": {
+    "ids": [
+      "D009519"
+    ], 
+    "pref_name": "New York City"
+  }, 
+  "New Zealand": {
+    "ids": [
+      "D009520"
+    ], 
+    "pref_name": "New Zealand"
+  }, 
+  "Newfoundland": {
+    "ids": [
+      "D009523"
+    ], 
+    "pref_name": "Newfoundland and Labrador"
+  }, 
+  "Newfoundland and Labrador": {
+    "ids": [
+      "D009523"
+    ], 
+    "pref_name": "Newfoundland and Labrador"
+  }, 
+  "Nicaragua": {
+    "ids": [
+      "D009527"
+    ], 
+    "pref_name": "Nicaragua"
+  }, 
+  "Republic of Niger": {
+    "ids": [
+      "D009548"
+    ], 
+    "pref_name": "Niger"
+  }, 
+  "Niger": {
+    "ids": [
+      "D009548"
+    ], 
+    "pref_name": "Niger"
+  }, 
+  "Nigeria": {
+    "ids": [
+      "D009549"
+    ], 
+    "pref_name": "Nigeria"
+  }, 
+  "Federal Republic of Nigeria": {
+    "ids": [
+      "D009549"
+    ], 
+    "pref_name": "Nigeria"
+  }, 
+  "North America": {
+    "ids": [
+      "D009656"
+    ], 
+    "pref_name": "North America"
+  }, 
+  "Northern America": {
+    "ids": [
+      "D009656"
+    ], 
+    "pref_name": "North America"
+  }, 
+  "North Carolina": {
+    "ids": [
+      "D009657"
+    ], 
+    "pref_name": "North Carolina"
+  }, 
+  "North Dakota": {
+    "ids": [
+      "D009658"
+    ], 
+    "pref_name": "North Dakota"
+  }, 
+  "North Sea": {
+    "ids": [
+      "D009659"
+    ], 
+    "pref_name": "North Sea"
+  }, 
+  "Northern Ireland": {
+    "ids": [
+      "D009660"
+    ], 
+    "pref_name": "Northern Ireland"
+  }, 
+  "Norway": {
+    "ids": [
+      "D009664"
+    ], 
+    "pref_name": "Norway"
+  }, 
+  "Nova Scotia": {
+    "ids": [
+      "D009674"
+    ], 
+    "pref_name": "Nova Scotia"
+  }, 
+  "Oceans": {
+    "ids": [
+      "D009792"
+    ], 
+    "pref_name": "Oceans and Seas"
+  }, 
+  "Oceans and Seas": {
+    "ids": [
+      "D009792"
+    ], 
+    "pref_name": "Oceans and Seas"
+  }, 
+  "Seas and Oceans": {
+    "ids": [
+      "D009792"
+    ], 
+    "pref_name": "Oceans and Seas"
+  }, 
+  "Ohio": {
+    "ids": [
+      "D009820"
+    ], 
+    "pref_name": "Ohio"
+  }, 
+  "Oklahoma": {
+    "ids": [
+      "D009825"
+    ], 
+    "pref_name": "Oklahoma"
+  }, 
+  "Oman": {
+    "ids": [
+      "D009850"
+    ], 
+    "pref_name": "Oman"
+  }, 
+  "Muscat": {
+    "ids": [
+      "D009850"
+    ], 
+    "pref_name": "Oman"
+  }, 
+  "Ontario": {
+    "ids": [
+      "D009864"
+    ], 
+    "pref_name": "Ontario"
+  }, 
+  "Oregon": {
+    "ids": [
+      "D009922"
+    ], 
+    "pref_name": "Oregon"
+  }, 
+  "Pacific Islands": {
+    "ids": [
+      "D010139"
+    ], 
+    "pref_name": "Pacific Islands"
+  }, 
+  "Micronesia-Polynesia": {
+    "ids": [
+      "D010139"
+    ], 
+    "pref_name": "Pacific Islands"
+  }, 
+  "Pacific Ocean": {
+    "ids": [
+      "D010140"
+    ], 
+    "pref_name": "Pacific Ocean"
+  }, 
+  "Pakistan": {
+    "ids": [
+      "D010154"
+    ], 
+    "pref_name": "Pakistan"
+  }, 
+  "Panama": {
+    "ids": [
+      "D010176"
+    ], 
+    "pref_name": "Panama"
+  }, 
+  "Panama Canal Zone": {
+    "ids": [
+      "D010177"
+    ], 
+    "pref_name": "Panama Canal Zone"
+  }, 
+  "Canal Zone": {
+    "ids": [
+      "D010177"
+    ], 
+    "pref_name": "Panama Canal Zone"
+  }, 
+  "Papua New Guinea": {
+    "ids": [
+      "D010219"
+    ], 
+    "pref_name": "Papua New Guinea"
+  }, 
+  "Paraguay": {
+    "ids": [
+      "D010239"
+    ], 
+    "pref_name": "Paraguay"
+  }, 
+  "Paris": {
+    "ids": [
+      "D010297"
+    ], 
+    "pref_name": "Paris"
+  }, 
+  "Pennsylvania": {
+    "ids": [
+      "D010414"
+    ], 
+    "pref_name": "Pennsylvania"
+  }, 
+  "Peru": {
+    "ids": [
+      "D010568"
+    ], 
+    "pref_name": "Peru"
+  }, 
+  "Phillipines": {
+    "ids": [
+      "D010679"
+    ], 
+    "pref_name": "Philippines"
+  }, 
+  "Philippines": {
+    "ids": [
+      "D010679"
+    ], 
+    "pref_name": "Philippines"
+  }, 
+  "Philipines": {
+    "ids": [
+      "D010679"
+    ], 
+    "pref_name": "Philippines"
+  }, 
+  "Phillippines": {
+    "ids": [
+      "D010679"
+    ], 
+    "pref_name": "Philippines"
+  }, 
+  "Pitcairn Island": {
+    "ids": [
+      "D010896"
+    ], 
+    "pref_name": "Pitcairn Island"
+  }, 
+  "Poland": {
+    "ids": [
+      "D011044"
+    ], 
+    "pref_name": "Poland"
+  }, 
+  "Tokelau": {
+    "ids": [
+      "D011114"
+    ], 
+    "pref_name": "Polynesia"
+  }, 
+  "Tokelau Islands": {
+    "ids": [
+      "D011114"
+    ], 
+    "pref_name": "Polynesia"
+  }, 
+  "French Polynesia": {
+    "ids": [
+      "D011114"
+    ], 
+    "pref_name": "Polynesia"
+  }, 
+  "Polynesia": {
+    "ids": [
+      "D011114"
+    ], 
+    "pref_name": "Polynesia"
+  }, 
+  "Wake Island": {
+    "ids": [
+      "D011114"
+    ], 
+    "pref_name": "Polynesia"
+  }, 
+  "Niue": {
+    "ids": [
+      "D011114"
+    ], 
+    "pref_name": "Polynesia"
+  }, 
+  "Wallis and Futuna Islands": {
+    "ids": [
+      "D011114"
+    ], 
+    "pref_name": "Polynesia"
+  }, 
+  "Cook Islands": {
+    "ids": [
+      "D011114"
+    ], 
+    "pref_name": "Polynesia"
+  }, 
+  "Portugal": {
+    "ids": [
+      "D011174"
+    ], 
+    "pref_name": "Portugal"
+  }, 
+  "Prince Edward Island": {
+    "ids": [
+      "D011325"
+    ], 
+    "pref_name": "Prince Edward Island"
+  }, 
+  "Puerto Rico": {
+    "ids": [
+      "D011647"
+    ], 
+    "pref_name": "Puerto Rico"
+  }, 
+  "Qatar": {
+    "ids": [
+      "D011780"
+    ], 
+    "pref_name": "Qatar"
+  }, 
+  "Quatar": {
+    "ids": [
+      "D011780"
+    ], 
+    "pref_name": "Qatar"
+  }, 
+  "Quebec": {
+    "ids": [
+      "D011792"
+    ], 
+    "pref_name": "Quebec"
+  }, 
+  "Queensland": {
+    "ids": [
+      "D011793"
+    ], 
+    "pref_name": "Queensland"
+  }, 
+  "Rhode Island": {
+    "ids": [
+      "D012237"
+    ], 
+    "pref_name": "Rhode Island"
+  }, 
+  "Romania": {
+    "ids": [
+      "D012383"
+    ], 
+    "pref_name": "Romania"
+  }, 
+  "Roumania": {
+    "ids": [
+      "D012383"
+    ], 
+    "pref_name": "Romania"
+  }, 
+  "Rome": {
+    "ids": [
+      "D012384"
+    ], 
+    "pref_name": "Rome"
+  }, 
+  "Russia (Pre 1917)": {
+    "ids": [
+      "D012425"
+    ], 
+    "pref_name": "Russia (Pre-1917)"
+  }, 
+  "Russia (Pre-1917)": {
+    "ids": [
+      "D012425"
+    ], 
+    "pref_name": "Russia (Pre-1917)"
+  }, 
+  "Russian SFSR": {
+    "ids": [
+      "D012426"
+    ], 
+    "pref_name": "Russia"
+  }, 
+  "Russian Federation (Europe)": {
+    "ids": [
+      "D012426"
+    ], 
+    "pref_name": "Russia"
+  }, 
+  "Russia": {
+    "ids": [
+      "D012426"
+    ], 
+    "pref_name": "Russia"
+  }, 
+  "Republic of Rwanda": {
+    "ids": [
+      "D012432"
+    ], 
+    "pref_name": "Rwanda"
+  }, 
+  "Rwanda": {
+    "ids": [
+      "D012432"
+    ], 
+    "pref_name": "Rwanda"
+  }, 
+  "San Francisco": {
+    "ids": [
+      "D012495"
+    ], 
+    "pref_name": "San Francisco"
+  }, 
+  "San Marino": {
+    "ids": [
+      "D012496"
+    ], 
+    "pref_name": "San Marino"
+  }, 
+  "Saskatchewan": {
+    "ids": [
+      "D012525"
+    ], 
+    "pref_name": "Saskatchewan"
+  }, 
+  "Saudi Arabia": {
+    "ids": [
+      "D012529"
+    ], 
+    "pref_name": "Saudi Arabia"
+  }, 
+  "Nordic Countries": {
+    "ids": [
+      "D012537"
+    ], 
+    "pref_name": "Scandinavian and Nordic Countries"
+  }, 
+  "Scandinavian and Nordic Countries": {
+    "ids": [
+      "D012537"
+    ], 
+    "pref_name": "Scandinavian and Nordic Countries"
+  }, 
+  "Scotland": {
+    "ids": [
+      "D012606"
+    ], 
+    "pref_name": "Scotland"
+  }, 
+  "Republic of Senegal": {
+    "ids": [
+      "D012675"
+    ], 
+    "pref_name": "Senegal"
+  }, 
+  "Senegal": {
+    "ids": [
+      "D012675"
+    ], 
+    "pref_name": "Senegal"
+  }, 
+  "Seychelles": {
+    "ids": [
+      "D012750"
+    ], 
+    "pref_name": "Seychelles"
+  }, 
+  "Russian Federation (Asia)": {
+    "ids": [
+      "D012800"
+    ], 
+    "pref_name": "Siberia"
+  }, 
+  "Siberia": {
+    "ids": [
+      "D012800"
+    ], 
+    "pref_name": "Siberia"
+  }, 
+  "Sicily": {
+    "ids": [
+      "D012802"
+    ], 
+    "pref_name": "Sicily"
+  }, 
+  "Republic of Sierra Leone": {
+    "ids": [
+      "D012807"
+    ], 
+    "pref_name": "Sierra Leone"
+  }, 
+  "Sierra Leone": {
+    "ids": [
+      "D012807"
+    ], 
+    "pref_name": "Sierra Leone"
+  }, 
+  "Sikkim": {
+    "ids": [
+      "D012819"
+    ], 
+    "pref_name": "Sikkim"
+  }, 
+  "Singapore": {
+    "ids": [
+      "D012846"
+    ], 
+    "pref_name": "Singapore"
+  }, 
+  "Somalia": {
+    "ids": [
+      "D012998"
+    ], 
+    "pref_name": "Somalia"
+  }, 
+  "South Africa": {
+    "ids": [
+      "D013019"
+    ], 
+    "pref_name": "South Africa"
+  }, 
+  "South America": {
+    "ids": [
+      "D013020"
+    ], 
+    "pref_name": "South America"
+  }, 
+  "South Australia": {
+    "ids": [
+      "D013021"
+    ], 
+    "pref_name": "South Australia"
+  }, 
+  "South Carolina": {
+    "ids": [
+      "D013022"
+    ], 
+    "pref_name": "South Carolina"
+  }, 
+  "South Dakota": {
+    "ids": [
+      "D013023"
+    ], 
+    "pref_name": "South Dakota"
+  }, 
+  "Canary Islands": {
+    "ids": [
+      "D013030"
+    ], 
+    "pref_name": "Spain"
+  }, 
+  "Balearic Islands": {
+    "ids": [
+      "D013030"
+    ], 
+    "pref_name": "Spain"
+  }, 
+  "Spain": {
+    "ids": [
+      "D013030"
+    ], 
+    "pref_name": "Spain"
+  }, 
+  "Sri Lanka": {
+    "ids": [
+      "D013188"
+    ], 
+    "pref_name": "Sri Lanka"
+  }, 
+  "Sudan": {
+    "ids": [
+      "D013397"
+    ], 
+    "pref_name": "Sudan"
+  }, 
+  "Republic of the Sudan": {
+    "ids": [
+      "D013397"
+    ], 
+    "pref_name": "Sudan"
+  }, 
+  "Surinam": {
+    "ids": [
+      "D013532"
+    ], 
+    "pref_name": "Suriname"
+  }, 
+  "Suriname": {
+    "ids": [
+      "D013532"
+    ], 
+    "pref_name": "Suriname"
+  }, 
+  "Svalbard": {
+    "ids": [
+      "D013538"
+    ], 
+    "pref_name": "Svalbard"
+  }, 
+  "Swaziland": {
+    "ids": [
+      "D013541"
+    ], 
+    "pref_name": "Swaziland"
+  }, 
+  "Sweden": {
+    "ids": [
+      "D013548"
+    ], 
+    "pref_name": "Sweden"
+  }, 
+  "Switzerland": {
+    "ids": [
+      "D013557"
+    ], 
+    "pref_name": "Switzerland"
+  }, 
+  "Syria": {
+    "ids": [
+      "D013593"
+    ], 
+    "pref_name": "Syria"
+  }, 
+  "Tadzhik SSR": {
+    "ids": [
+      "D013620"
+    ], 
+    "pref_name": "Tajikistan"
+  }, 
+  "Tajikistan": {
+    "ids": [
+      "D013620"
+    ], 
+    "pref_name": "Tajikistan"
+  }, 
+  "Taiwan": {
+    "ids": [
+      "D013624"
+    ], 
+    "pref_name": "Taiwan"
+  }, 
+  "Tanzania": {
+    "ids": [
+      "D013636"
+    ], 
+    "pref_name": "Tanzania"
+  }, 
+  "United Republic of Tanzania": {
+    "ids": [
+      "D013636"
+    ], 
+    "pref_name": "Tanzania"
+  }, 
+  "Tasmania": {
+    "ids": [
+      "D013648"
+    ], 
+    "pref_name": "Tasmania"
+  }, 
+  "Tennessee": {
+    "ids": [
+      "D013714"
+    ], 
+    "pref_name": "Tennessee"
+  }, 
+  "Texas": {
+    "ids": [
+      "D013781"
+    ], 
+    "pref_name": "Texas"
+  }, 
+  "Thailand": {
+    "ids": [
+      "D013785"
+    ], 
+    "pref_name": "Thailand"
+  }, 
+  "Siam": {
+    "ids": [
+      "D013785"
+    ], 
+    "pref_name": "Thailand"
+  }, 
+  "Kingdom of Thailand": {
+    "ids": [
+      "D013785"
+    ], 
+    "pref_name": "Thailand"
+  }, 
+  "Togo": {
+    "ids": [
+      "D014037"
+    ], 
+    "pref_name": "Togo"
+  }, 
+  "Togolese Republic": {
+    "ids": [
+      "D014037"
+    ], 
+    "pref_name": "Togo"
+  }, 
+  "Tokyo": {
+    "ids": [
+      "D014041"
+    ], 
+    "pref_name": "Tokyo"
+  }, 
+  "Tonga": {
+    "ids": [
+      "D014058"
+    ], 
+    "pref_name": "Tonga"
+  }, 
+  "Transcaucasia": {
+    "ids": [
+      "D014154"
+    ], 
+    "pref_name": "Transcaucasia"
+  }, 
+  "Trinidad and Tobago": {
+    "ids": [
+      "D014300"
+    ], 
+    "pref_name": "Trinidad and Tobago"
+  }, 
+  "Trinidad": {
+    "ids": [
+      "D014300"
+    ], 
+    "pref_name": "Trinidad and Tobago"
+  }, 
+  "Tunisia": {
+    "ids": [
+      "D014416"
+    ], 
+    "pref_name": "Tunisia"
+  }, 
+  "Turkey": {
+    "ids": [
+      "D014421"
+    ], 
+    "pref_name": "Turkey"
+  }, 
+  "Turkmenistan": {
+    "ids": [
+      "D014423"
+    ], 
+    "pref_name": "Turkmenistan"
+  }, 
+  "Turkmen SSR": {
+    "ids": [
+      "D014423"
+    ], 
+    "pref_name": "Turkmenistan"
+  }, 
+  "Uganda": {
+    "ids": [
+      "D014454"
+    ], 
+    "pref_name": "Uganda"
+  }, 
+  "Republic of Uganda": {
+    "ids": [
+      "D014454"
+    ], 
+    "pref_name": "Uganda"
+  }, 
+  "Ukraine": {
+    "ids": [
+      "D014455"
+    ], 
+    "pref_name": "Ukraine"
+  }, 
+  "United Arab Emirates": {
+    "ids": [
+      "D014479"
+    ], 
+    "pref_name": "United Arab Emirates"
+  }, 
+  "United States": {
+    "ids": [
+      "D014481"
+    ], 
+    "pref_name": "United States"
+  }, 
+  "Uruguay": {
+    "ids": [
+      "D014583"
+    ], 
+    "pref_name": "Uruguay"
+  }, 
+  "USSR": {
+    "ids": [
+      "D014586"
+    ], 
+    "pref_name": "USSR"
+  }, 
+  "Utah": {
+    "ids": [
+      "D014589"
+    ], 
+    "pref_name": "Utah"
+  }, 
+  "Uzbekistan": {
+    "ids": [
+      "D014610"
+    ], 
+    "pref_name": "Uzbekistan"
+  }, 
+  "Uzbek SSR": {
+    "ids": [
+      "D014610"
+    ], 
+    "pref_name": "Uzbekistan"
+  }, 
+  "Vatican City": {
+    "ids": [
+      "D014671"
+    ], 
+    "pref_name": "Vatican City"
+  }, 
+  "Holy See": {
+    "ids": [
+      "D014671"
+    ], 
+    "pref_name": "Vatican City"
+  }, 
+  "Venezuela": {
+    "ids": [
+      "D014687"
+    ], 
+    "pref_name": "Venezuela"
+  }, 
+  "Vermont": {
+    "ids": [
+      "D014707"
+    ], 
+    "pref_name": "Vermont"
+  }, 
+  "Victoria": {
+    "ids": [
+      "D014739"
+    ], 
+    "pref_name": "Victoria"
+  }, 
+  "North Vietnam": {
+    "ids": [
+      "D014744"
+    ], 
+    "pref_name": "Vietnam"
+  }, 
+  "Vietnam": {
+    "ids": [
+      "D014744"
+    ], 
+    "pref_name": "Vietnam"
+  }, 
+  "Viet Nam": {
+    "ids": [
+      "D014744"
+    ], 
+    "pref_name": "Vietnam"
+  }, 
+  "Vietnam, Republic of": {
+    "ids": [
+      "D014744"
+    ], 
+    "pref_name": "Vietnam"
+  }, 
+  "United States Virgin Islands": {
+    "ids": [
+      "D014767"
+    ], 
+    "pref_name": "United States Virgin Islands"
+  }, 
+  "Virginia": {
+    "ids": [
+      "D014768"
+    ], 
+    "pref_name": "Virginia"
+  }, 
+  "Wales": {
+    "ids": [
+      "D014852"
+    ], 
+    "pref_name": "Wales"
+  }, 
+  "Washington": {
+    "ids": [
+      "D014861"
+    ], 
+    "pref_name": "Washington"
+  }, 
+  "West Indies": {
+    "ids": [
+      "D014900"
+    ], 
+    "pref_name": "West Indies"
+  }, 
+  "Cayman Islands": {
+    "ids": [
+      "D014900"
+    ], 
+    "pref_name": "West Indies"
+  }, 
+  "Turks and Caicos Islands": {
+    "ids": [
+      "D014900"
+    ], 
+    "pref_name": "West Indies"
+  }, 
+  "Montserrat": {
+    "ids": [
+      "D014900"
+    ], 
+    "pref_name": "West Indies"
+  }, 
+  "West Virginia": {
+    "ids": [
+      "D014903"
+    ], 
+    "pref_name": "West Virginia"
+  }, 
+  "Western Australia": {
+    "ids": [
+      "D014904"
+    ], 
+    "pref_name": "Western Australia"
+  }, 
+  "Independent State of Samoa": {
+    "ids": [
+      "D014905"
+    ], 
+    "pref_name": "Independent State of Samoa"
+  }, 
+  "Wisconsin": {
+    "ids": [
+      "D014922"
+    ], 
+    "pref_name": "Wisconsin"
+  }, 
+  "Wyoming": {
+    "ids": [
+      "D014959"
+    ], 
+    "pref_name": "Wyoming"
+  }, 
+  "Yemen": {
+    "ids": [
+      "D015006"
+    ], 
+    "pref_name": "Yemen"
+  }, 
+  "Democratic Yemen": {
+    "ids": [
+      "D015006"
+    ], 
+    "pref_name": "Yemen"
+  }, 
+  "Yugoslavia": {
+    "ids": [
+      "D015022"
+    ], 
+    "pref_name": "Yugoslavia"
+  }, 
+  "Democratic Republic of the Congo": {
+    "ids": [
+      "D015023"
+    ], 
+    "pref_name": "Democratic Republic of the Congo"
+  }, 
+  "Zambia": {
+    "ids": [
+      "D015024"
+    ], 
+    "pref_name": "Zambia"
+  }, 
+  "Republic of Zambia": {
+    "ids": [
+      "D015024"
+    ], 
+    "pref_name": "Zambia"
+  }, 
+  "Zimbabwe Rhodesia": {
+    "ids": [
+      "D015030"
+    ], 
+    "pref_name": "Zimbabwe"
+  }, 
+  "Zimbabwe": {
+    "ids": [
+      "D015030"
+    ], 
+    "pref_name": "Zimbabwe"
+  }, 
+  "Republic of Zimbabwe": {
+    "ids": [
+      "D015030"
+    ], 
+    "pref_name": "Zimbabwe"
+  }, 
+  "Los Angeles": {
+    "ids": [
+      "D015141"
+    ], 
+    "pref_name": "Los Angeles"
+  }, 
+  "Baltimore": {
+    "ids": [
+      "D015142"
+    ], 
+    "pref_name": "Baltimore"
+  }, 
+  "Philadelphia": {
+    "ids": [
+      "D015143"
+    ], 
+    "pref_name": "Philadelphia"
+  }, 
+  "Southeast US": {
+    "ids": [
+      "D015144"
+    ], 
+    "pref_name": "Southeastern United States"
+  }, 
+  "Southeastern United States": {
+    "ids": [
+      "D015144"
+    ], 
+    "pref_name": "Southeastern United States"
+  }, 
+  "Midwestern United States": {
+    "ids": [
+      "D015146"
+    ], 
+    "pref_name": "Midwestern United States"
+  }, 
+  "Midwest US": {
+    "ids": [
+      "D015146"
+    ], 
+    "pref_name": "Midwestern United States"
+  }, 
+  "Northwest US": {
+    "ids": [
+      "D015205"
+    ], 
+    "pref_name": "Northwestern United States"
+  }, 
+  "Northwestern United States": {
+    "ids": [
+      "D015205"
+    ], 
+    "pref_name": "Northwestern United States"
+  }, 
+  "Southwestern United States": {
+    "ids": [
+      "D015206"
+    ], 
+    "pref_name": "Southwestern United States"
+  }, 
+  "Southwest US": {
+    "ids": [
+      "D015206"
+    ], 
+    "pref_name": "Southwestern United States"
+  }, 
+  "Djibouti": {
+    "ids": [
+      "D015730"
+    ], 
+    "pref_name": "Djibouti"
+  }, 
+  "Republic of Djibouti": {
+    "ids": [
+      "D015730"
+    ], 
+    "pref_name": "Djibouti"
+  }, 
+  "Northwest Territories": {
+    "ids": [
+      "D015873"
+    ], 
+    "pref_name": "Northwest Territories"
+  }, 
+  "Northwest Territory": {
+    "ids": [
+      "D015873"
+    ], 
+    "pref_name": "Northwest Territories"
+  }, 
+  "Yukon Territory": {
+    "ids": [
+      "D015874"
+    ], 
+    "pref_name": "Yukon Territory"
+  }, 
+  "Yukon": {
+    "ids": [
+      "D015874"
+    ], 
+    "pref_name": "Yukon Territory"
+  }, 
+  "Northern Territory": {
+    "ids": [
+      "D015876"
+    ], 
+    "pref_name": "Northern Territory"
+  }, 
+  "Republic of Guinea": {
+    "ids": [
+      "D016701"
+    ], 
+    "pref_name": "Guinea"
+  }, 
+  "Guinea": {
+    "ids": [
+      "D016701"
+    ], 
+    "pref_name": "Guinea"
+  }, 
+  "French Guinea": {
+    "ids": [
+      "D016701"
+    ], 
+    "pref_name": "Guinea"
+  }, 
+  "Guinea, Republic of": {
+    "ids": [
+      "D016701"
+    ], 
+    "pref_name": "Guinea"
+  }, 
+  "Spanish Guinea": {
+    "ids": [
+      "D016703"
+    ], 
+    "pref_name": "Equatorial Guinea"
+  }, 
+  "Guinea, Spanish": {
+    "ids": [
+      "D016703"
+    ], 
+    "pref_name": "Equatorial Guinea"
+  }, 
+  "Republic of Equatorial Guinea": {
+    "ids": [
+      "D016703"
+    ], 
+    "pref_name": "Equatorial Guinea"
+  }, 
+  "Equatorial Guinea": {
+    "ids": [
+      "D016703"
+    ], 
+    "pref_name": "Equatorial Guinea"
+  }, 
+  "Comoros": {
+    "ids": [
+      "D017507"
+    ], 
+    "pref_name": "Comoros"
+  }, 
+  "Reunion": {
+    "ids": [
+      "D017508"
+    ], 
+    "pref_name": "Reunion"
+  }, 
+  "Historical Geographic Locations": {
+    "ids": [
+      "D017516"
+    ], 
+    "pref_name": "Historical Geographic Locations"
+  }, 
+  "Commonwealth of Independent States": {
+    "ids": [
+      "D017517"
+    ], 
+    "pref_name": "Commonwealth of Independent States"
+  }, 
+  "Bosnia and Herzegovina": {
+    "ids": [
+      "D017522"
+    ], 
+    "pref_name": "Bosnia and Herzegovina"
+  }, 
+  "Bosnia": {
+    "ids": [
+      "D017522"
+    ], 
+    "pref_name": "Bosnia and Herzegovina"
+  }, 
+  "Croatia": {
+    "ids": [
+      "D017523"
+    ], 
+    "pref_name": "Croatia"
+  }, 
+  "Slovenia": {
+    "ids": [
+      "D017524"
+    ], 
+    "pref_name": "Slovenia"
+  }, 
+  "Caribbean Sea Region": {
+    "ids": [
+      "D017691"
+    ], 
+    "pref_name": "Caribbean Region"
+  }, 
+  "Caribbean": {
+    "ids": [
+      "D017691"
+    ], 
+    "pref_name": "Caribbean Region"
+  }, 
+  "Caribbean Region": {
+    "ids": [
+      "D017691"
+    ], 
+    "pref_name": "Caribbean Region"
+  }, 
+  "Subsaharan Africa": {
+    "ids": [
+      "D017954"
+    ], 
+    "pref_name": "Africa South of the Sahara"
+  }, 
+  "Africa South of the Sahara": {
+    "ids": [
+      "D017954"
+    ], 
+    "pref_name": "Africa South of the Sahara"
+  }, 
+  "Czech Republic": {
+    "ids": [
+      "D018153"
+    ], 
+    "pref_name": "Czech Republic"
+  }, 
+  "Slovakia": {
+    "ids": [
+      "D018154"
+    ], 
+    "pref_name": "Slovakia"
+  }, 
+  "Ancient Lands": {
+    "ids": [
+      "D018436"
+    ], 
+    "pref_name": "Ancient Lands"
+  }, 
+  "Tibet": {
+    "ids": [
+      "D018609"
+    ], 
+    "pref_name": "Tibet"
+  }, 
+  "Byzantium": {
+    "ids": [
+      "D018612"
+    ], 
+    "pref_name": "Byzantium"
+  }, 
+  "Macedonia, Former Yugoslave Republic of": {
+    "ids": [
+      "D018843"
+    ], 
+    "pref_name": "Macedonia (Republic)"
+  }, 
+  "Macedonia (Republic)": {
+    "ids": [
+      "D018843"
+    ], 
+    "pref_name": "Macedonia (Republic)"
+  }, 
+  "Samoa": {
+    "ids": [
+      "D018947"
+    ], 
+    "pref_name": "Samoa"
+  }, 
+  "Samoa Islands": {
+    "ids": [
+      "D018947"
+    ], 
+    "pref_name": "Samoa"
+  }, 
+  "Navigator Island": {
+    "ids": [
+      "D018947"
+    ], 
+    "pref_name": "Samoa"
+  }, 
+  "American Samoa": {
+    "ids": [
+      "D018948"
+    ], 
+    "pref_name": "American Samoa"
+  }, 
+  "Eritrea": {
+    "ids": [
+      "D019017"
+    ], 
+    "pref_name": "Eritrea"
+  }, 
+  "Palau": {
+    "ids": [
+      "D019029"
+    ], 
+    "pref_name": "Palau"
+  }, 
+  "Persia": {
+    "ids": [
+      "D019071"
+    ], 
+    "pref_name": "Persia"
+  }, 
+  "Mediterranean Region": {
+    "ids": [
+      "D019083"
+    ], 
+    "pref_name": "Mediterranean Region"
+  }, 
+  "Indian Ocean": {
+    "ids": [
+      "D019156"
+    ], 
+    "pref_name": "Indian Ocean"
+  }, 
+  "Dominica": {
+    "ids": [
+      "D019424"
+    ], 
+    "pref_name": "Dominica"
+  }, 
+  "Grenada": {
+    "ids": [
+      "D019425"
+    ], 
+    "pref_name": "Grenada"
+  }, 
+  "Guadeloupe": {
+    "ids": [
+      "D019430"
+    ], 
+    "pref_name": "Guadeloupe"
+  }, 
+  "Saint Lucia": {
+    "ids": [
+      "D019431"
+    ], 
+    "pref_name": "Saint Lucia"
+  }, 
+  "St. Lucia": {
+    "ids": [
+      "D019431"
+    ], 
+    "pref_name": "Saint Lucia"
+  }, 
+  "Falkland Islands": {
+    "ids": [
+      "D019432"
+    ], 
+    "pref_name": "Falkland Islands"
+  }, 
+  "Guernsey Island": {
+    "ids": [
+      "D019435"
+    ], 
+    "pref_name": "Guernsey"
+  }, 
+  "Guernsey": {
+    "ids": [
+      "D019435"
+    ], 
+    "pref_name": "Guernsey"
+  }, 
+  "St. Vincent and the Grenadines": {
+    "ids": [
+      "D019436"
+    ], 
+    "pref_name": "Saint Vincent and the Grenadines"
+  }, 
+  "Saint Vincent and the Grenadines": {
+    "ids": [
+      "D019436"
+    ], 
+    "pref_name": "Saint Vincent and the Grenadines"
+  }, 
+  "Saint Kitts and Nevis": {
+    "ids": [
+      "D019437"
+    ], 
+    "pref_name": "Saint Kitts and Nevis"
+  }, 
+  "St. Kitts and Nevis": {
+    "ids": [
+      "D019437"
+    ], 
+    "pref_name": "Saint Kitts and Nevis"
+  }, 
+  "Pacific States": {
+    "ids": [
+      "D019601"
+    ], 
+    "pref_name": "Pacific States"
+  }, 
+  "Nunavut": {
+    "ids": [
+      "D020957"
+    ], 
+    "pref_name": "Nunavut"
+  }, 
+  "Australian Capital Territory": {
+    "ids": [
+      "D020958"
+    ], 
+    "pref_name": "Australian Capital Territory"
+  }, 
+  "Oceania": {
+    "ids": [
+      "D044349"
+    ], 
+    "pref_name": "Oceania"
+  }, 
+  "Australasia": {
+    "ids": [
+      "D044362"
+    ], 
+    "pref_name": "Australasia"
+  }, 
+  "Democratic Republic of Timor-Leste": {
+    "ids": [
+      "D049648"
+    ], 
+    "pref_name": "Timor-Leste"
+  }, 
+  "Timor-Leste": {
+    "ids": [
+      "D049648"
+    ], 
+    "pref_name": "Timor-Leste"
+  }, 
+  "Montenegro": {
+    "ids": [
+      "D054548"
+    ], 
+    "pref_name": "Montenegro"
+  }, 
+  "Republic of Cape Verde": {
+    "ids": [
+      "D055726"
+    ], 
+    "pref_name": "Cape Verde"
+  }, 
+  "Cape Verde": {
+    "ids": [
+      "D055726"
+    ], 
+    "pref_name": "Cape Verde"
+  }, 
+  "Serbia": {
+    "ids": [
+      "D055771"
+    ], 
+    "pref_name": "Serbia"
+  }, 
+  "Prussia": {
+    "ids": [
+      "D055787"
+    ], 
+    "pref_name": "Prussia"
+  }, 
+  "New Orleans": {
+    "ids": [
+      "D055820"
+    ], 
+    "pref_name": "New Orleans"
+  }, 
+  "Republic of Korea": {
+    "ids": [
+      "D056910"
+    ], 
+    "pref_name": "Republic of Korea"
+  }, 
+  "Democratic People's Republic of Korea": {
+    "ids": [
+      "D056911"
+    ], 
+    "pref_name": "Democratic People's Republic of Korea"
+  }, 
+  "Korea, Democratic People's Republic of": {
+    "ids": [
+      "D056911"
+    ], 
+    "pref_name": "Democratic People's Republic of Korea"
+  }, 
+  "Ottoman Empire": {
+    "ids": [
+      "D057214"
+    ], 
+    "pref_name": "Ottoman Empire"
+  }, 
+  "Austro-Hungarian Empire": {
+    "ids": [
+      "D057235"
+    ], 
+    "pref_name": "Austria-Hungary"
+  }, 
+  "Habsburg Empire": {
+    "ids": [
+      "D057235"
+    ], 
+    "pref_name": "Austria-Hungary"
+  }, 
+  "Austria-Hungary": {
+    "ids": [
+      "D057235"
+    ], 
+    "pref_name": "Austria-Hungary"
+  }, 
+  "Confederate States of America": {
+    "ids": [
+      "D059009"
+    ], 
+    "pref_name": "Confederate States of America"
+  }, 
+  "Black Sea": {
+    "ids": [
+      "D059038"
+    ], 
+    "pref_name": "Black Sea"
+  }, 
+  "Holy Roman Empire": {
+    "ids": [
+      "D060786"
+    ], 
+    "pref_name": "Holy Roman Empire"
+  }, 
+  "Gulf of Mexico": {
+    "ids": [
+      "D060851"
+    ], 
+    "pref_name": "Gulf of Mexico"
+  }, 
+  "Islands": {
+    "ids": [
+      "D062312"
+    ], 
+    "pref_name": "Islands"
+  }, 
+  "Balkans": {
+    "ids": [
+      "D063368"
+    ], 
+    "pref_name": "Balkan Peninsula"
+  }, 
+  "Balkan Peninsula": {
+    "ids": [
+      "D063368"
+    ], 
+    "pref_name": "Balkan Peninsula"
+  }, 
+  "Republic of Kosovo": {
+    "ids": [
+      "D063826"
+    ], 
+    "pref_name": "Kosovo"
+  }, 
+  "Kosovo": {
+    "ids": [
+      "D063826"
+    ], 
+    "pref_name": "Kosovo"
+  }, 
+  "Mesopotamia": {
+    "ids": [
+      "D064867"
+    ], 
+    "pref_name": "Mesopotamia"
+  }, 
+  "North Asia": {
+    "ids": [
+      "D064873"
+    ], 
+    "pref_name": "Asia, Northern"
+  }, 
+  "Northern Asia": {
+    "ids": [
+      "D064873"
+    ], 
+    "pref_name": "Asia, Northern"
+  }, 
+  "Asia, Northern": {
+    "ids": [
+      "D064873"
+    ], 
+    "pref_name": "Asia, Northern"
+  }, 
+  "Republic of Tatarstan": {
+    "ids": [
+      "D064874"
+    ], 
+    "pref_name": "Tatarstan"
+  }, 
+  "Tatariya": {
+    "ids": [
+      "D064874"
+    ], 
+    "pref_name": "Tatarstan"
+  }, 
+  "Tatarstan": {
+    "ids": [
+      "D064874"
+    ], 
+    "pref_name": "Tatarstan"
+  }, 
+  "British Virgin Islands": {
+    "ids": [
+      "D064966"
+    ], 
+    "pref_name": "British Virgin Islands"
+  }, 
+  "Seoul": {
+    "ids": [
+      "D066106"
+    ], 
+    "pref_name": "Seoul"
+  }
+}

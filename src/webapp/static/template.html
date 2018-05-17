@@ -1,0 +1,38 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>
+    [TITLE]
+  </title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="/static/bootstrap.css">
+  <link rel="stylesheet" href="/static/align.css">
+</head>
+
+<body class="container-fluid">
+  <div class="page">
+    <div class="top-bar">
+      <a class="btn btn-dark btn-back" href="/">➡</a>
+      <div class="burger btn" onclick="document.getElementsByClassName('sidebar')[0].classList.remove('init-collapse');document.getElementsByClassName('sidebar')[0].classList.toggle('collapsed');document.getElementsByClassName('sidebar')[0].classList.toggle('uncollapsed');this.classList.toggle('burger-x')">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </div>
+    </div>
+    <div class="main-view">  
+      <div class="contents">
+        [CONTENTS]
+      
+      </div>
+      <div class="sidebar collapsed init-collapse">
+        [SIDEBAR]
+      </div>
+    </div>
+  </div>
+</body>
+</html>

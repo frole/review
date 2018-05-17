@@ -1,0 +1,147 @@
+html{
+  background-color: rgb(30 30 40);
+}
+body{
+  min-height:100vh;
+  max-height: 100vh;
+  position:relative;
+}
+.container-fluid{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.page{
+  background-color: rgb(30 30 40);
+  min-height:100vh;
+  max-height:100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: middle;
+}
+.top-bar{
+  background-color: rgb(60 60 70);
+  box-shadow: 0px 0px 4px black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.btn-back{
+  transform: rotate(180deg);
+}
+.main-view{
+  position: relative;
+  height: 100vh;
+  color: lightgray;
+  display: flex;
+  justify-content: flex-end;
+  overflow-x: hidden;
+}
+.contents{
+  position: relative;
+  padding-left: 10%;
+  padding-right: 10%;
+  height: 100%;
+  width: 100%;
+  color: lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  overflow-y:scroll;
+}
+p{
+  text-align: center;
+}
+.btn-group-lg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-wrap: wrap;
+}
+.text-area-form{
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.checkbox-form{
+  display:flex;
+  padding: 10%;
+  flex-direction: column;
+}
+.btn-dark{
+  margin: 1em;
+  box-shadow: 0px 0px 2px rgb(250, 250, 255);
+}
+img{
+  margin-bottom: 10vh;
+  max-width: 75%;
+  height: auto;
+}
+mark{
+  font-style: normal;
+  background-color: rgba(168, 136, 218, 0.5);
+  border-radius: 5px;
+  color: lightgray;
+  text-shadow: 0px 0px 1px black;
+}
+@keyframes uncollapse{
+  from {margin-right: -250px;}
+  to {margin-right: 0px;}
+}
+@keyframes collapse{
+  from {margin-right: 0px;}
+  to {margin-right: -250px;}
+}
+.sidebar {
+  align-self: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  min-width: 250px;
+  max-width: 250px;
+  height: 100%;
+  background-color: rgb(60 60 70);
+  box-shadow: 0px 0px 3px black;
+}
+.collapsed{
+  animation-name: collapse;
+  animation-duration: 0.1s;
+  margin-right: -250px;
+}
+.uncollapsed{
+  animation-name: uncollapse;
+  animation-duration: 0.1s;
+  margin-right: 0px;
+}
+.init-collapse{
+  animation-delay: -1s;
+}
+.burger{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1%;
+}
+.bar1, .bar2, .bar3 {
+  width: 35px;
+  height: 5px;
+  border-radius: 2px;
+  background-color: rgb(250, 250, 255);
+  margin: 3px 0;
+  transition: 0.1s;
+}
+.burger-x .bar1 {
+  transform: rotate(-45deg) translate(-8px, 8px);
+  background-color: rgb(205, 0, 0);
+}
+.burger-x .bar2 {opacity: 0;}
+.burger-x .bar3 {
+  transform: rotate(45deg) translate(-7.5px, -8px);
+  background-color: rgb(205, 0, 0);
+}
