@@ -129,23 +129,42 @@ def get_vocab(corpusname):
 
     # regex containing all punctution
     punct_regex = '[' + string.punctuation + ']'
-    corpusfile = get_json_dataset_by_name(corpusname)
     # initailizing vocabulary set
     vocab = set()
-    with open(corpusfile) as corpus:
-        for article_as_json in corpus:
-            article = json.loads(article_as_json)
-            try:
-                # removing punctuation, converting to lower case,
-                # removing article separators, loading each line
-                # as a seperate document
-                sentence = re.sub(punct_regex, '', article["ab"].lower()).split()
-                # vocab becomes the union of vocab and `sentence`
-                vocab |= set(sentence)
-            except KeyError:  # ignore if article has no abstract
-                pass
-            vocab |= set(re.sub(punct_regex, '', article["raw"].lower()).split())
+    for article in get_docs_from_json_corpus(corpusname=corpusname):
+        try:
+            # removing punctuation, converting to lower case,
+            # removing article separators, loading each line
+            # as a seperate document
+            sentence = re.sub(punct_regex, '', article["ab"].lower()).split()
+            # vocab becomes the union of vocab and `sentence`
+            vocab |= set(sentence)
+        except KeyError:  # ignore if article has no abstract
+            pass
+        vocab |= set(re.sub(punct_regex, '', article["raw"].lower()).split())
     return vocab
+
+
+def get_docs_from_json_corpus(corpusname=None, corpusfile=None):
+    """ Loads and yields each document in the specified JSON corpus
+        Arguments:
+            - (str) corpusname: name of the corpus to read from.
+                (should be specified iff corpusfile is not)
+            - (str) corpusfile: path to the corpus to read from.
+                (should be specified iff corpusname is not)
+        Yields:
+            - (dict): each document of the corpus
+    """
+    if corpusfile is None:
+        if corpusname is None:
+            raise ValueError("corpusname or corpusfile needs to be passed")
+        else:
+            corpusfile = get_json_dataset_by_name(corpusname)
+
+    import json
+    with open(corpusfile) as f:
+        for json_doc in f:
+            yield json.loads(json_doc)
 
 
 def load_google_news(enable_print=True):
