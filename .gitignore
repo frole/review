@@ -1,9 +1,7 @@
 /data/*/xml/
 /data/*/text/
 /data/models/
-/data/asthma/
-/data/autism/
-/data/leukemia/
+/data/*/json/*
 __pycache__
 *.pyc
 *.svg
