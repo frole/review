@@ -2,12 +2,9 @@
 import sys; sys.path += ['../']  # used to import modules from parent directory
 import random
 
-from async_tasks import coclust_async
-from async_tasks import ner_async_import
-from constants import PLOT_FILES_READ
-from constants import TAG_CATEGORIES
-from flask import Flask
-from flask import request
+from async_tasks import coclust_async, ner_async_import
+from constants import PLOT_FILES_READ, TAG_CATEGORIES
+from flask import Flask, request
 from multiprocessing.pool import ThreadPool
 from utils.misc_utils import get_json_dataset_by_name
 app = Flask(__name__)
@@ -96,6 +93,32 @@ def resume():
     return build_page(title="placeholder")
 
 
+@app.route("/biomed/topic")
+def topic_modeling():
+    """ Returns the webpage at <host URL>/biomed/topic
+    """
+    options = corpus_selector(["topic-form"])
+    return build_page(title="Topic Modeling", sidebar=options)
+
+
+@app.route("/biomed/topic", methods=['POST'])
+def topic_modeling_active_learning():
+    from utils.embed_utils import create_doc_embeddings
+    corpus = request.form['corpus']
+    model = create_doc_embeddings(corporanames=[corpus])
+    # placeholder : for now this method displays the model's
+    # methods. Further down the line, it should be an interface
+    # for active learning. It should also take more arguments
+    # to condition the document embeddings creation.
+    # Maybe make a page specifically for the doc embeddings
+    # and then one to access previously created embeddings
+    # in order to redirect the user to something else while
+    # the computing is happening.
+    model_methods = [method_name for method_name in dir(model)
+                     if callable(getattr(model, method_name))]
+    return build_page(title="Topic Modeling", contents=model_methods)
+
+
 @app.route("/biomed/clustering")
 def clustering(corpus=None):
     """ Returns the webpage at <host URL>/biomed/clustering
@@ -131,18 +154,7 @@ def clustering(corpus=None):
     img_tags += [begin_img_tag + plot_fname + '?' + str(rng) + end_img_tag
                  for plot_fname in PLOT_FILES_READ]
     img_tags += ["</p>"]
-    options = ['<form method="POST" class="coclust-form checkbox-form">',
-               '<select name="corpus">',
-               '<option value="test2">Test 2</option>',
-               '<option value="test1">Test 1</option>',
-               '<option value="asthma">Asthma</option>',
-               '<option value="leukemia">Leukemia</option>',
-               '<option value="autism">Autism</option>',
-               '<option value="classic3">Classic3</option>',
-               '<option value="classic4">Classic4</option>',
-               '</select>',
-               '<input type="submit" class="btn btn-dark submit" value="Submit"/>',
-               '</form>']
+    options = corpus_selector(classes=["coclust-form", "checkbox-form"])
     return build_page(contents=img_tags, sidebar=options)
 
 
@@ -192,3 +204,23 @@ def terminologie_tagged_text():
                tag_text.tag(text, whitelist),
                '</p>']
     return build_page(contents=content)
+
+
+def corpus_selector(classes):
+    """ returns a corpus selector form
+        Arguments:
+            - (list<str>) classes: list of classes that the form hould have
+    """
+    options = ['<form method="POST" class="' + ' '.join(classes) + '">',
+               '<select name="corpus">',
+               '<option value="test2">Test 2</option>',
+               '<option value="test1">Test 1</option>',
+               '<option value="asthma">Asthma</option>',
+               '<option value="leukemia">Leukemia</option>',
+               '<option value="autism">Autism</option>',
+               '<option value="classic3">Classic3</option>',
+               '<option value="classic4">Classic4</option>',
+               '</select>',
+               '<input type="submit" class="btn btn-dark submit" value="Submit"/>',
+               '</form>']
+    return options
