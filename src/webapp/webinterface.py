@@ -79,9 +79,10 @@ def biomedical():
     """ Returns the webpage at <host URL>/biomed
     """
     buttons = ['<p class="btn-group-lg">',
-               '<a class="btn btn-dark" href="/biomed/resume" role="button">Résumé</a>',
+               '<a class="btn btn-dark" href="/biomed/resume" role="button">Summary</a>',
                '<a class="btn btn-dark" href="/biomed/clustering" role="button">Clustering / Co-clustering</a>',
-               '<a class="btn btn-dark" href="/biomed/terminologie" role="button">Terminologie</a>',
+               '<a class="btn btn-dark" href="/biomed/terminologie" role="button">Terminology</a>',
+               '<a class="btn btn-dark" href="/biomed/topic" role="button">Topic Modeling</a>',
                '</p>']
     return build_page(title="Biomedical", contents=buttons)
 
