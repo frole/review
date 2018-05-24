@@ -5,7 +5,7 @@ import random
 from async_tasks import coclust_async, ner_async_import
 from constants import PLOT_FILES_READ, TAG_CATEGORIES
 from flask import Flask, request
-from multiprocessing.pool import ThreadPool
+from multiprocessing.pool import Pool
 from utils.misc_utils import get_json_dataset_by_name
 from utils.web_utils import build_page, corpus_selector
 app = Flask(__name__)
@@ -13,7 +13,7 @@ app = Flask(__name__)
 # initializing variable for later
 current_coclust_corpus = "test1"
 
-pool = ThreadPool(processes=2)
+pool = Pool(processes=2)
 # 2nd argument is a tuple with args to pass to function
 # In this case, on 1-tuple (with a comma to denote tuple-ness)
 coclusterizer_thread = pool.apply_async(coclust_async,
