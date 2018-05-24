@@ -141,7 +141,7 @@ def clustering(corpus=None):
         # of apply_async. We need a comma to denote a single element tuple.
         # without the comma, apply_async will try to iterate on corpus (str).
         # This applies co clustering with the new corpus.
-        pool = ThreadPool(processes=1)
+        pool = Pool(processes=1)
         coclusterizer_thread = pool.apply_async(coclust_async,
                                                 (get_json_dataset_by_name(corpus),))
 
