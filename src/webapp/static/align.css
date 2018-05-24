@@ -67,7 +67,7 @@ p{
   align-items: center;
   text-align: center;
 }
-.checkbox-form{
+.checkbox-form, .topic-form, .coclust-form{
   display:flex;
   padding: 10%;
   flex-direction: column;
