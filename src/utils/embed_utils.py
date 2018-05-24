@@ -28,7 +28,7 @@ def create_word_embeddings(corpusname,
     """
     from sentence_generator import Sentences
     from gensim.models.word2vec import Word2Vec
-    from misc_utils import get_json_dataset_by_name, get_w2v_model_by_name
+    from utils.misc_utils import get_json_dataset_by_name, get_w2v_model_by_name
     # creating word2vec model for the corpus with 300 dimensions, 5-grams,
     # ignoring words that occur less than 10 times and working on 3 cores
     # (4 would make the system unresponsive for 4-core systems)
@@ -95,7 +95,7 @@ def corpus_to_tagged_docs(corpusname):
                 (if it is not None)
             - (TaggedDocument): TaggedDocument for the body of the article
     """
-    from misc_utils import get_docs_from_json_corpus
+    from utils.misc_utils import get_docs_from_json_corpus
     for doc in get_docs_from_json_corpus(corpusname=corpusname):
         doc1, doc2 = _json_to_tagged_docs(doc)
         if doc1 is not None:
@@ -139,10 +139,15 @@ def create_doc_embeddings(corporanames,
                 will be used). The rule is not stored as part of the model.
     """
     from gensim.models.doc2vec import Doc2Vec
-    model = Doc2Vec(documents=corpora_to_tagged_docs(corporanames),
+    model = Doc2Vec(documents=None,
                     dm=dm,
                     dbow_words=dbow_words,
                     dm_concat=dm_concat,
                     dm_tag_count=dm_tag_count,
                     trim_rule=trim_rule)
+    train_corpus = corpora_to_tagged_docs(corporanames)
+    model.build_vocab(train_corpus)
+    model.train(train_corpus,
+                total_examples=model.corpus_count,
+                epochs=model.epochs)
     return model
