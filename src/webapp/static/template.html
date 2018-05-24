@@ -11,14 +11,15 @@
   <meta name="author" content="SitePoint">
 
   <link rel="stylesheet" href="/static/bootstrap.css">
-  <link rel="stylesheet" href="/static/align.css">
+  <link rel="stylesheet" href="/static/layout.css">
+  <link rel="stylesheet" href="/static/sidepanel.css">
 </head>
 
 <body class="container-fluid">
   <div class="page">
     <div class="top-bar">
       <a class="btn btn-dark btn-back" href="/">➡</a>
-      <div class="burger btn" onclick="document.getElementsByClassName('sidebar')[0].classList.remove('init-collapse');document.getElementsByClassName('sidebar')[0].classList.toggle('collapsed');document.getElementsByClassName('sidebar')[0].classList.toggle('uncollapsed');this.classList.toggle('burger-x')">
+      <div class="burger btn" onclick="document.getElementsByClassName('sidepanel')[0].classList.remove('init-collapse');document.getElementsByClassName('sidepanel')[0].classList.toggle('collapsed');document.getElementsByClassName('sidepanel')[0].classList.toggle('uncollapsed');this.classList.toggle('burger-x')">
         <div class="bar1"></div>
         <div class="bar2"></div>
         <div class="bar3"></div>
@@ -29,8 +30,8 @@
         [CONTENTS]
       
       </div>
-      <div class="sidebar collapsed init-collapse">
-        [SIDEBAR]
+      <div class="sidepanel collapsed init-collapse">
+        [SIDEPANEL]
       </div>
     </div>
   </div>
