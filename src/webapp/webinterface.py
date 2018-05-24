@@ -79,7 +79,7 @@ def biomedical():
     """ Returns the webpage at <host URL>/biomed
     """
     buttons = ['<p class="btn-group-lg">',
-               '<a class="btn btn-dark" href="/biomed/resume" role="button">Summary</a>',
+               '<a class="btn btn-dark" href="/biomed/summary" role="button">Summary</a>',
                '<a class="btn btn-dark" href="/biomed/clustering" role="button">Clustering / Co-clustering</a>',
                '<a class="btn btn-dark" href="/biomed/terminologie" role="button">Terminology</a>',
                '<a class="btn btn-dark" href="/biomed/topic" role="button">Topic Modeling</a>',
@@ -87,9 +87,9 @@ def biomedical():
     return build_page(title="Biomedical", contents=buttons)
 
 
-@app.route("/biomed/resume")
-def resume():
-    """ Returns the webpage at <host URL>/biomed/resume
+@app.route("/biomed/summary")
+def summary():
+    """ Returns the webpage at <host URL>/biomed/summary
     """
     return build_page(title="placeholder")
 
@@ -98,15 +98,52 @@ def resume():
 def topic_modeling():
     """ Returns the webpage at <host URL>/biomed/topic
     """
-    options = corpus_selector(["topic-form"])
-    return build_page(title="Topic Modeling", sidebar=options)
+    selector = corpus_selector(classes=["topic-form"], form_id="topic-form")
+    # selector for the algorithm DM vs. DBOW (dm argument for doc2vec)
+    separator = ['<div style="width:100%;height:10px;"></div>']
+    algorithm = ['<label>Algorithm:',
+                 '<select name="dm" form="topic-form">',
+                 '<option value="1">Distributed Memory</option>',
+                 '<option value="0">Distributed Bag of Words</option>',
+                 '</select>',
+                 '</label>']
+    # checkbox for whether or not to train word vectors (dbow_words)
+    train_wv = ['<label><input type="checkbox" form="topic-form" name="dbow_words"/> Train word vectors?</label>']
+    context_representation = ['<label>Context vector representation:',
+                              '<select name="dm_concat" form="topic-form">',
+                              '<option value="0">Sum / average (faster)</option>',
+                              '<option value="1">Concatenation</option>',
+                              '</select>',
+                              '</label>']
+    tag_count = ['<label>Document tag count:',
+                 '<textarea name="dm_tag_count" rows="1" cols="2" form="topic-form">',
+                 '1',
+                 '</textarea>',
+                 '</label>']
+    options = ['<div class="checkbox-form">', '']
+    options += algorithm + separator
+    options += train_wv + separator
+    options += context_representation + separator
+    options += tag_count
+    options += ['</div>']
+    return build_page(title="Topic Modeling", contents=selector, sidebar=options)
 
 
 @app.route("/biomed/topic", methods=['POST'])
 def topic_modeling_active_learning():
     from utils.embed_utils import create_doc_embeddings
+    # getting all form elements to send as arguments to doc2vec
     corpus = request.form['corpus']
-    model = create_doc_embeddings(corporanames=[corpus])
+    dm = int(request.form['dm'])
+    if request.form['dbow_words'] == 'on':
+        dbow_words = 1
+    dm_concat = int(request.form['dm_concat'])
+    dm_tag_count = int(request.form['dm_tag_count'])
+    model = create_doc_embeddings(corporanames=[corpus],
+                                  dm=dm,
+                                  dbow_words=dbow_words,
+                                  dm_concat=dm_concat,
+                                  dm_tag_count=dm_tag_count)
     # placeholder : for now this method displays the model's
     # methods. Further down the line, it should be an interface
     # for active learning. It should also take more arguments
@@ -115,9 +152,8 @@ def topic_modeling_active_learning():
     # and then one to access previously created embeddings
     # in order to redirect the user to something else while
     # the computing is happening.
-    model_methods = [method_name for method_name in dir(model)
-                     if callable(getattr(model, method_name))]
-    return build_page(title="Topic Modeling", contents=model_methods)
+
+    return build_page(title="Topic Modeling", contents=model)
 
 
 @app.route("/biomed/clustering")
@@ -181,7 +217,9 @@ def terminologie_request_txt():
                '</form>',
                "</p>"]
     options = ['<div class="checkbox-form">']
-    options += ['<label><input type="checkbox" form="text-area-form" name="' + category + '" checked/>' + category + '</label>' for category in TAG_CATEGORIES]
+    options += ['<label><input type="checkbox" form="text-area-form" name="' +
+                category + '" checked/>' + category + '</label>'
+                for category in TAG_CATEGORIES]
     options += ['</div>']
     return build_page(contents=content, sidebar=options)
 
@@ -207,12 +245,17 @@ def terminologie_tagged_text():
     return build_page(contents=content)
 
 
-def corpus_selector(classes):
+def corpus_selector(classes, form_id=None):
     """ returns a corpus selector form
-        Arguments:
+        Arguments:form_id
             - (list<str>) classes: list of classes that the form hould have
+            - (str) form_id: value of the id field of the form (optional)
     """
-    options = ['<form method="POST" class="' + ' '.join(classes) + '">',
+    formheader = '<form method="POST" class="' + ' '.join(classes) + '"'
+    if form_id is not None:
+        formheader += (' id="' + form_id + '"')
+    formheader += '>'
+    options = [formheader,
                '<select name="corpus">',
                '<option value="test2">Test 2</option>',
                '<option value="test1">Test 1</option>',
