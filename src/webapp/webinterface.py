@@ -4,14 +4,15 @@ import random
 
 from async_tasks import coclust_async, ner_async_import
 from constants import PLOT_FILES_READ, TAG_CATEGORIES
-from flask import Flask, request
+from flask import Flask, request, redirect, url_for
 from multiprocessing.pool import Pool
 from utils.misc_utils import get_json_dataset_by_name
 from utils.web_utils import build_page, corpus_selector
 app = Flask(__name__)
 
-# initializing variable for later
+# initializing variables for later
 current_coclust_corpus = "test1"
+doc_embeddings_model = None
 
 pool = Pool(processes=2)
 # 2nd argument is a tuple with args to pass to function
@@ -63,56 +64,66 @@ def summary():
     return build_page(title="placeholder")
 
 
-@app.route("/biomed/topic")
+@app.route("/biomed/topic", methods=['GET', 'POST'])
 def topic_modeling():
     """ Returns the webpage at <host URL>/biomed/topic
     """
-    selector = corpus_selector(classes=["topic-form"], form_id="topic-form")
-    # selector for the algorithm DM vs. DBOW (dm argument for doc2vec)
-    separator = ['<div style="width:100%;height:15px;"></div>']
-    algorithm = ['<label>Algorithm:',
-                 '<select name="dm" form="topic-form">',
-                 '<option value="1">Distributed Memory</option>',
-                 '<option value="0">Distributed Bag of Words</option>',
-                 '</select>',
-                 '</label>']
-    # checkbox for whether or not to train word vectors (dbow_words)
-    train_wv = ['<label><input type="checkbox" form="topic-form" name="dbow_words"/> Train word vectors?</label>']
-    context_representation = ['<label>Context vector representation:',
-                              '<select name="dm_concat" form="topic-form">',
-                              '<option value="0">Sum / average (faster)</option>',
-                              '<option value="1">Concatenation</option>',
-                              '</select>',
-                              '</label>']
-    tag_count = ['<label>Document tag count:',
-                 '<textarea name="dm_tag_count" rows="1" cols="2" form="topic-form">',
-                 '1',
-                 '</textarea>',
-                 '</label>']
-    options = ['<div class="checkbox-form">', '']
-    options += algorithm + separator
-    options += train_wv + separator
-    options += context_representation + separator
-    options += tag_count
-    options += ['</div>']
-    return build_page(title="Topic Modeling", contents=selector, sidebar=options)
+    if request.method == 'GET':
+        selector = corpus_selector(classes=["topic-form"], form_id="topic-form")
+        # selector for the algorithm DM vs. DBOW (dm argument for doc2vec)
+        separator = ['<div style="width:100%;height:15px;"></div>']
+        algorithm = ['<label>Algorithm:',
+                     '<select name="dm" form="topic-form">',
+                     '<option value="1">Distributed Memory</option>',
+                     '<option value="0">Distributed Bag of Words</option>',
+                     '</select>',
+                     '</label>']
+        # checkbox for whether or not to train word vectors (dbow_words)
+        train_wv = ['<label><input type="checkbox" form="topic-form" name="dbow_words"/> Train word vectors?</label>']
+        context_representation = ['<label>Context vector representation:',
+                                  '<select name="dm_concat" form="topic-form">',
+                                  '<option value="0">Sum / average (faster)</option>',
+                                  '<option value="1">Concatenation</option>',
+                                  '</select>',
+                                  '</label>']
+        tag_count = ['<label>Document tag count:',
+                     '<input type="text" name="dm_tag_count" form="topic-form" value="1" size="2"/>',
+                     '</label>']
+        options = ['<div class="checkbox-form">', '']
+        options += algorithm + separator
+        options += train_wv + separator
+        options += context_representation + separator
+        options += tag_count
+        options += ['</div>']
+        return build_page(title="Topic Modeling", contents=selector, sidebar=options)
+
+    elif request.method == 'POST':
+        from utils.embed_utils import create_doc_embeddings
+        global doc_embeddings_model
+
+        # getting all form elements to send as arguments to doc2vec
+        corpus = request.form['corpus']
+        dm = int(request.form['dm'])
+        dbow_words = 0
+        if 'dbow_words' in request.form and request.form['dbow_words'] == 'on':
+            dbow_words = 1
+        dm_concat = int(request.form['dm_concat'])
+        dm_tag_count = int(request.form['dm_tag_count'])
+        model = create_doc_embeddings(corporanames=[corpus],
+                                      dm=dm,
+                                      dbow_words=dbow_words,
+                                      dm_concat=dm_concat,
+                                      dm_tag_count=dm_tag_count)
+        doc_embeddings_model = model
+        return redirect('/biomed/topic/active', code=307)
+
+    else:
+        return "something went terribly wrong"
 
 
-@app.route("/biomed/topic", methods=['POST'])
+@app.route("/biomed/topic/active", methods=['POST'])
 def topic_modeling_active_learning():
-    from utils.embed_utils import create_doc_embeddings
-    # getting all form elements to send as arguments to doc2vec
-    corpus = request.form['corpus']
-    dm = int(request.form['dm'])
-    if request.form['dbow_words'] == 'on':
-        dbow_words = 1
-    dm_concat = int(request.form['dm_concat'])
-    dm_tag_count = int(request.form['dm_tag_count'])
-    model = create_doc_embeddings(corporanames=[corpus],
-                                  dm=dm,
-                                  dbow_words=dbow_words,
-                                  dm_concat=dm_concat,
-                                  dm_tag_count=dm_tag_count)
+
     # placeholder : for now this method displays the model's
     # methods. Further down the line, it should be an interface
     # for active learning. It should also take more arguments
@@ -122,7 +133,12 @@ def topic_modeling_active_learning():
     # in order to redirect the user to something else while
     # the computing is happening.
 
-    return build_page(title="Topic Modeling", contents=model)
+    return build_page(title="Topic Modeling", contents=[])
+
+
+@app.route("/biomed/topic/")
+def topic_modeling_use():
+    pass
 
 
 @app.route("/biomed/clustering")
