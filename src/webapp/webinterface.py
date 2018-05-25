@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 # initializing variables for later
 current_coclust_corpus = "test1"
-doc_embeddings_model = create_doc_embeddings(corporanames=["test1"])
+doc_vec_model = create_doc_embeddings(corporanames=["test1"])
 
 pool = Pool(processes=2)
 # 2nd argument is a tuple with args to pass to function
@@ -99,7 +99,7 @@ def topic_modeling():
         return build_page(title="Topic Modeling", contents=selector, sidebar=options)
 
     # Code only reachable if request.method == "POST"
-    global doc_embeddings_model
+    global doc_vec_model
 
     # getting all form elements to send as arguments to doc2vec
     corpus = request.form['corpus']
@@ -114,7 +114,7 @@ def topic_modeling():
                                   dbow_words=dbow_words,
                                   dm_concat=dm_concat,
                                   dm_tag_count=dm_tag_count)
-    doc_embeddings_model = model
+    doc_vec_model = model
     # redirecting with code 307 to ensure redirect uses POST
     return redirect('/biomed/topic/active', code=307)
 
@@ -152,14 +152,15 @@ def topic_modeling_use():
                    '</form>',
                    "</p>"]
         # options allow users to select the number of documents they want
-        options = ['<label>Number of documents to retrieve: <input type="text" name="dm_tag_count" form="text-area-form" value="3" size="2"/></label>']
+        options = ['<label>Number of documents to retrieve: <input type="text" name="topn" form="text-area-form" value="3" size="2"/></label>']
         return build_page(title="Topic Modeling", contents=content, sidebar=options)
     # Code only reachable if POST request not from "back" (i.e. not from
     # document list) and not from "proceed" (i.e. not from active learning)
     # therefore only reachable if coming from /biomed/topic/use textarea form
     new_doc = request.form["text"].split()
-    new_vector = doc_embeddings_model.infer_vector(new_doc)
-    documents = doc_embeddings_model.docvecs.most_similar(positive=[new_vector])
+    new_vector = doc_vec_model.infer_vector(new_doc)
+    documents = doc_vec_model.docvecs.most_similar(positive=[new_vector],
+                                                   topn=int(request.form["topn"]))
     return build_page(contents=[" ".join([str(d) for d in documents])])
 
 
