@@ -1,3 +1,6 @@
+TEST_STRING = 'Manifesto on small airway involvement and management in asthma and chronic obstructive pulmonary disease: an Interasma (Global Asthma Association - GAA) and World Allergy Organization (WAO) document endorsed by Allergic Rhinitis and its Impact on Asthma (ARIA) and Global Allergy and Asthma European Network'
+
+
 def build_page(title='Title', contents=[], sidebar=[]):
     """ This function builds a webpage using the template and taking
         as arguments the HTML elements needed to complete the page.
