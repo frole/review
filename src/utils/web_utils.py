@@ -1,7 +1,7 @@
 TEST_STRING = 'Manifesto on small airway involvement and management in asthma and chronic obstructive pulmonary disease: an Interasma (Global Asthma Association - GAA) and World Allergy Organization (WAO) document endorsed by Allergic Rhinitis and its Impact on Asthma (ARIA) and Global Allergy and Asthma European Network'
 
 
-def build_page(title='Title', contents=[], sidebar=[]):
+def build_page(title='Title', contents=[], sidebar=[], backtarget="/"):
     """ This function builds a webpage using the template and taking
         as arguments the HTML elements needed to complete the page.
         Args:
@@ -18,6 +18,7 @@ def build_page(title='Title', contents=[], sidebar=[]):
     # e.g. [CONTENTS] would denote where the contents should go. Therefore,
     # this function simply iterates over lines in the template, replacing the
     # containing a marker with the intended content.
+    backarrow = '<a class="btn btn-dark btn-back" href="' + backtarget + '">➡</a>'
     with open('./static/template.html') as template:
         page_lines = []
         for line in template:
@@ -27,6 +28,8 @@ def build_page(title='Title', contents=[], sidebar=[]):
                 page_lines += '\n'.join(sidebar)
             elif "[TITLE]" in line:
                 page_lines += title
+            elif "[BACKARROW]" in line:
+                page_lines += backarrow
             else:
                 page_lines += line
     page = ''.join(page_lines)

@@ -42,7 +42,8 @@ def root():
 def patents():
     """ Returns the webpage at <host URL>/patents
     """
-    return build_page(title="placeholder", contents=["<p>shaz</p><br />" for i in range(1000)])
+    return build_page(title="placeholder",
+                      contents=["<p>shaz</p><br />" for i in range(1000)])
 
 
 @app.route("/biomed")
@@ -62,7 +63,7 @@ def biomedical():
 def summary():
     """ Returns the webpage at <host URL>/biomed/summary
     """
-    return build_page(title="placeholder")
+    return build_page(title="placeholder", backtarget="/biomed")
 
 
 @app.route("/biomed/topic", methods=['GET', 'POST'])
@@ -96,7 +97,10 @@ def topic_modeling():
         options += context_representation + separator
         options += tag_count
         options += ['</div>']
-        return build_page(title="Topic Modeling", contents=selector, sidebar=options)
+        return build_page(title="Topic Modeling",
+                          contents=selector,
+                          sidebar=options,
+                          backtarget="/biomed")
 
     # Code only reachable if request.method == "POST"
     global doc_vec_model
@@ -136,7 +140,9 @@ def topic_modeling_active_learning():
             '<input type="submit" class="btn btn-dark submit" name="proceed" value="Submit & Proceed">',
             '</form>']
 
-    return build_page(title="Topic Modeling", contents=form)
+    return build_page(title="Topic Modeling",
+                      contents=form,
+                      backtarget="/biomed/topic")
 
 
 @app.route("/biomed/topic/use", methods=['GET', 'POST'])
@@ -153,7 +159,10 @@ def topic_modeling_use():
                    "</p>"]
         # options allow users to select the number of documents they want
         options = ['<label>Number of documents to retrieve: <input type="text" name="topn" form="text-area-form" value="3" size="2"/></label>']
-        return build_page(title="Topic Modeling", contents=content, sidebar=options)
+        return build_page(title="Topic Modeling",
+                          contents=content,
+                          sidebar=options,
+                          backtarget="/biomed/topic")
     # Code only reachable if POST request not from "back" (i.e. not from
     # document list) and not from "proceed" (i.e. not from active learning)
     # therefore only reachable if coming from /biomed/topic/use textarea form
@@ -161,7 +170,8 @@ def topic_modeling_use():
     new_vector = doc_vec_model.infer_vector(new_doc)
     documents = doc_vec_model.docvecs.most_similar(positive=[new_vector],
                                                    topn=int(request.form["topn"]))
-    return build_page(contents=[" ".join([str(d) for d in documents])])
+    return build_page(contents=[" ".join([str(d) for d in documents])],
+                      backtarget="/biomed/topic/use")
 
 
 @app.route("/biomed/clustering")
@@ -200,7 +210,7 @@ def clustering(corpus=None):
                  for plot_fname in PLOT_FILES_READ]
     img_tags += ["</p>"]
     options = corpus_selector(classes=["coclust-form", "checkbox-form"])
-    return build_page(contents=img_tags, sidebar=options)
+    return build_page(contents=img_tags, sidebar=options, backtarget="/biomed")
 
 
 @app.route("/biomed/clustering", methods=['POST'])
@@ -229,7 +239,7 @@ def terminologie_request_txt():
                 category + '" checked/>' + category + '</label>'
                 for category in TAG_CATEGORIES]
     options += ['</div>']
-    return build_page(contents=content, sidebar=options)
+    return build_page(contents=content, sidebar=options, backtarget="/biomed")
 
 
 @app.route("/biomed/terminologie", methods=['POST'])
@@ -250,4 +260,4 @@ def terminologie_tagged_text():
     content = ['<p class="container text-justify">',
                tag_text.tag(text, whitelist),
                '</p>']
-    return build_page(contents=content)
+    return build_page(contents=content, backtarget="/biomed/terminologie")
