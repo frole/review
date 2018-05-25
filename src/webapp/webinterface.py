@@ -97,48 +97,51 @@ def topic_modeling():
         options += ['</div>']
         return build_page(title="Topic Modeling", contents=selector, sidebar=options)
 
-    elif request.method == 'POST':
-        from utils.embed_utils import create_doc_embeddings
-        global doc_embeddings_model
+    # Code only reachable if request.method == "POST"
+    from utils.embed_utils import create_doc_embeddings
+    global doc_embeddings_model
 
-        # getting all form elements to send as arguments to doc2vec
-        corpus = request.form['corpus']
-        dm = int(request.form['dm'])
-        dbow_words = 0
-        if 'dbow_words' in request.form and request.form['dbow_words'] == 'on':
-            dbow_words = 1
-        dm_concat = int(request.form['dm_concat'])
-        dm_tag_count = int(request.form['dm_tag_count'])
-        model = create_doc_embeddings(corporanames=[corpus],
-                                      dm=dm,
-                                      dbow_words=dbow_words,
-                                      dm_concat=dm_concat,
-                                      dm_tag_count=dm_tag_count)
-        doc_embeddings_model = model
-        return redirect('/biomed/topic/active', code=307)
-
-    else:
-        return "something went terribly wrong"
+    # getting all form elements to send as arguments to doc2vec
+    corpus = request.form['corpus']
+    dm = int(request.form['dm'])
+    dbow_words = 0
+    if 'dbow_words' in request.form and request.form['dbow_words'] == 'on':
+        dbow_words = 1
+    dm_concat = int(request.form['dm_concat'])
+    dm_tag_count = int(request.form['dm_tag_count'])
+    model = create_doc_embeddings(corporanames=[corpus],
+                                  dm=dm,
+                                  dbow_words=dbow_words,
+                                  dm_concat=dm_concat,
+                                  dm_tag_count=dm_tag_count)
+    doc_embeddings_model = model
+    # redirecting with code 307 to ensure redirect uses POST
+    return redirect('/biomed/topic/active', code=307)
 
 
 @app.route("/biomed/topic/active", methods=['POST'])
 def topic_modeling_active_learning():
 
-    # placeholder : for now this method displays the model's
-    # methods. Further down the line, it should be an interface
-    # for active learning. It should also take more arguments
-    # to condition the document embeddings creation.
-    # Maybe make a page specifically for the doc embeddings
-    # and then one to access previously created embeddings
-    # in order to redirect the user to something else while
-    # the computing is happening.
+    # placeholder : Further down the line, this method should be an
+    # interface for active learning. Maybe make a page specifically
+    # for the doc embeddings and then one to access previously
+    # created embeddings in order to redirect the user to something
+    # else while the computing is happening.
+    if "proceed" in request.form:
+        # redirecting with code 307 to ensure redirect uses POST
+        return redirect('/biomed/topic/use', code=307)
 
-    return build_page(title="Topic Modeling", contents=[])
+    form = ['<form method="POST" class="" id="">',
+            '<input type="submit" class="btn btn-dark submit" name="submit" value="Submit" />',
+            '<input type="submit" class="btn btn-dark submit" name="proceed" value="Submit & Proceed">',
+            '</form>']
+
+    return build_page(title="Topic Modeling", contents=form)
 
 
-@app.route("/biomed/topic/")
+@app.route("/biomed/topic/use", methods=['POST'])
 def topic_modeling_use():
-    pass
+    return build_page()
 
 
 @app.route("/biomed/clustering")
