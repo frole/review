@@ -5,7 +5,7 @@ import random
 from async_tasks import coclust_async, ner_async_import
 from constants import PLOT_FILES_READ, TAG_CATEGORIES
 from flask import Flask, request, redirect
-from multiprocessing.pool import Pool
+from multiprocessing.pool import Pool, ThreadPool
 from utils.misc_utils import get_json_dataset_by_name
 from utils.web_utils import build_page, corpus_selector, TEST_STRING
 from utils.embed_utils import create_doc_embeddings
@@ -16,12 +16,13 @@ current_coclust_corpus = "test1"
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
 
 pool = Pool(processes=2)
+tpool = ThreadPool(processes=1)
 # 2nd argument is a tuple with args to pass to function
 # In this case, on 1-tuple (with a comma to denote tuple-ness)
 coclusterizer_thread = pool.apply_async(coclust_async,
                                         (get_json_dataset_by_name(current_coclust_corpus),))
 # In this case, the empty tuple
-ner_importer_thread = pool.apply_async(ner_async_import, ())
+ner_importer_thread = tpool.apply_async(ner_async_import, ())
 
 
 @app.route("/")
