@@ -7,7 +7,7 @@ from constants import PLOT_FILES_READ, TAG_CATEGORIES
 from flask import Flask, request, redirect, url_for
 from multiprocessing.pool import Pool
 from utils.misc_utils import get_json_dataset_by_name
-from utils.web_utils import build_page, corpus_selector
+from utils.web_utils import build_page, corpus_selector, TEST_STRING
 app = Flask(__name__)
 
 # initializing variables for later
@@ -139,8 +139,29 @@ def topic_modeling_active_learning():
     return build_page(title="Topic Modeling", contents=form)
 
 
-@app.route("/biomed/topic/use", methods=['POST'])
+@app.route("/biomed/topic/use", methods=['GET', 'POST'])
 def topic_modeling_use():
+    if "back" in request.form or "proceed" in request.form or request.method == 'GET':
+        # content is a textarea in which one enters the text to infer
+        content = ["<p>",
+                   '<form method="POST" class="text-area-form" id="text-area-form">'
+                   '<textarea name="text" rows="10" cols="75">',
+                   TEST_STRING,
+                   '</textarea>', '<br/>',
+                   '<input type="submit" class="btn btn-dark submit" value="Submit" style="align: right;"/>',
+                   '</form>',
+                   "</p>"]
+        # options allow users to select the number of documents they want
+        options = ['<label>Number of documents to retrieve: <input type="text" name="dm_tag_count" form="text-area-form" value="3" size="2"/></label>']
+        return build_page(title="Topic Modeling", contents=content, sidebar=options)
+    # Code only reachable if POST request not from "back" (i.e. not from
+    # document list) and not from "proceed" (i.e. not from active learning)
+    # therefore only reachable if coming from /biomed/topic/use textarea form
+    new_doc = request.form["text"].split()
+    new_vector = doc_embeddings_model.infer_vector(new_doc)
+    documents = doc_embeddings_model.docvecs.most_similar(positive=[new_vector])
+    print(documents)
+    print([i for i in documents])
     return build_page()
 
 
@@ -199,7 +220,7 @@ def terminologie_request_txt():
     content = ["<p>",
                '<form method="POST" class="text-area-form" id="text-area-form">'
                '<textarea name="text" rows="10" cols="75">',
-               'Manifesto on small airway involvement and management in asthma and chronic obstructive pulmonary disease: an Interasma (Global Asthma Association - GAA) and World Allergy Organization (WAO) document endorsed by Allergic Rhinitis and its Impact on Asthma (ARIA) and Global Allergy and Asthma European Network',
+               TEST_STRING,
                '</textarea>', '<br/>',
                '<input type="submit" class="btn btn-dark submit" value="Submit" style="align: right;"/>',
                '</form>',
