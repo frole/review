@@ -4,15 +4,16 @@ import random
 
 from async_tasks import coclust_async, ner_async_import
 from constants import PLOT_FILES_READ, TAG_CATEGORIES
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect
 from multiprocessing.pool import Pool
 from utils.misc_utils import get_json_dataset_by_name
 from utils.web_utils import build_page, corpus_selector, TEST_STRING
+from utils.embed_utils import create_doc_embeddings
 app = Flask(__name__)
 
 # initializing variables for later
 current_coclust_corpus = "test1"
-doc_embeddings_model = None
+doc_embeddings_model = create_doc_embeddings(corporanames=["test1"])
 
 pool = Pool(processes=2)
 # 2nd argument is a tuple with args to pass to function
@@ -98,7 +99,6 @@ def topic_modeling():
         return build_page(title="Topic Modeling", contents=selector, sidebar=options)
 
     # Code only reachable if request.method == "POST"
-    from utils.embed_utils import create_doc_embeddings
     global doc_embeddings_model
 
     # getting all form elements to send as arguments to doc2vec
@@ -160,9 +160,7 @@ def topic_modeling_use():
     new_doc = request.form["text"].split()
     new_vector = doc_embeddings_model.infer_vector(new_doc)
     documents = doc_embeddings_model.docvecs.most_similar(positive=[new_vector])
-    print(documents)
-    print([i for i in documents])
-    return build_page()
+    return build_page(contents=[" ".join([str(d) for d in documents])])
 
 
 @app.route("/biomed/clustering")
