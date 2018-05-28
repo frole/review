@@ -59,3 +59,17 @@ def corpus_selector(classes, form_id=None):
                '<input type="submit" class="btn btn-dark submit" value="Submit"/>',
                '</form>']
     return options
+
+
+def create_doc_display_areas(documents):
+    """ Creates an area in which to display text for each document passed
+        as argument. Should be styled with CSS to be scrollable.
+        Arguments:
+            - (list<str>) documents: a list of strings (typically
+                corresponding to some document) to display in boxes
+    """
+    text_area_begin = '<p class="document-display-area">\n'
+    text_area_end = '\n</p>'
+
+    return [str(head) + '\n' + text_area_begin + doc + text_area_end
+            for head, doc in documents.items()]
