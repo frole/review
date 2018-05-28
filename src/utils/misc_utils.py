@@ -125,7 +125,6 @@ def get_vocab(corpusname):
     """
     import re
     import string
-    import json
 
     # regex containing all punctution
     punct_regex = '[' + string.punctuation + ']'
