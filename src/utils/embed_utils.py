@@ -40,7 +40,7 @@ def create_word_embeddings(corpusname,
     return model
 
 
-def _json_to_tagged_docs(json_doc):
+def _json_to_tagged_docs(json_doc, tags):
     """ Turns a document loaded from a corpus into 2 TaggedDocuments
         Arguments:
             - (dict) json_doc: a document read with `json.loads` from a corpus
@@ -54,35 +54,20 @@ def _json_to_tagged_docs(json_doc):
     from gensim.models.doc2vec import TaggedDocument
 
     try:
-        keywords = json_doc["kwds"].split(sep="+")
-    except KeyError:
-        keywords = []
-
-    try:
-        mesh = json_doc["mesh"].split(sep="+")
-    except KeyError:
-        mesh = []
-
-    try:
-        label = json_doc["label"]
-    except KeyError:
-        label = None
-    tags = keywords + mesh + [label] if label is not None else keywords + mesh
-
-    try:
         abstract = re.sub("[" + string.punctuation + "]", '',
                           json_doc["ab"].lower()).split()
     except KeyError:
         abstract = None
 
     if abstract is not None:
-        abstract_tagged_doc = TaggedDocument(abstract, tags)
+        abs_tags = ["+".join(tags + ['abstract'])]
+        abstract_tagged_doc = TaggedDocument(abstract, abs_tags)
     else:
         abstract_tagged_doc = None
 
     fulltext = re.sub("[" + string.punctuation + "]", '',
                       json_doc["raw"].lower()).split()
-    return abstract_tagged_doc, TaggedDocument(fulltext, tags)
+    return abstract_tagged_doc, TaggedDocument(fulltext, ["+".join(tags)])
 
 
 def corpus_to_tagged_docs(corpusname):
@@ -96,8 +81,11 @@ def corpus_to_tagged_docs(corpusname):
             - (TaggedDocument): TaggedDocument for the body of the article
     """
     from utils.misc_utils import get_docs_from_json_corpus
+    docnumber = 0
     for doc in get_docs_from_json_corpus(corpusname=corpusname):
-        doc1, doc2 = _json_to_tagged_docs(doc)
+        tags = [corpusname, str(docnumber)]
+        doc1, doc2 = _json_to_tagged_docs(doc, tags)
+        docnumber += 1
         if doc1 is not None:
             yield doc1
         yield doc2
@@ -109,6 +97,27 @@ def corpora_to_tagged_docs(corporanames):
     for corpusname in corporanames:
         for tagged_doc in corpus_to_tagged_docs(corpusname):
             yield tagged_doc
+
+
+def get_doc_from_tag(tag):
+    """ From a tag returns the full text of the corresponding
+        document according to the convention:
+            tag = "corpusname+linenumber" for a normal text
+            tag = "corpusname+linenumber+abstract" for an abstract
+        Arguments:
+            - (str) tag: a tag following the aforementioned convention
+    """
+    from utils.misc_utils import get_docs_from_json_corpus
+    current_doc = 0
+    tag = tag.split("+")
+    for doc in get_docs_from_json_corpus(corpusname=tag[0]):
+        # if the doc at current line is not equal to linenumber
+        if current_doc != int(tag[1]):
+            current_doc += 1
+        elif 'abstract' in tag:
+            return doc['ab']
+        else:
+            return doc['raw']
 
 
 def create_doc_embeddings(corporanames,
