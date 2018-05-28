@@ -61,14 +61,17 @@ def corpus_selector(classes, form_id=None):
     return options
 
 
-def create_doc_display_areas(documents):
+def create_doc_display_areas(documents, classes=["document-display-area"]):
     """ Creates an area in which to display text for each document passed
         as argument. Should be styled with CSS to be scrollable.
         Arguments:
-            - (list<str>) documents: a list of strings (typically
-                corresponding to some document) to display in boxes
+            - (dict<any:str>) documents: a dict with any type coercible
+                to str as keys to display above the text boxes and strings
+                for values to display in the text boxes
+            - (list<str>) classes: list of classes that the element
+                should have. Defaults to ["document-display-area"].
     """
-    text_area_begin = '<p class="document-display-area">\n'
+    text_area_begin = '<p class="' + ' '.join(classes) + '">\n'
     text_area_end = '\n</p>'
 
     return [str(head) + '\n' + text_area_begin + doc + text_area_end
