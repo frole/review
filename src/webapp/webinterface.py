@@ -167,11 +167,22 @@ def topic_modeling_use():
     # Code only reachable if POST request not from "back" (i.e. not from
     # document list) and not from "proceed" (i.e. not from active learning)
     # therefore only reachable if coming from /biomed/topic/use textarea form
+    from utils.embed_utils import get_doc_from_tag
+    from utils.web_utils import create_doc_display_areas
+
     new_doc = request.form["text"].split()
     new_vector = doc_vec_model.infer_vector(new_doc)
-    documents = doc_vec_model.docvecs.most_similar(positive=[new_vector],
-                                                   topn=int(request.form["topn"]))
-    return build_page(contents=[" ".join([str(d) for d in documents])],
+    similar_vectors = doc_vec_model.docvecs.most_similar(positive=[new_vector],
+                                                         topn=int(request.form["topn"]))
+
+    # `documents` is a dict such that each key corresponds to a vector and
+    # each value is a document. Each key is a tuple of the form:
+    # ([corpus, line], similarity) with [corpus, line] being extracted
+    # from the document tag returned by similar_vectors.
+
+    documents = {(v[0].split("+")[0], v[0].split("+")[1], v[1]):
+                 get_doc_from_tag(v[0]) for v in similar_vectors}
+    return build_page(contents=create_doc_display_areas(documents),
                       backtarget="/biomed/topic/use")
 
 
