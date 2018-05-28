@@ -18,16 +18,6 @@ body{
   flex-direction: column;
   justify-content: middle;
 }
-.top-bar{
-  background-color: rgb(60 60 70);
-  box-shadow: 0px 0px 4px black;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.btn-back{
-  transform: rotate(180deg);
-}
 .main-view{
   position: relative;
   height: 100vh;
@@ -40,6 +30,7 @@ body{
   position: relative;
   padding-left: 10%;
   padding-right: 10%;
+  padding-top: 10vh;
   height: 100%;
   width: 100%;
   color: lightgray;
@@ -47,17 +38,10 @@ body{
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
-  overflow-y:scroll;
+  overflow-y: auto;
 }
 p{
   text-align: center;
-}
-.btn-group-lg, .topic-form{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  flex-wrap: wrap;
 }
 .text-area-form{
   height:100%;
@@ -72,10 +56,6 @@ p{
   padding: 10%;
   flex-direction: column;
 }
-.btn-dark{
-  margin: 1em;
-  box-shadow: 0px 0px 2px rgb(250, 250, 255);
-}
 img{
   margin-bottom: 10vh;
   max-width: 75%;
@@ -87,4 +67,16 @@ mark{
   border-radius: 5px;
   color: lightgray;
   text-shadow: 0px 0px 1px black;
+}
+.document-display-area{
+  text-align: justify;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  max-width: 900px;
+  background-color: rgb(60 60 70);
+  border-radius: 5px;
+  margin-bottom: 10vh;
 }
