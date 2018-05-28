@@ -259,9 +259,12 @@ def terminologie_tagged_text():
     """ Returns the webpage at <host URL>/biomed/terminologie after a POST request
         (intended to be called when settings in the sidebar are changed)
     """
-    tag_text = ner_importer_thread.get()  # the fact that this is called systematically isn't a problem.
+    from utils.web_utils import create_doc_display_areas
+
+    # the fact that this is called systematically isn't a problem.
+    tag_text = ner_importer_thread.get()
+
     text = request.form['text']
-    print(request.form)
     whitelist = []
     for category in TAG_CATEGORIES:
         try:
@@ -269,7 +272,8 @@ def terminologie_tagged_text():
                 whitelist += [category]
         except Exception:  # do nothing if some category isn't listed
             pass
-    content = ['<p class="container text-justify">',
-               tag_text.tag(text, whitelist),
-               '</p>']
+    content = create_doc_display_areas({'Results of text tagging':
+                                        tag_text.tag(text, whitelist)},
+                                       classes=["document-display-area",
+                                                "container"])
     return build_page(contents=content, backtarget="/biomed/terminologie")
