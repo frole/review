@@ -15,13 +15,19 @@ app = Flask(__name__)
 current_coclust_corpus = "test1"
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
 
+# creating process and thread pools
 pool = Pool(processes=2)
 tpool = ThreadPool(processes=1)
-# 2nd argument is a tuple with args to pass to function
+# 2nd argument of apply_async is a tuple with args to pass to function
 # In this case, on 1-tuple (with a comma to denote tuple-ness)
-coclusterizer_thread = pool.apply_async(coclust_async,
-                                        (get_json_dataset_by_name(current_coclust_corpus),))
-# In this case, the empty tuple
+json_corpus = (get_json_dataset_by_name(current_coclust_corpus),)
+# co-clustering can happen in a different process which ignores the GIL
+coclusterizer_thread = pool.apply_async(coclust_async, json_corpus)
+# In this next case, the empty tuple is passed to apply_async
+# here we do the import in a different thread because processes can't
+# return an import. The import takes a long time because numpy does a
+# lot of number crunching. Since this happens outside of the GIL, this
+# should still result in improved performance.
 ner_importer_thread = tpool.apply_async(ner_async_import, ())
 
 
@@ -126,6 +132,8 @@ def topic_modeling():
 
 @app.route("/biomed/topic/active", methods=['POST'])
 def topic_modeling_active_learning():
+    from utils.embed_utils import get_doc_from_tag
+    from utils.web_utils import create_doc_display_areas, create_topic_selector
 
     # placeholder : Further down the line, this method should be an
     # interface for active learning. Maybe make a page specifically
@@ -136,13 +144,45 @@ def topic_modeling_active_learning():
         # redirecting with code 307 to ensure redirect uses POST
         return redirect('/biomed/topic/use', code=307)
 
-    form = ['<form method="POST" class="" id="">',
-            '<input type="submit" class="btn btn-dark submit" name="submit" value="Submit" />',
-            '<input type="submit" class="btn btn-dark submit" name="proceed" value="Submit & Proceed">',
-            '</form>']
+    # `doc_vec_model.docvecs.doctags` is a dict such that each entry is of the
+    # form `tag: document_descriptor` where `tag` is a document identifier
+    # (a "tag" for a TaggedDoc) and `document_descriptor` is a `Doctag` which
+    # aggregates some metadata on the corresponding document. Getting the keys
+    # of this dict returns a `dict_keys` object of all the tags in the model.
+    # This object is not subscriptable but can be coerced to a list. //======
+    # Of this list of tags, we are selecting 5 randomly as a placeholder
+    # until the active learning is actually implemented.
+    doc_tags = random.sample(
+        population=list(doc_vec_model.docvecs.doctags.keys()),
+        k=5)
+
+    # getting documents from tags and putting in a dict
+    # for `create_doc_display_areas`
+    docs = {"Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1]:
+            (get_doc_from_tag(tag), create_topic_selector(tag))
+            for tag in doc_tags}
+
+    # transforming into display areas
+    doc_display_areas = create_doc_display_areas(documents=docs)
+    # the contents of the webpage are the documents in their display areas
+    # each followed by the radio buttons for each document
+    contents = doc_display_areas
+    contents += ['<form method="POST" class="" id="active-form">',
+                 '<input type="submit" class="btn btn-dark submit" name="submit" value="Submit" />',
+                 '<input type="submit" class="btn btn-dark submit" name="proceed" value="Submit & Proceed">',
+                 '</form>']
+
+    sidebar = ['<p>',
+               'Topic 1: <br />',
+               'Topic 2: <br />',
+               'Topic 3: <br />',
+               'Topic 4: <br />',
+               'Topic 5: <br />',
+               '</p>']
 
     return build_page(title="Topic Modeling",
-                      contents=form,
+                      contents=contents,
+                      sidebar=sidebar,
                       backtarget="/biomed/topic")
 
 
@@ -164,6 +204,7 @@ def topic_modeling_use():
                           contents=content,
                           sidebar=options,
                           backtarget="/biomed/topic")
+
     # Code only reachable if POST request not from "back" (i.e. not from
     # document list) and not from "proceed" (i.e. not from active learning)
     # therefore only reachable if coming from /biomed/topic/use textarea form
@@ -180,31 +221,32 @@ def topic_modeling_use():
     # ([corpus, line], similarity) with [corpus, line] being extracted
     # from the document tag returned by similar_vectors.
 
-    documents = {(v[0].split("+")[0], v[0].split("+")[1], v[1]):
-                 get_doc_from_tag(v[0]) for v in similar_vectors}
+    documents = {'Corpus: ' + v[0].split("+")[0] +
+                 ', Doc #' + v[0].split("+")[1] +
+                 ', Similarity: ' + str(v[1])[2:4] + "%":
+                 (get_doc_from_tag(v[0]), '') for v in similar_vectors}
     return build_page(contents=create_doc_display_areas(documents),
                       backtarget="/biomed/topic/use")
 
 
-@app.route("/biomed/clustering")
-def clustering(corpus=None):
+@app.route("/biomed/clustering", methods=['GET', 'POST'])
+def clustering():
     """ Returns the webpage at <host URL>/biomed/clustering
     """
     global current_coclust_corpus  # These variables are initialized at the top in
     global coclusterizer_thread    # order to start clustering as the app starts
     global pool
 
-    # Corpus is not None <=> function is called after a POST request potentially
-    # (but not necessarily) changing the corpus to do clustering on.
-    if corpus is not None and corpus != current_coclust_corpus:
-        current_coclust_corpus = corpus
+    if request.method == 'POST' and request.form["corpus"] != current_coclust_corpus:
+        current_coclust_corpus = request.form["corpus"]
         # Arguments of coclust_async are passed as a tuple in the second argument
         # of apply_async. We need a comma to denote a single element tuple.
         # without the comma, apply_async will try to iterate on corpus (str).
         # This applies co clustering with the new corpus.
         pool = Pool(processes=1)
-        coclusterizer_thread = pool.apply_async(coclust_async,
-                                                (get_json_dataset_by_name(corpus),))
+        # json_corpus is a 1-tuple because apply_async takes a tuple as arg
+        json_corpus = (get_json_dataset_by_name(request.form["corpus"]),)
+        coclusterizer_thread = pool.apply_async(coclust_async, json_corpus)
 
     # we don't actually need the return value, as the plots are written to files.
     # nevertheless, this will force waiting for the thread to finish custering.
@@ -223,15 +265,6 @@ def clustering(corpus=None):
     img_tags += ["</p>"]
     options = corpus_selector(classes=["coclust-form", "checkbox-form"])
     return build_page(contents=img_tags, sidebar=options, backtarget="/biomed")
-
-
-@app.route("/biomed/clustering", methods=['POST'])
-def clustering_post():
-    """ Returns the webpage at <host URL>/biomed/clustering after a POST request
-        (intended to be called when settings in the sidebar are changed)
-    """
-    corpus = request.form['corpus']
-    return clustering(corpus)
 
 
 @app.route("/biomed/terminologie")
