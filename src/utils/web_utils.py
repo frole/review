@@ -61,7 +61,7 @@ def corpus_selector(classes, form_id=None):
     return options
 
 
-def create_doc_display_areas(documents, classes=["document-display-area"]):
+def create_doc_display_areas(documents, classes=[]):
     """ Creates an area in which to display text for each document passed
         as argument. Should be styled with CSS to be scrollable.
         Arguments:
@@ -71,8 +71,27 @@ def create_doc_display_areas(documents, classes=["document-display-area"]):
             - (list<str>) classes: list of classes that the element
                 should have. Defaults to ["document-display-area"].
     """
-    text_area_begin = '<p class="' + ' '.join(classes) + '">\n'
-    text_area_end = '\n</p>'
+    text_area_outer_begin = '<div class="outer-document-display-area">'
+    text_area_inner_begin = '<p class="inner-document-display-area ' +\
+        ' '.join(classes) + '">\n'
+    text_area_inner_end = '\n</p>\n'
+    text_area_outer_end = '\n</div><br />'
 
-    return [str(head) + '\n' + text_area_begin + doc + text_area_end
-            for head, doc in documents.items()]
+    return [text_area_outer_begin + str(head) + '<br />' + '\n' +
+            text_area_inner_begin + doc + text_area_inner_end +
+            footer + text_area_outer_end
+            for head, (doc, footer) in documents.items()]
+
+
+def create_topic_selector(doc_tag, values=[1, 2, 3, 4, 5]):
+    """ Super temporary placeholder
+    """
+    # creating the topic radio buttons for the articles
+    # the parentheses are only for splitting over multiple lines elegantly
+    return ('<span>' +
+            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[0]) + '" form="active-form" checked> Topic 1  ' +
+            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[1]) + '" form="active-form"> Topic 2  ' +
+            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[2]) + '" form="active-form"> Topic 3  ' +
+            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[3]) + '" form="active-form"> Topic 4  ' +
+            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[4]) + '" form="active-form"> Topic 5  ' +
+            '</span>')
