@@ -1,34 +1,10 @@
 """ This script launches the FLASK web interface for the project"""
 import sys; sys.path += ['../']  # used to import modules from parent directory
-import random
 
-from async_tasks import coclust_async, ner_async_import
-from constants import PLOT_FILES_READ, TAG_CATEGORIES
-from flask import Flask, request, redirect
-from multiprocessing.pool import Pool, ThreadPool
-from utils.misc_utils import get_json_dataset_by_name
-from utils.web_utils import build_page, corpus_selector, TEST_STRING
-from utils.embed_utils import create_doc_embeddings
+from backend_functions import terminology, topicmodeling, clustering
+from flask import Flask
+from utils.web_utils import build_page, make_btn_group
 app = Flask(__name__)
-
-# initializing variables for later
-current_coclust_corpus = "test1"
-doc_vec_model = create_doc_embeddings(corporanames=["test1"])
-
-# creating process and thread pools
-pool = Pool(processes=2)
-tpool = ThreadPool(processes=1)
-# 2nd argument of apply_async is a tuple with args to pass to function
-# In this case, on 1-tuple (with a comma to denote tuple-ness)
-json_corpus = (get_json_dataset_by_name(current_coclust_corpus),)
-# co-clustering can happen in a different process which ignores the GIL
-coclusterizer_thread = pool.apply_async(coclust_async, json_corpus)
-# In this next case, the empty tuple is passed to apply_async
-# here we do the import in a different thread because processes can't
-# return an import. The import takes a long time because numpy does a
-# lot of number crunching. Since this happens outside of the GIL, this
-# should still result in improved performance.
-ner_importer_thread = tpool.apply_async(ner_async_import, ())
 
 
 @app.route("/")
@@ -49,20 +25,21 @@ def root():
 def patents():
     """ Returns the webpage at <host URL>/patents
     """
-    return build_page(title="placeholder",
-                      contents=["<p>shaz</p><br />" for i in range(1000)])
+    return build_page(title="placeholder")
 
 
 @app.route("/biomed")
 def biomedical():
     """ Returns the webpage at <host URL>/biomed
     """
-    buttons = ['<p class="btn-group-lg">',
-               '<a class="btn btn-dark" href="/biomed/summary" role="button">Summary</a>',
-               '<a class="btn btn-dark" href="/biomed/clustering" role="button">Clustering / Co-clustering</a>',
-               '<a class="btn btn-dark" href="/biomed/terminologie" role="button">Terminology</a>',
-               '<a class="btn btn-dark" href="/biomed/topic" role="button">Topic Modeling</a>',
-               '</p>']
+    buttons = make_btn_group(labels=["Summary",
+                                     "Clustering / Co-clustering",
+                                     "Terminology",
+                                     "Topic Modeling"],
+                             targets=["/biomed/summary",
+                                      "/biomed/clustering",
+                                      "/biomed/terminology",
+                                      "/biomed/topicmodeling"])
     return build_page(title="Biomedical", contents=buttons)
 
 
@@ -73,240 +50,52 @@ def summary():
     return build_page(title="placeholder", backtarget="/biomed")
 
 
-@app.route("/biomed/topic", methods=['GET', 'POST'])
+@app.route("/biomed/topicmodeling", methods=['GET', 'POST'])
 def topic_modeling():
-    """ Returns the webpage at <host URL>/biomed/topic
+    """ Returns the webpage at <host URL>/biomed/topicmodeling
     """
-    if request.method == 'GET':
-        selector = corpus_selector(classes=["topic-form"], form_id="topic-form")
-        # selector for the algorithm DM vs. DBOW (dm argument for doc2vec)
-        separator = ['<div style="width:100%;height:15px;"></div>']
-        algorithm = ['<label>Algorithm:',
-                     '<select name="dm" form="topic-form">',
-                     '<option value="1">Distributed Memory</option>',
-                     '<option value="0">Distributed Bag of Words</option>',
-                     '</select>',
-                     '</label>']
-        # checkbox for whether or not to train word vectors (dbow_words)
-        train_wv = ['<label><input type="checkbox" form="topic-form" name="dbow_words"/> Train word vectors?</label>']
-        context_representation = ['<label>Context vector representation:',
-                                  '<select name="dm_concat" form="topic-form">',
-                                  '<option value="0">Sum / average (faster)</option>',
-                                  '<option value="1">Concatenation</option>',
-                                  '</select>',
-                                  '</label>']
-        tag_count = ['<label>Document tag count:',
-                     '<input type="text" name="dm_tag_count" form="topic-form" value="1" size="2"/>',
-                     '</label>']
-        options = ['<div class="checkbox-form">', '']
-        options += algorithm + separator
-        options += train_wv + separator
-        options += context_representation + separator
-        options += tag_count
-        options += ['</div>']
-        return build_page(title="Topic Modeling",
-                          contents=selector,
-                          sidebar=options,
-                          backtarget="/biomed")
-
-    # Code only reachable if request.method == "POST"
-    global doc_vec_model
-
-    # getting all form elements to send as arguments to doc2vec
-    corpus = request.form['corpus']
-    dm = int(request.form['dm'])
-    dbow_words = 0
-    if 'dbow_words' in request.form and request.form['dbow_words'] == 'on':
-        dbow_words = 1
-    dm_concat = int(request.form['dm_concat'])
-    dm_tag_count = int(request.form['dm_tag_count'])
-    model = create_doc_embeddings(corporanames=[corpus],
-                                  dm=dm,
-                                  dbow_words=dbow_words,
-                                  dm_concat=dm_concat,
-                                  dm_tag_count=dm_tag_count)
-    doc_vec_model = model
-    # redirecting with code 307 to ensure redirect uses POST
-    return redirect('/biomed/topic/active', code=307)
+    return topicmodeling.topic_modeling()
 
 
-@app.route("/biomed/topic/active", methods=['POST'])
+@app.route("/biomed/topicmodeling/topics", methods=['GET', 'POST'])
+def topic_modeling_top_words():
+    """ Returns the webpage at <host URL>/biomed/topicmodeling/topics
+        Shows the top words for each topic and has a button to redirect
+        the user towards the "use model" page.
+    """
+    button = make_btn_group(labels=["Proceed"],
+                            targets=["/biomed/topicmodeling/use"])
+    return build_page(title="Top words per topic",
+                      contents=button)
+
+
+@app.route("/biomed/topicmodeling/active", methods=['POST'])
 def topic_modeling_active_learning():
-    from utils.embed_utils import get_doc_from_tag
-    from utils.web_utils import create_doc_display_areas, create_topic_selector
-
-    # placeholder : Further down the line, this method should be an
-    # interface for active learning. Maybe make a page specifically
-    # for the doc embeddings and then one to access previously
-    # created embeddings in order to redirect the user to something
-    # else while the computing is happening.
-    if "proceed" in request.form:
-        # redirecting with code 307 to ensure redirect uses POST
-        return redirect('/biomed/topic/use', code=307)
-
-    # `doc_vec_model.docvecs.doctags` is a dict such that each entry is of the
-    # form `tag: document_descriptor` where `tag` is a document identifier
-    # (a "tag" for a TaggedDoc) and `document_descriptor` is a `Doctag` which
-    # aggregates some metadata on the corresponding document. Getting the keys
-    # of this dict returns a `dict_keys` object of all the tags in the model.
-    # This object is not subscriptable but can be coerced to a list. //======
-    # Of this list of tags, we are selecting 5 randomly as a placeholder
-    # until the active learning is actually implemented.
-    doc_tags = random.sample(
-        population=list(doc_vec_model.docvecs.doctags.keys()),
-        k=5)
-
-    # getting documents from tags and putting in a dict
-    # for `create_doc_display_areas`
-    docs = {"Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1]:
-            (get_doc_from_tag(tag), create_topic_selector(tag))
-            for tag in doc_tags}
-
-    # transforming into display areas
-    doc_display_areas = create_doc_display_areas(documents=docs)
-    # the contents of the webpage are the documents in their display areas
-    # each followed by the radio buttons for each document
-    contents = doc_display_areas
-    contents += ['<form method="POST" class="" id="active-form">',
-                 '<input type="submit" class="btn btn-dark submit" name="submit" value="Submit" />',
-                 '<input type="submit" class="btn btn-dark submit" name="proceed" value="Submit & Proceed">',
-                 '</form>']
-
-    sidebar = ['<p>',
-               'Topic 1: <br />',
-               'Topic 2: <br />',
-               'Topic 3: <br />',
-               'Topic 4: <br />',
-               'Topic 5: <br />',
-               '</p>']
-
-    return build_page(title="Topic Modeling",
-                      contents=contents,
-                      sidebar=sidebar,
-                      backtarget="/biomed/topic")
+    return topicmodeling.topic_modeling_active_learning()
 
 
-@app.route("/biomed/topic/use", methods=['GET', 'POST'])
+@app.route("/biomed/topicmodeling/use", methods=['GET', 'POST'])
 def topic_modeling_use():
-    if "back" in request.form or "proceed" in request.form or request.method == 'GET':
-        # content is a textarea in which one enters the text to infer
-        content = ["<p>",
-                   '<form method="POST" class="text-area-form" id="text-area-form">'
-                   '<textarea name="text" rows="10" cols="75">',
-                   TEST_STRING,
-                   '</textarea>', '<br/>',
-                   '<input type="submit" class="btn btn-dark submit" value="Submit" style="align: right;"/>',
-                   '</form>',
-                   "</p>"]
-        # options allow users to select the number of documents they want
-        options = ['<label>Number of documents to retrieve: <input type="text" name="topn" form="text-area-form" value="3" size="2"/></label>']
-        return build_page(title="Topic Modeling",
-                          contents=content,
-                          sidebar=options,
-                          backtarget="/biomed/topic")
-
-    # Code only reachable if POST request not from "back" (i.e. not from
-    # document list) and not from "proceed" (i.e. not from active learning)
-    # therefore only reachable if coming from /biomed/topic/use textarea form
-    from utils.embed_utils import get_doc_from_tag
-    from utils.web_utils import create_doc_display_areas
-
-    new_doc = request.form["text"].split()
-    new_vector = doc_vec_model.infer_vector(new_doc)
-    similar_vectors = doc_vec_model.docvecs.most_similar(positive=[new_vector],
-                                                         topn=int(request.form["topn"]))
-
-    # `documents` is a dict such that each key corresponds to a vector and
-    # each value is a document. Each key is a tuple of the form:
-    # ([corpus, line], similarity) with [corpus, line] being extracted
-    # from the document tag returned by similar_vectors.
-
-    documents = {'Corpus: ' + v[0].split("+")[0] +
-                 ', Doc #' + v[0].split("+")[1] +
-                 ', Similarity: ' + str(v[1])[2:4] + "%":
-                 (get_doc_from_tag(v[0]), '') for v in similar_vectors}
-    return build_page(contents=create_doc_display_areas(documents),
-                      backtarget="/biomed/topic/use")
+    return topicmodeling.topic_modeling_use()
 
 
 @app.route("/biomed/clustering", methods=['GET', 'POST'])
-def clustering():
+def clustering_page():
     """ Returns the webpage at <host URL>/biomed/clustering
     """
-    global current_coclust_corpus  # These variables are initialized at the top in
-    global coclusterizer_thread    # order to start clustering as the app starts
-    global pool
-
-    if request.method == 'POST' and request.form["corpus"] != current_coclust_corpus:
-        current_coclust_corpus = request.form["corpus"]
-        # Arguments of coclust_async are passed as a tuple in the second argument
-        # of apply_async. We need a comma to denote a single element tuple.
-        # without the comma, apply_async will try to iterate on corpus (str).
-        # This applies co clustering with the new corpus.
-        pool = Pool(processes=1)
-        # json_corpus is a 1-tuple because apply_async takes a tuple as arg
-        json_corpus = (get_json_dataset_by_name(request.form["corpus"]),)
-        coclusterizer_thread = pool.apply_async(coclust_async, json_corpus)
-
-    # we don't actually need the return value, as the plots are written to files.
-    # nevertheless, this will force waiting for the thread to finish custering.
-    coclusterizer_thread.wait()
-    coclusterizer_thread.get()
-
-    # generating random number to concatenate with
-    # image filenames to prevent caching
-    rng = random.randint(0, 65535)
-
-    begin_img_tag = '<img src="'
-    end_img_tag = '">'
-    img_tags = ['<p class="img-grp">']
-    img_tags += [begin_img_tag + plot_fname + '?' + str(rng) + end_img_tag
-                 for plot_fname in PLOT_FILES_READ]
-    img_tags += ["</p>"]
-    options = corpus_selector(classes=["coclust-form", "checkbox-form"])
-    return build_page(contents=img_tags, sidebar=options, backtarget="/biomed")
+    return clustering.clustering_page()
 
 
-@app.route("/biomed/terminologie")
-def terminologie_request_txt():
-    """ Returns the webpage at <host URL>/biomed/terminologie
+@app.route("/biomed/terminology")
+def terminology_request_txt():
+    """ Returns the webpage at <host URL>/biomed/terminology
     """
-    content = ["<p>",
-               '<form method="POST" class="text-area-form" id="text-area-form">'
-               '<textarea name="text" rows="10" cols="75">',
-               TEST_STRING,
-               '</textarea>', '<br/>',
-               '<input type="submit" class="btn btn-dark submit" value="Submit" style="align: right;"/>',
-               '</form>',
-               "</p>"]
-    options = ['<div class="checkbox-form">']
-    options += ['<label><input type="checkbox" form="text-area-form" name="' +
-                category + '" checked/>' + category + '</label>'
-                for category in TAG_CATEGORIES]
-    options += ['</div>']
-    return build_page(contents=content, sidebar=options, backtarget="/biomed")
+    return terminology.terminology_request_txt()
 
 
-@app.route("/biomed/terminologie", methods=['POST'])
-def terminologie_tagged_text():
-    """ Returns the webpage at <host URL>/biomed/terminologie after a POST request
+@app.route("/biomed/terminology", methods=['POST'])
+def terminology_tagged_text():
+    """ Returns the webpage at <host URL>/biomed/terminology after a POST request
         (intended to be called when settings in the sidebar are changed)
     """
-    from utils.web_utils import create_doc_display_areas
-
-    # the fact that this is called systematically isn't a problem.
-    tag_text = ner_importer_thread.get()
-
-    text = request.form['text']
-    whitelist = []
-    for category in TAG_CATEGORIES:
-        try:
-            if request.form[category] == 'on':
-                whitelist += [category]
-        except Exception:  # do nothing if some category isn't listed
-            pass
-    content = create_doc_display_areas({'Results of text tagging':
-                                        tag_text.tag(text, whitelist)},
-                                       classes=["document-display-area",
-                                                "container"])
-    return build_page(contents=content, backtarget="/biomed/terminologie")
+    return terminology.terminology_tagged_text()
