@@ -95,3 +95,34 @@ def create_topic_selector(doc_tag, values=[1, 2, 3, 4, 5]):
             '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[3]) + '" form="active-form"> Topic 4  ' +
             '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[4]) + '" form="active-form"> Topic 5  ' +
             '</span>')
+
+
+def make_btn_group(labels, targets):
+    """ Creates and returns an HTML button group for simple redirections
+        Arguments:
+            - (list<str>) labels: list of button labels
+            - (list<str>) targets: list of URLs the buttons should send to
+    """
+    buttons = ['<p class="btn-group-lg">']
+    buttons += ['<a class="btn btn-dark" href="' + target +
+                '" role="button">' + label + '</a>'
+                for label, target in zip(labels, targets)]
+    buttons += ['</p>']
+
+    return buttons
+
+
+def make_submit_group(labels, names, form=None):
+    """ Creates and returns an HTML button group for multiple "submit" buttons
+        Arguments:
+            - (list<str>) labels: list of button labels
+            - (list<str>) names: list of names for the buttons (which identify
+                    the pressed button in the request form)
+            - (str) form: id of the form these buttons belong to. If left
+                    blank or None, these buttons should be children of the
+                    form element they pertain to.
+    """
+    formfield = '" form="' + form if form is not None else ''
+    return ['<input type="submit" class="btn btn-dark submit" name="' +
+            name + '" value="' + label + formfield + '" />'
+            for label, name in zip(labels, names)]
