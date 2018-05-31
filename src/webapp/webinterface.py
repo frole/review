@@ -79,6 +79,16 @@ def topic_modeling_use():
     return topicmodeling.topic_modeling_use()
 
 
+@app.route("/biomed/topicmodeling/use/docsim", methods=['POST'])
+def topic_modeling_use_docsim():
+    return topicmodeling.topic_modeling_use_docsim()
+
+
+@app.route("/biomed/topicmodeling/use/topicsim", methods=['POST'])
+def topic_modeling_use_topicsim():
+    return topicmodeling.topic_modeling_use_topicsim()
+
+
 @app.route("/biomed/clustering", methods=['GET', 'POST'])
 def clustering_page():
     """ Returns the webpage at <host URL>/biomed/clustering
