@@ -29,11 +29,10 @@ def topic_modeling():
                                   '<option value="1">Concatenation</option>',
                                   '</select>',
                                   '</label>']
-        options = ['<div class="checkbox-form">', '']
-        options += algorithm + separator
-        options += train_wv + separator
-        options += context_representation + separator
-        options += ['</div>']
+        options = (['<div class="checkbox-form">', ''] +
+                   algorithm + separator +
+                   train_wv + separator +
+                   context_representation + ['</div>'])
         return build_page(title="Topic Modeling",
                           contents=selector,
                           sidebar=options,
@@ -50,14 +49,12 @@ def topic_modeling():
                 request.form['dbow_words'] == 'on'):
             dbow_words = 1
         dm_concat = int(request.form['dm_concat'])
-        dm_tag_count = int(request.form['dm_tag_count'])
 
         # creating doc2vec model
         model = create_doc_embeddings(corporanames=[corpus],
                                       dm=dm,
                                       dbow_words=dbow_words,
-                                      dm_concat=dm_concat,
-                                      dm_tag_count=dm_tag_count)
+                                      dm_concat=dm_concat)
         doc_vec_model = model
         # redirecting with code 307 to ensure redirect uses POST
         return redirect('/biomed/topicmodeling/topics', code=307)
@@ -100,10 +97,8 @@ def topic_modeling_active_learning():
     # each followed by the radio buttons for each document
     contents = doc_display_areas
     contents += ['<form method="POST" class="" id="active-form">']
-    contents += make_submit_group(labels=["Submit",
-                                          "Submit & Proceed"],
-                                  names=["submit",
-                                         "proceed"])
+    contents += make_submit_group(labels=["Submit", "Submit & Proceed"],
+                                  names=["submit", "proceed"])
     contents += ['</form>']
 
     sidebar = ['<p>',
@@ -128,7 +123,6 @@ def topic_modeling_use():
                    '<textarea name="text" rows="10" cols="75">',
                    TEST_STRING,
                    '</textarea>', '<br/>',
-                   '<input type="submit" class="btn btn-dark submit" value="Submit" style="align: right;"/>',
                    '<br /> Or drag & drop a file <br />',
                    '<label>Or enter a document tag: <input type="text" name="doc_tag" form="text-area-form" size="20"/></label>',
                    '</form>',
@@ -138,8 +132,9 @@ def topic_modeling_use():
                                              "Search by topic similarity",
                                              "Classify documents by relevancy"],
                                      names=["doc_sim",
-                                            "tpoic_sim",
-                                            "active"])
+                                            "topic_sim",
+                                            "active"],
+                                     form="text-area-form")
     # options allow users to select the number of documents they want
         options = ['<label>Number of documents to retrieve: <input type="text" name="topn" form="text-area-form" value="3" size="2"/></label>']
         return build_page(title="Topic Modeling",
@@ -150,10 +145,25 @@ def topic_modeling_use():
     # Code only reachable if POST request not from "back" (i.e. not from
     # document list) and not from "proceed" (i.e. not from active learning)
     # therefore only reachable if coming from /biomed/topicmodeling/use textarea form
+    elif "doc_sim" in request.form:  # 1st submit button
+        return redirect('/biomed/topicmodeling/use/docsim', code=307)
+    elif "topic_sim" in request.form:  # 2nd submit button
+        return redirect('/biomed/topicmodeling/use/topicsim', code=307)
+    else:  # 3rd submit button
+        return redirect('/biomed/topicmodeling/active', code=307)
+
+
+def topic_modeling_use_docsim():
     from utils.embed_utils import get_doc_from_tag
     from utils.web_utils import create_doc_display_areas
 
-    new_doc = request.form["text"].split()
+    # getting new document : priority #1 is D&D (NYI)
+    #                                 #2 is doc_tag
+    #                                 #3 is entered text
+    if "doc_tag" in request.form and request.form["doc_tag"] != '':
+        new_doc = get_doc_from_tag(request.form["doc_tag"])
+    else:
+        new_doc = request.form["text"].split()
     new_vector = doc_vec_model.infer_vector(new_doc)
     similar_vectors = doc_vec_model.docvecs.most_similar(positive=[new_vector],
                                                          topn=int(request.form["topn"]))
@@ -169,3 +179,7 @@ def topic_modeling_use():
                  (get_doc_from_tag(v[0]), '') for v in similar_vectors}
     return build_page(contents=create_doc_display_areas(documents),
                       backtarget="/biomed/topicmodeling/use")
+
+
+def topic_modeling_use_topicsim():
+    return topic_modeling_use_docsim()
