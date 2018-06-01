@@ -112,7 +112,7 @@ def create_radio_group(name, labels, values, checked=None, form_id=None):
               for label, value, chkstate in
               zip(labels, values, checked_btns)]
     group += ['</span>']
-    return group
+    return '\n'.join(group)
 
 
 def make_btn_group(labels, targets):
@@ -141,6 +141,9 @@ def make_submit_group(labels, names, form_id=None):
                     form element they pertain to.
     """
     formfield = '" form="' + form_id if form_id is not None else ''
-    return ['<input type="submit" class="btn btn-dark submit" name="' +
-            name + '" value="' + label + formfield + '" />'
-            for label, name in zip(labels, names)]
+    buttons = ['<p class="btn-group-lg">']
+    buttons += ['<input type="submit" class="btn btn-dark submit" name="' +
+                name + '" value="' + label + formfield + '" />'
+                for label, name in zip(labels, names)]
+    buttons += ['</p>']
+    return buttons
