@@ -5,7 +5,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
   flex-wrap: wrap;
   /*compensation for the 10 vh of paddng-top in parent*/
   padding-bottom: 10vh;
