@@ -62,7 +62,7 @@ def topic_modeling():
 
 def topic_modeling_active_learning():
     from utils.embed_utils import get_doc_from_tag
-    from utils.web_utils import create_doc_display_areas, create_topic_selector
+    from utils.web_utils import create_doc_display_areas, create_radio_group
 
     # placeholder : Further down the line, this method should be an
     # interface for active learning. Maybe make a page specifically
@@ -88,7 +88,13 @@ def topic_modeling_active_learning():
     # getting documents from tags and putting in a dict
     # for `create_doc_display_areas`
     docs = {"Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1]:
-            (get_doc_from_tag(tag), create_topic_selector(tag))
+            (get_doc_from_tag(tag),
+                create_radio_group(name="radio-" + tag,
+                                   labels=["Relevant", "Irrelevant"],
+                                   values=["relevant", "irrelevant"],
+                                   checked="relevant",
+                                   form_id="active-form")
+             )
             for tag in doc_tags}
 
     # transforming into display areas
@@ -134,7 +140,7 @@ def topic_modeling_use():
                                      names=["doc_sim",
                                             "topic_sim",
                                             "active"],
-                                     form="text-area-form")
+                                     form_id="text-area-form")
     # options allow users to select the number of documents they want
         options = ['<label>Number of documents to retrieve: <input type="text" name="topn" form="text-area-form" value="3" size="2"/></label>']
         return build_page(title="Topic Modeling",

@@ -83,18 +83,36 @@ def create_doc_display_areas(documents, classes=[]):
             for head, (doc, footer) in documents.items()]
 
 
-def create_topic_selector(doc_tag, values=[1, 2, 3, 4, 5]):
-    """ Super temporary placeholder
+def create_radio_group(name, labels, values, checked=None, form_id=None):
+    """ creates a group of radio buttons.
+        Arguments:
+            - (str) name: name of the button group
+                    (used to group the buttons in the form)
+            - (list<str>) labels: one label per button, will be
+                    shown on screen
+            - (list<str>) values: one value per button, used to
+                    retrieve the checked button in a POST request
+            - (str) checked: `checked` should be in `values` and designates
+                    which button should be checked by default. Lave empty
+                    or None if no button should be selected.
+            - (str) form_id: the id of the form these buttons should belong
+                    to. If None or left blank, the radio group should be
+                    inside the form it belongs to.
     """
-    # creating the topic radio buttons for the articles
-    # the parentheses are only for splitting over multiple lines elegantly
-    return ('<span>' +
-            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[0]) + '" form="active-form" checked> Topic 1  ' +
-            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[1]) + '" form="active-form"> Topic 2  ' +
-            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[2]) + '" form="active-form"> Topic 3  ' +
-            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[3]) + '" form="active-form"> Topic 4  ' +
-            '<input type="radio" name="topic' + doc_tag + '" value="' + str(values[4]) + '" form="active-form"> Topic 5  ' +
-            '</span>')
+    # will insert the form parameter if passed as arg
+    form = '' if form_id is None else ' form="' + form_id + '"'
+    # will append "checked" to the HTML tag of each button for which the
+    # label has been specified as needing to be checked in the arguments
+    checked_btns = [' checked' if value == checked
+                    else '' for value in values]
+
+    group = ['<span>']
+    group += ['<input type="radio" name="' + name + '" value="' +
+              str(value) + form + chkstate + '> ' + label
+              for label, value, chkstate in
+              zip(labels, values, checked_btns)]
+    group += ['</span>']
+    return group
 
 
 def make_btn_group(labels, targets):
@@ -112,17 +130,17 @@ def make_btn_group(labels, targets):
     return buttons
 
 
-def make_submit_group(labels, names, form=None):
+def make_submit_group(labels, names, form_id=None):
     """ Creates and returns an HTML button group for multiple "submit" buttons
         Arguments:
             - (list<str>) labels: list of button labels
             - (list<str>) names: list of names for the buttons (which identify
                     the pressed button in the request form)
-            - (str) form: id of the form these buttons belong to. If left
+            - (str) form_id: id of the form these buttons belong to. If left
                     blank or None, these buttons should be children of the
                     form element they pertain to.
     """
-    formfield = '" form="' + form if form is not None else ''
+    formfield = '" form="' + form_id if form_id is not None else ''
     return ['<input type="submit" class="btn btn-dark submit" name="' +
             name + '" value="' + label + formfield + '" />'
             for label, name in zip(labels, names)]
