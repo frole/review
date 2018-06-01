@@ -124,15 +124,13 @@ def topic_modeling_active_learning():
 def topic_modeling_use():
     if "back" in request.form or "proceed" in request.form or request.method == 'GET':
         # content is a textarea in which one enters the text to infer
-        content = ["<p>",
-                   '<form method="POST" class="text-area-form" id="text-area-form">'
+        content = ['<form method="POST" class="text-area-form" id="text-area-form">'
                    '<textarea name="text" rows="10" cols="75">',
                    TEST_STRING,
                    '</textarea>', '<br/>',
                    '<br /> Or drag & drop a file <br />',
                    '<label>Or enter a document tag: <input type="text" name="doc_tag" form="text-area-form" size="20"/></label>',
-                   '</form>',
-                   "</p>"]
+                   '</form>']
 
         content += make_submit_group(labels=["Search by document similarity",
                                              "Search by topic similarity",
