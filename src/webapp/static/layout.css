@@ -4,7 +4,7 @@ html{
 body{
   min-height:100vh;
   max-height: 100vh;
-  position:relative;
+  position: relative;
 }
 .container-fluid{
   padding-left: 0px;
@@ -35,23 +35,23 @@ body{
   width: 100%;
   color: lightgray;
   display: flex;
-  justify-content: center;
+  /*justify-content: safe center;*/
   align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
   overflow-y: auto;
 }
 p{
   text-align: center;
 }
 .text-area-form{
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
 .checkbox-form, .topic-form, .coclust-form{
-  display:flex;
+  display: flex;
   padding: 10%;
   flex-direction: column;
 }
@@ -76,6 +76,7 @@ mark{
   max-width: 900px;
   background-color: rgb(60 60 70);
   border-radius: 5px;
+  margin: auto;
 }
 .outer-document-display-area{
   width: 100%;
