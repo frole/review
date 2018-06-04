@@ -1,10 +1,14 @@
 """ This script launches the FLASK web interface for the project"""
 import sys; sys.path += ['../']  # used to import modules from parent directory
+import hashlib
+import time
 
 from backend_functions import terminology, topicmodeling, clustering
 from flask import Flask
 from utils.web_utils import build_page, make_btn_group
+
 app = Flask(__name__)
+app.secret_key = hashlib.md5(str(time.time()).encode("utf-8")).hexdigest()
 
 
 @app.route("/")

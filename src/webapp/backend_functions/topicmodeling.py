@@ -1,7 +1,7 @@
 import sys; sys.path += ['../../']  # used to import modules from grandparent directory
 import random
 
-from flask import request, redirect
+from flask import request, session, redirect
 from utils.web_utils import build_page, corpus_selector, TEST_STRING, make_submit_group
 from utils.embed_utils import create_doc_embeddings
 
@@ -71,7 +71,7 @@ def topic_modeling_active_learning():
     # else while the computing is happening.
     if "proceed" in request.form:
         # redirecting with code 307 to ensure redirect uses POST
-        return redirect('/biomed/topicmodeling/use', code=307)
+        return redirect('/biomed/topicmodeling/use/docsim', code=307)
 
     # `doc_vec_model.docvecs.doctags` is a dict such that each entry is of the
     # form `tag: document_descriptor` where `tag` is a document identifier
@@ -144,33 +144,38 @@ def topic_modeling_use():
         return build_page(title="Topic Modeling",
                           contents=content,
                           sidebar=options,
-                          backtarget="/biomed/topicmodeling")
+                          backtarget="/biomed/topicmodeling/topics")
 
     # Code only reachable if POST request not from "back" (i.e. not from
     # document list) and not from "proceed" (i.e. not from active learning)
     # therefore only reachable if coming from /biomed/topicmodeling/use textarea form
-    elif "doc_sim" in request.form:  # 1st submit button
-        return redirect('/biomed/topicmodeling/use/docsim', code=307)
-    elif "topic_sim" in request.form:  # 2nd submit button
-        return redirect('/biomed/topicmodeling/use/topicsim', code=307)
-    else:  # 3rd submit button
-        return redirect('/biomed/topicmodeling/active', code=307)
+    else:
+        from utils.embed_utils import get_doc_from_tag
+        # getting new document : priority #1 is D&D (NYI)
+        #                                 #2 is doc_tag
+        #                                 #3 is entered text
+        if "doc_tag" in request.form and request.form["doc_tag"] != '':
+            new_doc = get_doc_from_tag(request.form["doc_tag"])
+        else:
+            new_doc = request.form["text"].split()
+        session['document'] = new_doc
+        session['topn'] = request.form["topn"]
+
+        if "doc_sim" in request.form:  # 1st submit button
+            return redirect('/biomed/topicmodeling/use/docsim', code=307)
+        elif "topic_sim" in request.form:  # 2nd submit button
+            return redirect('/biomed/topicmodeling/use/topicsim', code=307)
+        else:  # 3rd submit button
+            return redirect('/biomed/topicmodeling/active', code=307)
 
 
 def topic_modeling_use_docsim():
     from utils.embed_utils import get_doc_from_tag
     from utils.web_utils import create_doc_display_areas
 
-    # getting new document : priority #1 is D&D (NYI)
-    #                                 #2 is doc_tag
-    #                                 #3 is entered text
-    if "doc_tag" in request.form and request.form["doc_tag"] != '':
-        new_doc = get_doc_from_tag(request.form["doc_tag"])
-    else:
-        new_doc = request.form["text"].split()
-    new_vector = doc_vec_model.infer_vector(new_doc)
+    new_vector = doc_vec_model.infer_vector(session['document'])
     similar_vectors = doc_vec_model.docvecs.most_similar(positive=[new_vector],
-                                                         topn=int(request.form["topn"]))
+                                                         topn=int(session['topn']))
 
     # `documents` is a dict such that each key corresponds to a vector and
     # each value is a document. Each key is a tuple of the form:
