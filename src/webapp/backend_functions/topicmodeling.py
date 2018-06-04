@@ -2,7 +2,7 @@ import sys; sys.path += ['../../']  # used to import modules from grandparent di
 import random
 
 from flask import request, session, redirect
-from utils.web_utils import build_page, corpus_selector, TEST_STRING, make_submit_group
+from utils.web_utils import build_page, corpus_selector, TEST_STRING, make_submit_group, make_btn_group
 from utils.embed_utils import create_doc_embeddings
 
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
@@ -51,13 +51,34 @@ def topic_modeling():
         dm_concat = int(request.form['dm_concat'])
 
         # creating doc2vec model
-        model = create_doc_embeddings(corporanames=[corpus],
-                                      dm=dm,
-                                      dbow_words=dbow_words,
-                                      dm_concat=dm_concat)
-        doc_vec_model = model
+        doc_vec_model = create_doc_embeddings(corporanames=[corpus],
+                                              dm=dm,
+                                              dbow_words=dbow_words,
+                                              dm_concat=dm_concat)
         # redirecting with code 307 to ensure redirect uses POST
         return redirect('/biomed/topicmodeling/topics', code=307)
+
+
+def topic_modeling_top_words():
+    from sklearn.cluster import KMeans
+    import numpy as np
+
+    # making a numpy array from the data
+    dv = np.array([doc_vec_model.docvecs[key] for key
+                   in doc_vec_model.docvecs.doctags.keys()])
+    # carrying out K-means to group documents by topic
+    km_model = KMeans(n_clusters=20, random_state=0).fit(dv)
+    # extracting topic vectors (centroids of the groups)
+    topics = km_model.cluster_centers_
+    # get top words from topic vectors
+    # express documents as a function of topics
+
+    # {key: dv[key] for key in dv.doctags.keys()}
+
+    button = make_btn_group(labels=["Proceed"],
+                            targets=["/biomed/topicmodeling/use"])
+    return build_page(title="Top words per topic",
+                      contents=button)
 
 
 def topic_modeling_active_learning():
@@ -151,6 +172,7 @@ def topic_modeling_use():
     # therefore only reachable if coming from /biomed/topicmodeling/use textarea form
     else:
         from utils.embed_utils import get_doc_from_tag
+        # saving form to session
         # getting new document : priority #1 is D&D (NYI)
         #                                 #2 is doc_tag
         #                                 #3 is entered text
@@ -191,4 +213,6 @@ def topic_modeling_use_docsim():
 
 
 def topic_modeling_use_topicsim():
+    """ This function creates the page for topic similarity modeling
+    """
     return topic_modeling_use_docsim()

@@ -67,10 +67,7 @@ def topic_modeling_top_words():
         Shows the top words for each topic and has a button to redirect
         the user towards the "use model" page.
     """
-    button = make_btn_group(labels=["Proceed"],
-                            targets=["/biomed/topicmodeling/use"])
-    return build_page(title="Top words per topic",
-                      contents=button)
+    return topicmodeling.topic_modeling_top_words()
 
 
 @app.route("/biomed/topicmodeling/active", methods=['POST'])
