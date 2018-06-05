@@ -6,6 +6,7 @@ from utils.web_utils import build_page, corpus_selector, TEST_STRING, make_submi
 from utils.embed_utils import create_doc_embeddings
 
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
+session['corpora'] = ["test1"]
 
 
 def topic_modeling():
@@ -43,6 +44,8 @@ def topic_modeling():
 
         # getting all form elements to send as arguments to doc2vec
         corpus = request.form['corpus']
+        # saving corpus in session for later
+        session['corpora'] = [corpus]
         dm = int(request.form['dm'])
         dbow_words = 0
         if ('dbow_words' in request.form and
@@ -62,6 +65,11 @@ def topic_modeling():
 def topic_modeling_top_words():
     from sklearn.cluster import KMeans
     import numpy as np
+    from misc_utils import get_vocab
+
+    # placeholder
+    def prob(word, topic):
+        return 0
 
     # making a numpy array from the data
     dv = np.array([doc_vec_model.docvecs[key] for key
@@ -70,7 +78,15 @@ def topic_modeling_top_words():
     km_model = KMeans(n_clusters=20, random_state=0).fit(dv)
     # extracting topic vectors (centroids of the groups)
     topics = km_model.cluster_centers_
+
     # get top words from topic vectors
+    #     get vocab
+    vocab = set()
+    for corpus in session['corpora']:
+        # vocab is the union of vocabs in corpora
+        vocab |= get_vocab(corpus)
+
+    {c: {prob(w, c): w for w in vocab} for c in topics}
     # express documents as a function of topics
 
     # {key: dv[key] for key in dv.doctags.keys()}
