@@ -2,7 +2,7 @@ import sys; sys.path += ['../../']  # used to import modules from grandparent di
 import random
 
 from flask import request, session, redirect
-from utils.web_utils import build_page, corpus_selector, TEST_STRING, make_submit_group, make_btn_group
+from utils.web_utils import build_page, corpus_selector, TEST_STRING, make_submit_group, make_btn_group, create_doc_display_areas
 from utils.embed_utils import create_doc_embeddings
 
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
@@ -154,14 +154,32 @@ def topic_modeling_top_words():
         prob_word_list.sort(reverse=True)
         del prob_word_list[5:]
 
+    # creating the dict to send to create_doc_display_areas
+    # Keys will be headers for "documents", so the keys will be "Topic 1" etc.
+    # Values are "documents", or strings that should be displayed
+    # we want to display something of the form:
+    #     Aardvark: 89%
+    #     Bumblebee: 80%
+    # etc. We get topics, words and percentages from `topic_word_probability`,
+    # and format words and percentages with a `join`ed list comprehension
+    # and get the number of the topic by simultaneously iterating over
+    # `range(len(topic_word_probability))` thanks to `zip()`.
+    topic_top_terms = {("Topic " + str(i) + ": "):
+                       '\n'.join([word + ": " + str(int(prob * 100)) + "%"
+                                  for prob, word in pw_list])
+                       for i, (_, pw_list) in
+                       zip(range(len(topic_word_probability)),
+                           topic_word_probability.items())}
+
+    contents = create_doc_display_areas(documents=topic_top_terms)\
+        + make_btn_group(labels=["Proceed"],
+                         targets=["/biomed/topicmodeling/use"])
+
     # express documents as a function of topics
+    # {tag: dv[tag] for tag in dv.doctags.keys()}
 
-    # {key: dv[key] for key in dv.doctags.keys()}
-
-    button = make_btn_group(labels=["Proceed"],
-                            targets=["/biomed/topicmodeling/use"])
     return build_page(title="Top words per topic",
-                      contents=button)
+                      contents=contents)
 
 
 def topic_modeling_active_learning():
