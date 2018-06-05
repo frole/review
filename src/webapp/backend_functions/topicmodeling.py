@@ -64,7 +64,6 @@ def topic_modeling():
 def topic_modeling_top_words():
     import math
     import numpy as np
-    from utils.misc_utils import get_vocab
     from sklearn.cluster import KMeans
 
     class ProbDenom:
@@ -86,7 +85,7 @@ def topic_modeling_top_words():
                 Returns:
                     - The value of the denominator
             """
-            if topic != self.topic:
+            if (topic != self.topic).any() or self.topic is None:
                 self.topic = topic
                 # doc_vec_model.wv.syn0: list of word vectors, access by index
                 self.value = (sum([math.exp(wv.dot(topic))
