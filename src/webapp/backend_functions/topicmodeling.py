@@ -6,7 +6,6 @@ from utils.web_utils import build_page, corpus_selector, TEST_STRING, make_submi
 from utils.embed_utils import create_doc_embeddings
 
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
-session['corpora'] = ["test1"]
 
 
 def topic_modeling():
