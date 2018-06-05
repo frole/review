@@ -64,7 +64,7 @@ def topic_modeling():
 def topic_modeling_top_words():
     import math
     import numpy as np
-    from misc_utils import get_vocab
+    from utils.misc_utils import get_vocab
     from sklearn.cluster import KMeans
 
     class ProbDenom:
@@ -124,10 +124,7 @@ def topic_modeling_top_words():
 
     # get top words from topic vectors
     #     get vocab
-    vocab = set()
-    for corpus in session['corpora']:
-        # vocab is the union of vocabs in corpora
-        vocab |= get_vocab(corpus)
+    vocab = set(doc_vec_model.wv.index2word)
 
     #     get probability for each topic to produce each word ; each topic
     #     is associated to a list that associates words and probabilities
