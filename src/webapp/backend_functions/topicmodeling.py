@@ -149,18 +149,18 @@ def topic_modeling_top_words():
         prob_word_list.sort(reverse=True)
         del prob_word_list[5:]
 
-    # creating the dict to send to create_doc_display_areas
-    # Keys will be headers for "documents", so the keys will be "Topic 1" etc.
-    # Values are "documents", or strings that should be displayed
-    # we want to display something of the form:
+    # Creating the list of tuples to send to create_doc_display_areas
+    # Each tuple is of the form (header, document, footer), the headers
+    # will be "Topic 1" etc., "documents" are strings of the form:
     #     Aardvark: 89%
     #     Bumblebee: 80%
-    # etc. We get topics, words and percentages from `topic_word_probability`,
+    # etc., and footers will be empty.
+    # We get topics, words and percentages from `topic_word_probability`,
     # and format words and percentages with a `join`ed list comprehension
     # and get the number of the topic by simultaneously iterating over
     # `range(len(topic_word_probability))` thanks to `zip()`.
     topic_top_terms = [(("Topic " + str(i) + ": "),  # head
-                        '<br />\n'.join([word + ": " + str(prob * 100)[:5] + "%"
+                        '<br />\n'.join([word + ": " + str(prob)[2:6] + "%"
                                          for prob, word in pw_list]),  # doc
                         '')  # footer
                        for i, (_, pw_list) in
@@ -203,7 +203,7 @@ def topic_modeling_active_learning():
         population=list(doc_vec_model.docvecs.doctags.keys()),
         k=5)
 
-    # getting documents from tags and putting in a dict
+    # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
     docs = [("Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1],
              get_doc_from_tag(tag),
@@ -296,10 +296,11 @@ def topic_modeling_use_docsim():
     similar_vectors = doc_vec_model.docvecs.most_similar(positive=[new_vector],
                                                          topn=int(session['topn']))
 
-    # `documents` is a dict such that each key corresponds to a vector and
-    # each value is a document. Each key is a tuple of the form:
-    # ([corpus, line], similarity) with [corpus, line] being extracted
-    # from the document tag returned by similar_vectors.
+    # `documents` is a list such that each element (a tuple) is of the form
+    # `header, document, footer`, where `header` and `footer` are to be
+    # displayed above and below the corresponding document respectively.
+    # Footers are left empty and headers are of the form
+    # "Corpus: <corpusname>, Doc #<docnumber>, Similarity: X%"
 
     documents = [('Corpus: ' + v[0].split("+")[0] +
                   ', Doc #' + v[0].split("+")[1] +

@@ -65,11 +65,12 @@ def create_doc_display_areas(documents, classes=[]):
     """ Creates an area in which to display text for each document passed
         as argument. Should be styled with CSS to be scrollable.
         Arguments:
-            - (dict<any:str>) documents: a dict with any type coercible
-                to str as keys to display above the text boxes and strings
-                for values to display in the text boxes
-            - (list<str>) classes: list of classes that the element
-                should have. Defaults to ["document-display-area"].
+            - (list<str, str, str>) documents: a list of tuples of the form
+                `(header, document, footer)`. The document will be displayed
+                in the text boxes, whilst header and footer will be above and
+                below the text boxes respectively.
+            - (list<str>) classes: list of classes that the element should
+                have.
     """
     text_area_outer_begin = '<div class="outer-document-display-area">'
     text_area_inner_begin = '<p class="inner-document-display-area ' +\
