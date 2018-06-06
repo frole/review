@@ -127,10 +127,10 @@ def topic_modeling_top_words():
 
     #     get probability for each topic to produce each word ; each topic
     #     is associated to a list that associates words and probabilities
-    topic_word_probability = {
+    topic_word_probability = [
         # You may be wondering why my topics are named 'c'. Well, ask
         # Hashimoto, I'm just following the convention in the article.
-        c: [
+        (c, [  # UNHASHABLE TYPE NDARRAY
             # this list contains tuples (prob, word).
             # Tuple comparison works as follows:
             # (a, b) < (c, d) <=> a < c or (a = c and b < d)
@@ -138,11 +138,11 @@ def topic_modeling_top_words():
             # which allows us to easily get the top terms per topic
             (prob(w, c), w)
             for w in vocab
-        ]  # one could use `.sorted` here rather than sort later but that is
+        ])  # one could use `.sorted` here rather than sort later but that is
         #    less memory-efficient as the list would need to be copied
         for c in topics
-    }
-    for _, prob_word_list in topic_word_probability.items():
+    ]
+    for _, prob_word_list in topic_word_probability:
         # As mentioned earlier, we are sorting in order to get the top terms
         # per document and we're doing it after the fact as opposed to doing
         # it at the creation of the list because this is more efficient.
@@ -160,11 +160,12 @@ def topic_modeling_top_words():
     # and get the number of the topic by simultaneously iterating over
     # `range(len(topic_word_probability))` thanks to `zip()`.
     topic_top_terms = {("Topic " + str(i) + ": "):
-                       '\n'.join([word + ": " + str(int(prob * 100)) + "%"
-                                  for prob, word in pw_list])
+                       ('\n'.join([word + ": " + str(int(prob * 100)) + "%"
+                                   for prob, word in pw_list]),
+                        '')  # footer
                        for i, (_, pw_list) in
                        zip(range(len(topic_word_probability)),
-                           topic_word_probability.items())}
+                           topic_word_probability)}
 
     contents = create_doc_display_areas(documents=topic_top_terms)\
         + make_btn_group(labels=["Proceed"],
