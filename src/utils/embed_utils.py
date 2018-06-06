@@ -275,3 +275,62 @@ def get_topic_word_prob(model):
         prob_word_list.sort(reverse=True)
         del prob_word_list[5:]
     return topic_word_probabilities
+
+
+def kv_index_to_doctag(keyedvectors, i_index):
+    """ This function reimplements keyedvectors.index_to_doctag because the
+        original implementation contains a bug (which has been fixed in later
+        versions of gensim but which I can't use)
+        Original docstring :
+            Return string key for given i_index, if available. Otherwise
+            return raw int doctag (same int).
+    """
+    candidate_offset = i_index - keyedvectors.max_rawint - 1
+    if 0 <= candidate_offset < len(keyedvectors.offset2doctag):
+        return keyedvectors.offset2doctag[candidate_offset]
+    else:
+        return i_index
+
+
+def get_docs_in_topic_space(model):
+    """ Computes and returns the document vectors expressed as a function
+        of the topics.
+        Arguments:
+            - (gensim.models.doc2vec.Doc2Vec) model: A doc2vec model
+        Returns:
+            - (2D ndarray) docs: Matrix with all the document vectors
+                expressed as a function of the topics.
+    """
+    import math
+    import numpy as np
+
+    topics = get_topic_vecs(model)
+    # modifying math.exp so that it can be applied over an array
+    exp = np.vectorize(math.exp)
+    # shortening function name
+    m = np.matrix
+    ndocs = len(model.docvecs)
+    # projecting documents onto topics
+    doc_topic_proj = model.docvecs.vectors_docs.dot(topics.T)
+
+    # this is a vectorized version of equation 3 in Hashimoto et al.'s
+    # "Topic detection using paragraph vectors to support
+    # active learning in systematic reviews", June 2016
+    # instead of computing each item independantly, we compute
+    # the entire matrix at once
+    docs_as_topics = (
+        np.apply_along_axis(func1d=exp,
+                            axis=0,
+                            arr=doc_topic_proj) /
+        m(np.ones(ndocs)).T.dot(m(exp(sum(doc_topic_proj))))
+    )
+
+    # here is a version that is vectorized to a lesser
+    # degree (still looping on columns)
+    # [exp(dv.dot(topics.T)) /
+    #  (sum(exp(dv.dot(topics.T))) *
+    #   np.ones(len(topics)))  # multiplying ones vector by a scalar returns a
+    #                          # vector with many times the same value
+    #  for dv in model.docvecs]
+
+    return docs_as_topics
