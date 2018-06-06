@@ -80,7 +80,7 @@ def create_doc_display_areas(documents, classes=[]):
     return [text_area_outer_begin + str(head) + '<br />' + '\n' +
             text_area_inner_begin + doc + text_area_inner_end +
             footer + text_area_outer_end
-            for head, (doc, footer) in documents.items()]
+            for (head, doc, footer) in documents]
 
 
 def create_radio_group(name, labels, values, checked=None, form_id=None):

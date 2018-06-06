@@ -159,13 +159,13 @@ def topic_modeling_top_words():
     # and format words and percentages with a `join`ed list comprehension
     # and get the number of the topic by simultaneously iterating over
     # `range(len(topic_word_probability))` thanks to `zip()`.
-    topic_top_terms = {("Topic " + str(i) + ": "):
-                       ('<br />\n'.join([word + ": " + str(prob * 100)[:5] + "%"
-                                         for prob, word in pw_list]),
+    topic_top_terms = [(("Topic " + str(i) + ": "),  # head
+                        '<br />\n'.join([word + ": " + str(prob * 100)[:5] + "%"
+                                         for prob, word in pw_list]),  # doc
                         '')  # footer
                        for i, (_, pw_list) in
                        zip(range(len(topic_word_probability)),
-                           topic_word_probability)}
+                           topic_word_probability)]
 
     contents = create_doc_display_areas(documents=topic_top_terms)\
         + make_btn_group(labels=["Proceed"],
@@ -205,15 +205,15 @@ def topic_modeling_active_learning():
 
     # getting documents from tags and putting in a dict
     # for `create_doc_display_areas`
-    docs = {"Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1]:
-            (get_doc_from_tag(tag),
-                create_radio_group(name="radio-" + tag,
-                                   labels=["Relevant", "Irrelevant"],
-                                   values=["relevant", "irrelevant"],
-                                   checked="relevant",
-                                   form_id="active-form")
+    docs = [("Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1],
+             get_doc_from_tag(tag),
+             create_radio_group(name="radio-" + tag,
+                                labels=["Relevant", "Irrelevant"],
+                                values=["relevant", "irrelevant"],
+                                checked="relevant",
+                                form_id="active-form")
              )
-            for tag in doc_tags}
+            for tag in doc_tags]
 
     # transforming into display areas
     doc_display_areas = create_doc_display_areas(documents=docs)
@@ -301,10 +301,12 @@ def topic_modeling_use_docsim():
     # ([corpus, line], similarity) with [corpus, line] being extracted
     # from the document tag returned by similar_vectors.
 
-    documents = {'Corpus: ' + v[0].split("+")[0] +
-                 ', Doc #' + v[0].split("+")[1] +
-                 ', Similarity: ' + str(v[1])[2:4] + "%":
-                 (get_doc_from_tag(v[0]), '') for v in similar_vectors}
+    documents = [('Corpus: ' + v[0].split("+")[0] +
+                  ', Doc #' + v[0].split("+")[1] +
+                  ', Similarity: ' + str(v[1])[2:4] + "%",  # head
+                  get_doc_from_tag(v[0]),  # doc
+                  '')  # footer
+                 for v in similar_vectors]
     return build_page(contents=create_doc_display_areas(documents),
                       backtarget="/biomed/topicmodeling/use")
 
