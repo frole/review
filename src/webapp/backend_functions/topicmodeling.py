@@ -62,7 +62,8 @@ def topic_modeling():
 
 
 def topic_modeling_top_words():
-    """
+    """ Generates the page that shows the top words for each topic
+        in the selected corpus at /biomed/topicmodeling/topics
     """
     from utils.embed_utils import get_topic_word_prob
     topic_word_probability = get_topic_word_prob(model=doc_vec_model)
@@ -97,6 +98,9 @@ def topic_modeling_top_words():
 
 
 def topic_modeling_active_learning():
+    """ Generates the page for human input for active learning
+        at /biomed/topicmodeling/active
+    """
     from utils.embed_utils import get_doc_from_tag
     from utils.web_utils import create_doc_display_areas, create_radio_group
 
