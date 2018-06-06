@@ -160,8 +160,8 @@ def topic_modeling_top_words():
     # and get the number of the topic by simultaneously iterating over
     # `range(len(topic_word_probability))` thanks to `zip()`.
     topic_top_terms = {("Topic " + str(i) + ": "):
-                       ('\n'.join([word + ": " + str(int(prob * 100)) + "%"
-                                   for prob, word in pw_list]),
+                       ('<br />\n'.join([word + ": " + str(prob * 100)[:5] + "%"
+                                         for prob, word in pw_list]),
                         '')  # footer
                        for i, (_, pw_list) in
                        zip(range(len(topic_word_probability)),
