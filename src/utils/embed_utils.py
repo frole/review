@@ -292,14 +292,18 @@ def kv_index_to_doctag(keyedvectors, i_index):
         return i_index
 
 
-def get_docs_in_topic_space(model):
+def get_docs_in_topic_space(model, extra_doc=None):
     """ Computes and returns the document vectors expressed as a function
         of the topics.
         Arguments:
             - (gensim.models.doc2vec.Doc2Vec) model: A doc2vec model
+            - (str) extra_doc: optional. If not None, will place the extra
+                document in the topic space and return it
         Returns:
             - (np.matrix) docs: Matrix with all the document vectors
                 expressed as a function of the topics.
+            - (np.ndarray) extra_vec: the vector for the `extra_doc` in the
+                topic space. If no `extra_doc` is given, will be None.
     """
     import math
     import numpy as np
@@ -325,6 +329,18 @@ def get_docs_in_topic_space(model):
         m(np.ones(ndocs)).T.dot(m(exp(sum(doc_topic_proj))))
     )
 
+    # This chunk of code is only for the case that we want to place an extra
+    # document in the topic space
+    new_vec_proj = None
+    if extra_doc is not None:
+        new_vector = model.infer_vector(extra_doc)
+        # placing extra document in topic space
+        new_vec_proj = (exp(new_vector.dot(topics.T)) /
+                        (sum(exp(new_vector.dot(topics.T))) *
+                         np.ones(len(topics))
+                         )
+                        )
+
     # here is a version that is vectorized to a lesser
     # degree (still looping on columns)
     # [exp(dv.dot(topics.T)) /
@@ -333,4 +349,4 @@ def get_docs_in_topic_space(model):
     #                          # vector with many times the same value
     #  for dv in model.docvecs]
 
-    return docs_as_topics
+    return docs_as_topics, new_vec_proj

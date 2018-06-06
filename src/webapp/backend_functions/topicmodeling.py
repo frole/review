@@ -90,9 +90,6 @@ def topic_modeling_top_words():
         + make_btn_group(labels=["Proceed"],
                          targets=["/biomed/topicmodeling/use"])
 
-    # express documents as a function of topics
-    # {tag: dv[tag] for tag in dv.doctags.keys()}
-
     return build_page(title="Top words per topic",
                       contents=contents)
 
@@ -237,4 +234,10 @@ def topic_modeling_use_docsim():
 def topic_modeling_use_topicsim():
     """ This function creates the page for topic similarity modeling
     """
+    # express documents as a function of topics
+    # {tag: dv[tag] for tag in dv.doctags.keys()}
+    from utils.embed_utils import get_docs_in_topic_space
+    docs, input_doc = get_docs_in_topic_space(doc_vec_model,
+                                              extra_doc=session['document'])
+
     return topic_modeling_use_docsim()
