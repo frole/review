@@ -298,7 +298,7 @@ def get_docs_in_topic_space(model):
         Arguments:
             - (gensim.models.doc2vec.Doc2Vec) model: A doc2vec model
         Returns:
-            - (2D ndarray) docs: Matrix with all the document vectors
+            - (np.matrix) docs: Matrix with all the document vectors
                 expressed as a function of the topics.
     """
     import math
