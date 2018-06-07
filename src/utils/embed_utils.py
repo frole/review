@@ -292,6 +292,14 @@ def kv_index_to_doctag(keyedvectors, i_index):
         return i_index
 
 
+def kv_indices_to_doctags(keyedvectors, indexlist):
+    """ Equivalent to kv_index_to_doctag but takes a list of indices as arg
+        and returns a generator on doctags
+    """
+    for i in indexlist:
+        yield kv_index_to_doctag(keyedvectors, i)
+
+
 def get_docs_in_topic_space(model, extra_doc=None):
     """ Computes and returns the document vectors expressed as a function
         of the topics.
