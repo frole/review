@@ -360,12 +360,47 @@ def get_docs_in_topic_space(model, extra_doc=None):
     return docs_as_topics, new_vec_proj
 
 
-def get_top_docs_by_topic_sim(n, model, extra_doc=None):
+def get_top_docs_by_topic_sim(n,
+                              model=None,
+                              docs_proj=None,
+                              extra_doc_str=None,
+                              xtra_doc_proj=None):
+    """ This function fetches the cosine similarity between a set of doc
+        vectors and an extra document, all projected in the topic space,
+        and returns the top `n` similarities in decreasing order as well
+        as the corresponding doc tags.
+        Either `model` AND `extra_doc_str` should be passed XOR
+        `docs_proj` AND `xtra_doc_proj` should be passed.
+        Arguments:
+            - (int) n: number of top documents to return
+            - (gensim.models.doc2vec.Doc2Vec) model: the document embeddings
+                model.
+            - (np.matrix) docs_proj: the document embeddings projected in the
+                topic space as returned by get_docs_in_topic_space.
+            - (str) extra_doc_str: the document to compare to the other
+                documents in the model.
+            - (numpy.ndarray) xtra_doc_proj: vector projected in the topic
+                space corresponding to extra_doc_str, as returned by
+                get_docs_in_topic_space.
+        Returns:
+            - (generator<str>) top_docs: doc tags of the top n docs most
+                similar to extra_doc_str.
+            - (list<float>) top_similarities: cosine similarity of the top n
+                docs most similar to extra_doc_str.
+    """
     import numpy as np
     from numpy import matrix as m
     from utils.embed_utils import get_docs_in_topic_space, kv_indices_to_doctags
 
-    docs, input_doc = get_docs_in_topic_space(model, extra_doc=extra_doc)
+    case1 = (model is not None and extra_doc_str is not None)
+    case2 = (docs_proj is not None and xtra_doc_proj is not None)
+    assert case1 or case2
+
+    if case2:
+        docs = docs_proj
+        input_doc = xtra_doc_proj
+    else:
+        docs, xtra_doc_proj = get_docs_in_topic_space(model, extra_doc=extra_doc_str)
 
     # we want the cosine similarity between each document and the input
     # document therefore, we want (u.v)/(|u|*|v|) for all u in docs and
