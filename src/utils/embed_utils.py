@@ -400,7 +400,7 @@ def get_top_docs_by_topic_sim(n,
         docs = docs_proj
         input_doc = xtra_doc_proj
     else:
-        docs, xtra_doc_proj = get_docs_in_topic_space(model, extra_doc=extra_doc_str)
+        docs, input_doc = get_docs_in_topic_space(model, extra_doc=extra_doc_str)
 
     # we want the cosine similarity between each document and the input
     # document therefore, we want (u.v)/(|u|*|v|) for all u in docs and
