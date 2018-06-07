@@ -100,7 +100,7 @@ def topic_modeling_active_learning():
     """
     # express documents as a function of topics
     # {tag: dv[tag] for tag in dv.doctags.keys()}
-    from utils.embed_utils import get_top_docs_by_topic_sim, get_doc_from_tag  # , kv_indices_to_doctags
+    from utils.embed_utils import get_top_docs_by_topic_sim, get_doc_from_tag, get_docs_in_topic_space  # , kv_indices_to_doctags
     from utils.web_utils import create_doc_display_areas, create_radio_group
 
     # placeholder : Further down the line, this method should be an
@@ -112,10 +112,13 @@ def topic_modeling_active_learning():
         # redirecting with code 307 to ensure redirect uses POST
         return redirect('/biomed/topicmodeling/use/docsim', code=307)
 
+    docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
+                                              extra_doc=session['document'])
+
     top_docs_tags, top_similarities =\
-        get_top_docs_by_topic_sim(n=int(session['topn']),
-                                  model=doc_vec_model,
-                                  extra_doc=session['document'])
+        get_top_docs_by_topic_sim(n=20,
+                                  docs_proj=docs,
+                                  xtra_doc_proj=input_doc)
     # docs is our space
     #
 
@@ -245,9 +248,10 @@ def topic_modeling_use_topicsim():
     """
     from utils.embed_utils import get_doc_from_tag, get_top_docs_by_topic_sim
 
-    top_docs, top_similarities = get_top_docs_by_topic_sim(n=int(session['topn']),
-                                                           model=doc_vec_model,
-                                                           extra_doc=session['document'])
+    top_docs, top_similarities =\
+        get_top_docs_by_topic_sim(n=int(session['topn']),
+                                  model=doc_vec_model,
+                                  extra_doc_str=session['document'])
 
     documents = [('Corpus: ' + d.split("+")[0] +
                   ', Doc #' + d.split("+")[1] +
