@@ -358,3 +358,35 @@ def get_docs_in_topic_space(model, extra_doc=None):
     #  for dv in model.docvecs]
 
     return docs_as_topics, new_vec_proj
+
+
+def get_top_docs_by_topic_sim(n, model, extra_doc=None):
+    import numpy as np
+    from numpy import matrix as m
+    from utils.embed_utils import get_docs_in_topic_space, kv_indices_to_doctags
+
+    docs, input_doc = get_docs_in_topic_space(model, extra_doc=extra_doc)
+
+    # we want the cosine similarity between each document and the input
+    # document therefore, we want (u.v)/(|u|*|v|) for all u in docs and
+    # v the input document
+    # therefore, we want:
+    #     - the dot product of all docs with input which should give us an
+    #         ndocsx1 vector with all the dot products, which is (X.v^t)
+    #         with X=docs, v the input doc, and ^t is transposition
+    #     - the product of the norms of all the vectors, for which we will
+    #       use np.linalg.norm, specifying the axis that yields an ndocsx1
+    #       vector in the case of `docs`
+    # for numpy vector representation reasons, we have to transpose one
+    # side of the division
+    doc_similarities = (docs.dot(m(input_doc).T) /
+                        (np.linalg.norm(input_doc) *
+                            m(np.linalg.norm(docs, axis=1))).T)
+    # argsort yields the original indices of the values in the sorted array
+    # [::-1] reverses the array
+    # [:n] slices off the top n values
+    top_indices = np.argsort(list(doc_similarities.flat))[::-1][:n]
+    top_docs = kv_indices_to_doctags(model.docvecs, top_indices)
+    top_similarities = [doc_similarities.flat[i] for i in top_indices]
+
+    return top_docs, top_similarities
