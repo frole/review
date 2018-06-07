@@ -260,12 +260,12 @@ def topic_modeling_use_topicsim():
     # argsort yields the original indices of the values in the sorted array
     # [::-1] reverses the array
     # [:n] slices off the top n values
-    top_indices = np.argsort(list(doc_similarities.flat))[::-1][:session['topn']]
+    top_indices = np.argsort(list(doc_similarities.flat))[::-1][:int(session['topn'])]
     top_similarities = [doc_similarities.flat[i] for i in top_indices]
     top_docs = kv_indices_to_doctags(doc_vec_model.docvecs, top_indices)
 
-    documents = [('Corpus: ' + d[0].split("+")[0] +
-                  ', Doc #' + d[0].split("+")[1] +
+    documents = [('Corpus: ' + d.split("+")[0] +
+                  ', Doc #' + d.split("+")[1] +
                   ', Similarity: ' + str(s)[2:4] + "%",  # head
                   get_doc_from_tag(d),  # doc
                   '')  # footer
