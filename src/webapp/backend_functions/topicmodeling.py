@@ -1,9 +1,9 @@
 import sys; sys.path += ['../../']  # used to import modules from grandparent directory
 import random
 
-from flask import request, session, redirect
-from utils.web_utils import build_page, corpus_selector, TEST_STRING, make_submit_group, make_btn_group, create_doc_display_areas
+from flask import redirect, request, session
 from utils.embed_utils import create_doc_embeddings
+from utils.web_utils import TEST_STRING, build_page, corpus_selector, create_doc_display_areas, make_btn_group, make_submit_group
 
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
 
@@ -98,7 +98,9 @@ def topic_modeling_active_learning():
     """ Generates the page for human input for active learning
         at /biomed/topicmodeling/active
     """
-    from utils.embed_utils import get_doc_from_tag
+    # express documents as a function of topics
+    # {tag: dv[tag] for tag in dv.doctags.keys()}
+    from utils.embed_utils import get_top_docs_by_topic_sim, get_doc_from_tag  # , kv_indices_to_doctags
     from utils.web_utils import create_doc_display_areas, create_radio_group
 
     # placeholder : Further down the line, this method should be an
@@ -109,6 +111,13 @@ def topic_modeling_active_learning():
     if "proceed" in request.form:
         # redirecting with code 307 to ensure redirect uses POST
         return redirect('/biomed/topicmodeling/use/docsim', code=307)
+
+    top_docs_tags, top_similarities =\
+        get_top_docs_by_topic_sim(n=int(session['topn']),
+                                  model=doc_vec_model,
+                                  extra_doc=session['document'])
+    # docs is our space
+    #
 
     # `doc_vec_model.docvecs.doctags` is a dict such that each entry is of the
     # form `tag: document_descriptor` where `tag` is a document identifier
@@ -234,35 +243,11 @@ def topic_modeling_use_docsim():
 def topic_modeling_use_topicsim():
     """ This function creates the page for topic similarity modeling
     """
-    # express documents as a function of topics
-    # {tag: dv[tag] for tag in dv.doctags.keys()}
-    import numpy as np
-    from numpy import matrix as m
-    from utils.embed_utils import get_docs_in_topic_space, kv_indices_to_doctags, get_doc_from_tag
+    from utils.embed_utils import get_doc_from_tag, get_top_docs_by_topic_sim
 
-    docs, input_doc = get_docs_in_topic_space(doc_vec_model,
-                                              extra_doc=session['document'])
-    # we want the cosine similarity between each document and the input
-    # document therefore, we want (u.v)/(|u|*|v|) for all u in docs and
-    # v the input document
-    # therefore, we want:
-    #     - the dot product of all docs with input which should give us an
-    #         ndocsx1 vector with all the dot products, which is (X.v^t)
-    #         with X=docs, v the input doc, and ^t is transposition
-    #     - the product of the norms of all the vectors, for which we will
-    #       use np.linalg.norm, specifying the axis that yields an ndocsx1
-    #       vector in the case of `docs`
-    # for numpy vector representation reasons, we have to transpose one
-    # side of the division
-    doc_similarities = (docs.dot(m(input_doc).T) /
-                        (np.linalg.norm(input_doc) *
-                            m(np.linalg.norm(docs, axis=1))).T)
-    # argsort yields the original indices of the values in the sorted array
-    # [::-1] reverses the array
-    # [:n] slices off the top n values
-    top_indices = np.argsort(list(doc_similarities.flat))[::-1][:int(session['topn'])]
-    top_similarities = [doc_similarities.flat[i] for i in top_indices]
-    top_docs = kv_indices_to_doctags(doc_vec_model.docvecs, top_indices)
+    top_docs, top_similarities = get_top_docs_by_topic_sim(n=int(session['topn']),
+                                                           model=doc_vec_model,
+                                                           extra_doc=session['document'])
 
     documents = [('Corpus: ' + d.split("+")[0] +
                   ', Doc #' + d.split("+")[1] +
@@ -270,5 +255,6 @@ def topic_modeling_use_topicsim():
                   get_doc_from_tag(d),  # doc
                   '')  # footer
                  for d, s in zip(top_docs, top_similarities)]
+
     return build_page(contents=create_doc_display_areas(documents),
                       backtarget="/biomed/topicmodeling/use")
