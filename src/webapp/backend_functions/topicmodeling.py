@@ -237,7 +237,24 @@ def topic_modeling_use_topicsim():
     # express documents as a function of topics
     # {tag: dv[tag] for tag in dv.doctags.keys()}
     from utils.embed_utils import get_docs_in_topic_space
+    import numpy as np
+
     docs, input_doc = get_docs_in_topic_space(doc_vec_model,
                                               extra_doc=session['document'])
+    # we want the similarity between each document and the input document
+    # therefore, we want (u.v)/(|u|*|v|) for all u in docs and v the input
+    # document
+    # therefore, we want:
+    #     - the dot product of all docs with input which should give us an
+    #         ndocsx1 vector with all the dot products, which is (X.v^t)
+    #         with X=docs, v the input doc, and ^t is transposition
+    #     - the product of the norms of all the vectors, for which we will
+    #       use np.linalg.norm, specifying the axis that yields an ndocsx1
+    #       vector in the case of `docs`
+    # for numpy vector representation reasons, we have to transpose one
+    # side of the division
+    doc_similarities = (docs.dot(np.matrix(input_doc).T) /
+                        (np.linalg.norm(input_doc) *
+                            np.linalg.norm(docs, axis=1)).T)
 
     return topic_modeling_use_docsim()
