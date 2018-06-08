@@ -391,6 +391,62 @@ def get_docs_in_topic_space(model, extra_doc=None):
     return docs_as_topics, new_vec_proj
 
 
+def get_doc_topic_sim(model=None,
+                      docs_proj=None,
+                      extra_doc_str=None,
+                      xtra_doc_proj=None):
+    """ This function returns the cosine similarity between a set of doc
+        vectors and an extra document, all projected in the topic space
+        Either `model` AND `extra_doc_str` should be passed XOR
+        `docs_proj` AND `xtra_doc_proj` should be passed.
+        Arguments:
+            - (gensim.models.doc2vec.Doc2Vec) model: the document embeddings
+                model.
+            - (np.matrix) docs_proj: the document embeddings projected in the
+                topic space as returned by get_docs_in_topic_space.
+            - (str) extra_doc_str: the document to compare to the other
+                documents in the model.
+            - (numpy.ndarray) xtra_doc_proj: vector projected in the topic
+                space corresponding to extra_doc_str, as returned by
+                get_docs_in_topic_space.
+        Returns:
+            - (generator<str>) top_docs: doc tags of the docs most
+                similar to extra_doc_str.
+            - (list<float>) top_similarities: cosine similarity of the
+                docs most similar to extra_doc_str.
+    """
+    import numpy as np
+    from numpy import matrix as m
+    from utils.embed_utils import get_docs_in_topic_space
+
+    case1 = (model is not None and extra_doc_str is not None)
+    case2 = (docs_proj is not None and xtra_doc_proj is not None)
+    assert case1 or case2
+
+    if case2:
+        docs = docs_proj
+        input_doc = xtra_doc_proj
+    else:
+        docs, input_doc = get_docs_in_topic_space(model, extra_doc=extra_doc_str)
+
+    # we want the cosine similarity between each document and the input
+    # document therefore, we want (u.v)/(|u|*|v|) for all u in docs and
+    # v the input document
+    # therefore, we want:
+    #     - the dot product of all docs with input which should give us an
+    #         ndocsx1 vector with all the dot products, which is (X.v^t)
+    #         with X=docs, v the input doc, and ^t is transposition
+    #     - the product of the norms of all the vectors, for which we will
+    #       use np.linalg.norm, specifying the axis that yields an ndocsx1
+    #       vector in the case of `docs`
+    # for numpy vector representation reasons, we have to transpose one
+    # side of the division
+    doc_similarities = (docs.dot(m(input_doc).T) /
+                        (np.linalg.norm(input_doc) *
+                            m(np.linalg.norm(docs, axis=1))).T)
+    return doc_similarities
+
+
 def get_top_docs_by_topic_sim(n,
                               model=None,
                               docs_proj=None,
@@ -419,35 +475,9 @@ def get_top_docs_by_topic_sim(n,
             - (list<float>) top_similarities: cosine similarity of the top n
                 docs most similar to extra_doc_str.
     """
+    from utils.embed_utils import kv_indices_to_doctags
     import numpy as np
-    from numpy import matrix as m
-    from utils.embed_utils import get_docs_in_topic_space, kv_indices_to_doctags
-
-    case1 = (model is not None and extra_doc_str is not None)
-    case2 = (docs_proj is not None and xtra_doc_proj is not None)
-    assert case1 or case2
-
-    if case2:
-        docs = docs_proj
-        input_doc = xtra_doc_proj
-    else:
-        docs, input_doc = get_docs_in_topic_space(model, extra_doc=extra_doc_str)
-
-    # we want the cosine similarity between each document and the input
-    # document therefore, we want (u.v)/(|u|*|v|) for all u in docs and
-    # v the input document
-    # therefore, we want:
-    #     - the dot product of all docs with input which should give us an
-    #         ndocsx1 vector with all the dot products, which is (X.v^t)
-    #         with X=docs, v the input doc, and ^t is transposition
-    #     - the product of the norms of all the vectors, for which we will
-    #       use np.linalg.norm, specifying the axis that yields an ndocsx1
-    #       vector in the case of `docs`
-    # for numpy vector representation reasons, we have to transpose one
-    # side of the division
-    doc_similarities = (docs.dot(m(input_doc).T) /
-                        (np.linalg.norm(input_doc) *
-                            m(np.linalg.norm(docs, axis=1))).T)
+    doc_similarities = get_doc_topic_sim()
     # argsort yields the original indices of the values in the sorted array
     # [::-1] reverses the array
     # [:n] slices off the top n values
@@ -456,3 +486,49 @@ def get_top_docs_by_topic_sim(n,
     top_similarities = [doc_similarities.flat[i] for i in top_indices]
 
     return top_docs, top_similarities
+
+
+def get_flop_docs_by_topic_sim(n,
+                               model=None,
+                               docs_proj=None,
+                               extra_doc_str=None,
+                               xtra_doc_proj=None):
+    """ This function is identical to `get_top_docs_by_topic_sim` but returns
+        the n most different documents.
+    """
+    from utils.embed_utils import kv_indices_to_doctags
+    import numpy as np
+    doc_similarities = get_doc_topic_sim()
+    # argsort yields the original indices of the values in the sorted array
+    # [:n] slices off the n first values
+    flop_indices = np.argsort(list(doc_similarities.flat))[:n]
+    flop_docs = kv_indices_to_doctags(model.docvecs, flop_indices)
+    flop_similarities = [doc_similarities.flat[i] for i in flop_indices]
+
+    return flop_docs, flop_similarities
+
+
+def get_top_and_flop_docs_top_sim(n,
+                                  m,
+                                  model=None,
+                                  docs_proj=None,
+                                  extra_doc_str=None,
+                                  xtra_doc_proj=None):
+    """ This function fuses `get_top_docs_by_topic_sim` and
+        `get_flop_docs_by_topic_sim`. The `n` argument corresponds to the
+        `n` argument of `get_top_docs_by_topic_sim` and the `m` argument
+         corresponds to the `n` argument of `get_flop_docs_by_topic_sim`.
+         Returns:
+            top_docs
+            flop_docs
+    """
+    from utils.embed_utils import kv_indices_to_doctags
+    import numpy as np
+    doc_similarities = get_doc_topic_sim()
+    sim = np.argsort(list(doc_similarities.flat))
+    flop_indices = sim[:m]
+    top_indices = sim[::-1][:n]
+    flop_docs = kv_indices_to_doctags(model.docvecs, flop_indices)
+    top_docs = kv_indices_to_doctags(model.docvecs, top_indices)
+
+    return top_docs, flop_docs
