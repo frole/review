@@ -65,7 +65,7 @@ def topic_modeling_top_words():
     """ Generates the page that shows the top words for each topic
         in the selected corpus at /biomed/topicmodeling/topics
     """
-    from utils.embed_utils import get_topic_word_prob
+    from utils.topic_utils import get_topic_word_prob
     topic_word_probability = get_topic_word_prob(model=doc_vec_model)
 
     # Creating the list of tuples to send to create_doc_display_areas
@@ -100,7 +100,9 @@ def topic_modeling_active_learning():
     """
     # express documents as a function of topics
     # {tag: dv[tag] for tag in dv.doctags.keys()}
-    from utils.embed_utils import get_top_docs_by_topic_sim, get_doc_from_tag, get_docs_in_topic_space  # , kv_indices_to_doctags
+    from sklearn.svm import LinearSVC
+    from pandas import DataFrame
+    from utils.miscutils import doctag2index
     from utils.web_utils import create_doc_display_areas, create_radio_group
 
     # placeholder : Further down the line, this method should be an
@@ -109,16 +111,25 @@ def topic_modeling_active_learning():
     # created embeddings in order to redirect the user to something
     # else while the computing is happening.
     if "proceed" in request.form:
+        from utils.embed_utils import get_doc_from_tag
+        from utils.topic_utils import get_top_and_flop_docs_top_sim, get_docs_in_topic_space
         # redirecting with code 307 to ensure redirect uses POST
         return redirect('/biomed/topicmodeling/use/docsim', code=307)
+    # In this case, we come from /topicmodeling/use and clicked on the
+    # "Active Learning" button
+    if "active" in request.form:
+        docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
+                                                  extra_doc=session['document'])
+        relevant_docs_tags, irrelevant_docs_tags =\
+            get_top_and_flop_docs_top_sim(n=10,
+                                          m=10,
+                                          docs_proj=docs,
+                                          xtra_doc_proj=input_doc)
 
-    docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
-                                              extra_doc=session['document'])
+        docs = DataFrame(docs)
+        session["docs_as_topics"] = docs
+        session["svm"] = LinearSVC()
 
-    top_docs_tags, top_similarities =\
-        get_top_docs_by_topic_sim(n=20,
-                                  docs_proj=docs,
-                                  xtra_doc_proj=input_doc)
     # docs is our space
     #
 
@@ -246,7 +257,8 @@ def topic_modeling_use_docsim():
 def topic_modeling_use_topicsim():
     """ This function creates the page for topic similarity modeling
     """
-    from utils.embed_utils import get_doc_from_tag, get_top_docs_by_topic_sim
+    from utils.embed_utils import get_doc_from_tag
+    from utils.topic_utils import get_top_docs_by_topic_sim
 
     top_docs, top_similarities =\
         get_top_docs_by_topic_sim(n=int(session['topn']),
