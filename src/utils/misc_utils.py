@@ -2,6 +2,31 @@
 import sys; sys.path += ['../']
 
 
+def dichotomy(ls, v, _i=0):
+    """ Dichotomy search, or the optimal search for an item's index
+        in a sorted list.
+        Arguments:
+            - (list) ls: the list in which to search, must be sorted for
+                this to work
+            - v: value to search for in the list, must be comparable to the
+                items in the list
+            - (int) _i: should not be used, is reserved for recursive purposes
+        Returns:
+            The index of v in ls if found, -1 if not. The value
+            returned is the first occurrence found, not guaranteed
+            to be the first in the list
+    """
+    if ls == [] or ls is None:
+        return -1
+    midvalue = len(ls) // 2
+    if v < ls[midvalue]:
+        return dichotomy(ls[:midvalue], v, _i)
+    elif v > ls[midvalue]:
+        return dichotomy(ls[midvalue:], v, _i + midvalue)
+    else:
+        return _i + midvalue
+
+
 def file_len(fname):
     """ returns the length of the file corresponding to the filename given as argument
         Code by SilentGhost on StackOverflow at https://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python
