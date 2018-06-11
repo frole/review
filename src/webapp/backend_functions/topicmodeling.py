@@ -106,7 +106,6 @@ def topic_modeling_active_learning():
     # {tag: dv[tag] for tag in dv.doctags.keys()}
     from sklearn.svm import LinearSVC
     from pandas import DataFrame
-    from utils.miscutils import doctag2index
     from utils.web_utils import create_doc_display_areas, create_radio_group
 
     # placeholder : Further down the line, this method should be an
@@ -136,18 +135,28 @@ def topic_modeling_active_learning():
         session["svm"] = LinearSVC()
         session["relevant"] = []
         session["irrelevant"] = []
-
-    # `doc_vec_model.docvecs.doctags` is a dict such that each entry is of the
-    # form `tag: document_descriptor` where `tag` is a document identifier
-    # (a "tag" for a TaggedDoc) and `document_descriptor` is a `Doctag` which
-    # aggregates some metadata on the corresponding document. Getting the keys
-    # of this dict returns a `dict_keys` object of all the tags in the model.
-    # This object is not subscriptable but can be coerced to a list. //======
-    # Of this list of tags, we are selecting 5 randomly as a placeholder
-    # until the active learning is actually implemented.
-    doc_tags = random.sample(
-        population=list(doc_vec_model.docvecs.doctags.keys()),
-        k=5)
+    # case where we're looping
+    else:
+        for elmt in request.form:
+            # if the element isa radio button
+            if "radio" in elmt:
+                # if the button was checked as "relevant"
+                if elmt == 'relevant':
+                    # elmt structure is "radio-<DOCTAG>"
+                    # elmt.split('-')[1] returns the corresponding doctag
+                    # which we add to either the list of relevant or
+                    # irrelevant documents as an index
+                    session["relevant"].append(
+                        doc_vec_model.doctag2index(
+                            elmt.split('-')[1]
+                        )
+                    )
+                else:
+                    session["irrelevant"].append(
+                        doc_vec_model.doctag2index(
+                            elmt.split('-')[1]
+                        )
+                    )
 
     # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
@@ -159,7 +168,17 @@ def topic_modeling_active_learning():
                                 checked="relevant",
                                 form_id="active-form")
              )
-            for tag in doc_tags]
+            for tag in pred_rlvnt_docs_tags]
+
+    docs += [("Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1],
+              get_doc_from_tag(tag),
+              create_radio_group(name="radio-" + tag,
+                                 labels=["Relevant", "Irrelevant"],
+                                 values=["relevant", "irrelevant"],
+                                 checked="irrelevant",
+                                 form_id="active-form")
+              )
+             for tag in pred_irlvnt_docs_tags]
 
     # transforming into display areas
     doc_display_areas = create_doc_display_areas(documents=docs)

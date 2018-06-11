@@ -313,6 +313,8 @@ def get_top_and_flop_docs_top_sim(n,
          Returns:
             top_docs
             flop_docs
+        Performance-wise, this function is better than individual calls to
+        get_top_docs_by_topic_sim and get_flop_docs_by_topic_sim.
     """
     from utils.embed_utils import kv_indices_to_doctags
     import numpy as np
