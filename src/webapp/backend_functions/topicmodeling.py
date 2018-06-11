@@ -131,6 +131,7 @@ def topic_modeling_active_learning():
                                           docs_proj=docs,
                                           xtra_doc_proj=input_doc)
 
+        # use docs.loc[r, c] to access values
         docs = DataFrame(docs)
         session["docs_as_topics"] = docs
         session["svm"] = LinearSVC()
@@ -158,7 +159,8 @@ def topic_modeling_active_learning():
                             elmt.split('-')[1]
                         )
                     )
-        X = [session["docs_as_topics"][i] for i in session["relevant"] + session["irrelevant"]]
+        X = [session["docs_as_topics"].loc[0, ] for i in
+             session["relevant"] + session["irrelevant"]]
         y = (list(ones(len(session["relevant"]), dtype=int)) +
              list(ones(len(session["irrelevant"]), dtype=int) * 2)
              )
