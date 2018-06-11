@@ -104,7 +104,7 @@ def topic_modeling_active_learning():
     """
     # express documents as a function of topics
     # {tag: dv[tag] for tag in dv.doctags.keys()}
-    from numpy import ones
+    from numpy import ones, argsort
     from pandas import DataFrame
     from sklearn.svm import LinearSVC
     from utils.web_utils import create_doc_display_areas, create_radio_group
@@ -115,7 +115,7 @@ def topic_modeling_active_learning():
     # created embeddings in order to redirect the user to something
     # else while the computing is happening.
     if "proceed" in request.form:
-        from utils.embed_utils import get_doc_from_tag
+        from utils.embed_utils import get_doc_from_tag, kv_indices_to_doctags
         from utils.topic_utils import get_top_and_flop_docs_top_sim, get_docs_in_topic_space
         # redirecting with code 307 to ensure redirect uses POST
         return redirect('/biomed/topicmodeling/use/docsim', code=307)
@@ -134,9 +134,10 @@ def topic_modeling_active_learning():
         # use docs.loc[r, c] to access values
         docs = DataFrame(docs)
         session["docs_as_topics"] = docs
-        session["svm"] = LinearSVC()
+        session["svm"] = LinearSVC(dual=False)
         session["relevant"] = []
         session["irrelevant"] = []
+        proportion_classified = 0
     # case where we're looping
     else:
         for elmt in request.form:
@@ -153,18 +154,45 @@ def topic_modeling_active_learning():
                             elmt.split('-')[1]
                         )
                     )
+                # if the button was checked as "irrelevant"
                 else:
                     session["irrelevant"].append(
                         doc_vec_model.doctag2index(
                             elmt.split('-')[1]
                         )
                     )
-        X = session["docs_as_topics"].loc[session["relevant"] +
-                                          session["irrelevant"], ]
+        # avoiding joining lists every time
+        classified = session["relevant"] + session["irrelevant"]
+
+        proportion_classified = len(classified) / session["docs_as_topics"].shape[0]
+        # all docs have been classified
+        if proportion_classified == 1:
+            # # # TODO: redirect towards next page # # #
+            pass
+
+        # # # TODO: figure out of order of `classified` is taken into account # # #
+        # # #  (if it's not, the relevant/irrelevant tags won't make sense)   # # #
+        X = session["docs_as_topics"].loc[classified, ]
         y = (list(ones(len(session["relevant"]), dtype=int)) +
              list(ones(len(session["irrelevant"]), dtype=int) * 2)
              )
         session["svm"].fit(X=X, y=y)
+
+        # Confidence scores for class "2" where > 0 means this class would
+        # be predicted. This is actually the distance to the separation
+        # hyperplane, i.e. the farther away a point is form the decision
+        # boundary, the more condfident we are.
+        prediction = session["svm"].decision_function(session["docs_as_topics"])
+
+        # indices of sorted prediction
+        idx_sorted_pred = argsort(prediction)
+        # removing documents previously classified
+        idx_sorted_pred = [index for index in idx_sorted_pred
+                           if index not in classified]
+
+        nsamples = min(len(idx_sorted_pred) / 2, 10)
+        pred_rlvnt_docs_tags = kv_indices_to_doctags(idx_sorted_pred[::-1][:nsamples])
+        pred_irlvnt_docs_tags = kv_indices_to_doctags(idx_sorted_pred[:nsamples])
 
     # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
