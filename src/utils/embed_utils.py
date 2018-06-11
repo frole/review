@@ -4,6 +4,52 @@
 import sys; sys.path += ['../']
 
 
+def create_doc_embeddings(corporanames,
+                          dm=1,
+                          dbow_words=0,
+                          dm_concat=0,
+                          dm_tag_count=1,
+                          trim_rule=None):
+    """ Creates Document embeddings (paragraph vectors) for the specified corpora
+        Arguments:
+            - (list<str>) corporanames: a list of corpus names for which
+                embeddings should be created
+            - (int {1,0}) dm: Defines the training algorithm. If dm=1,
+                'distributed memory' is used. Otherwise, distributed
+                bag of words.
+            - (int {1,0}) dbow_words:
+                    1 - trains word-vectors (skip-gram)
+                    0 - only trains doc-vectors (faster)
+            - (int {1,0}) dm_concat:
+                    1 - use concatenation of context vectors
+                    0 - use sum/average of context vectors (smaller model)
+            - (int) dm_tag_count: Expected constant number of document tags
+                per document, when using dm_concat mode; default is 1.
+            - (function) trim_rule: Vocabulary trimming rule. Can be None
+                (min_count will be used), or a callable that accepts parameters
+                (word, count, min_count) and returns gensim.utils.RULE_DISCARD,
+                gensim.utils.RULE_KEEP or gensim.utils.RULE_DEFAULT (min_count
+                will be used). The rule is not stored as part of the model.
+    """
+    from gensim.models.doc2vec import Doc2Vec
+    model = Doc2Vec(documents=None,
+                    dm=dm,
+                    dbow_words=dbow_words,
+                    dm_concat=dm_concat,
+                    dm_tag_count=dm_tag_count,
+                    trim_rule=trim_rule)
+    train_corpus = corpora_to_tagged_docs(corporanames)
+    model.build_vocab(train_corpus)
+    model.train(train_corpus,
+                total_examples=model.corpus_count,
+                epochs=model.epochs)
+    # for some reason the model doesn't include a way to get the index
+    # of an embedding by its tag so we're adding it here
+    model.doctag2index = {model.docvecs.index2entity[i]: i
+                          for i in range(len(model.docvecs.index2entity))}
+    return model
+
+
 def create_word_embeddings(corpusname,
                            save_to_file=False,
                            size=300,
@@ -129,48 +175,6 @@ def get_doc_from_tag(tag):
             return doc['raw']
 
 
-def create_doc_embeddings(corporanames,
-                          dm=1,
-                          dbow_words=0,
-                          dm_concat=0,
-                          dm_tag_count=1,
-                          trim_rule=None):
-    """ Creates Document embeddings (paragraph vectors) for the specified corpora
-        Arguments:
-            - (list<str>) corporanames: a list of corpus names for which
-                embeddings should be created
-            - (int {1,0}) dm: Defines the training algorithm. If dm=1,
-                'distributed memory' is used. Otherwise, distributed
-                bag of words.
-            - (int {1,0}) dbow_words:
-                    1 - trains word-vectors (skip-gram)
-                    0 - only trains doc-vectors (faster)
-            - (int {1,0}) dm_concat:
-                    1 - use concatenation of context vectors
-                    0 - use sum/average of context vectors (smaller model)
-            - (int) dm_tag_count: Expected constant number of document tags
-                per document, when using dm_concat mode; default is 1.
-            - (function) trim_rule: Vocabulary trimming rule. Can be None
-                (min_count will be used), or a callable that accepts parameters
-                (word, count, min_count) and returns gensim.utils.RULE_DISCARD,
-                gensim.utils.RULE_KEEP or gensim.utils.RULE_DEFAULT (min_count
-                will be used). The rule is not stored as part of the model.
-    """
-    from gensim.models.doc2vec import Doc2Vec
-    model = Doc2Vec(documents=None,
-                    dm=dm,
-                    dbow_words=dbow_words,
-                    dm_concat=dm_concat,
-                    dm_tag_count=dm_tag_count,
-                    trim_rule=trim_rule)
-    train_corpus = corpora_to_tagged_docs(corporanames)
-    model.build_vocab(train_corpus)
-    model.train(train_corpus,
-                total_examples=model.corpus_count,
-                epochs=model.epochs)
-    return model
-
-
 def kv_index_to_doctag(keyedvectors, i_index):
     """ This function reimplements keyedvectors.index_to_doctag because the
         original implementation contains a bug (which has been fixed in later
@@ -192,21 +196,3 @@ def kv_indices_to_doctags(keyedvectors, indexlist):
     """
     for i in indexlist:
         yield kv_index_to_doctag(keyedvectors, i)
-
-
-def doctag2index(model, tag):
-    """ Returns the index of the vector of the document of the specified tag
-        for the specified model. Assumes the tags are comparable and were
-        created in ascending order to achieve O(log(n)) complexity.
-        Arguments:
-            - (gensim.models.doc2vec.Doc2Vec) model: The relevant doc2vec
-                model
-            - (str) tag: the tag whose index is needed
-        Returns:
-            The index of the document corresponding to the specified tag
-    """
-    taglist = model.docvecs.index2entity
-    # I know taglist is sorted so a dichotomy search will be more effective
-    # than using the usual index() method.
-    from utils.misc_utils import dichotomy
-    return dichotomy(taglist, tag)
