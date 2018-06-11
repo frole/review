@@ -97,6 +97,10 @@ def topic_modeling_top_words():
 def topic_modeling_active_learning():
     """ Generates the page for human input for active learning
         at /biomed/topicmodeling/active
+        -> use predicted relevant and irrelevant tags to create page
+       |   update confirmed relevant and irrelevant tags with user form submission
+       |   svm.fit(X=docs, y=relevant)
+        -- predicted relevant = svm.predict()
     """
     # express documents as a function of topics
     # {tag: dv[tag] for tag in dv.doctags.keys()}
@@ -116,11 +120,12 @@ def topic_modeling_active_learning():
         # redirecting with code 307 to ensure redirect uses POST
         return redirect('/biomed/topicmodeling/use/docsim', code=307)
     # In this case, we come from /topicmodeling/use and clicked on the
-    # "Active Learning" button
+    # "Active Learning" button, so initialization phase
     if "active" in request.form:
         docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
                                                   extra_doc=session['document'])
-        relevant_docs_tags, irrelevant_docs_tags =\
+        # predicted relevant and irrelevant tags
+        pred_rlvnt_docs_tags, pred_irlvnt_docs_tags =\
             get_top_and_flop_docs_top_sim(n=10,
                                           m=10,
                                           docs_proj=docs,
@@ -129,9 +134,8 @@ def topic_modeling_active_learning():
         docs = DataFrame(docs)
         session["docs_as_topics"] = docs
         session["svm"] = LinearSVC()
-
-    # docs is our space
-    #
+        session["relevant"] = []
+        session["irrelevant"] = []
 
     # `doc_vec_model.docvecs.doctags` is a dict such that each entry is of the
     # form `tag: document_descriptor` where `tag` is a document identifier
