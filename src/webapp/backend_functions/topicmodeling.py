@@ -104,8 +104,9 @@ def topic_modeling_active_learning():
     """
     # express documents as a function of topics
     # {tag: dv[tag] for tag in dv.doctags.keys()}
-    from sklearn.svm import LinearSVC
+    from numpy import ones
     from pandas import DataFrame
+    from sklearn.svm import LinearSVC
     from utils.web_utils import create_doc_display_areas, create_radio_group
 
     # placeholder : Further down the line, this method should be an
@@ -138,7 +139,7 @@ def topic_modeling_active_learning():
     # case where we're looping
     else:
         for elmt in request.form:
-            # if the element isa radio button
+            # if the element is a radio button
             if "radio" in elmt:
                 # if the button was checked as "relevant"
                 if elmt == 'relevant':
@@ -157,6 +158,11 @@ def topic_modeling_active_learning():
                             elmt.split('-')[1]
                         )
                     )
+        X = [session["docs_as_topics"][i] for i in session["relevant"] + session["irrelevant"]]
+        y = (list(ones(len(session["relevant"]), dtype=int)) +
+             list(ones(len(session["irrelevant"]), dtype=int) * 2)
+             )
+        session["svm"].fit(X=X, y=y)
 
     # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
