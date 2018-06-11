@@ -159,8 +159,8 @@ def topic_modeling_active_learning():
                             elmt.split('-')[1]
                         )
                     )
-        X = [session["docs_as_topics"].loc[0, ] for i in
-             session["relevant"] + session["irrelevant"]]
+        X = session["docs_as_topics"].loc[session["relevant"] +
+                                          session["irrelevant"], ]
         y = (list(ones(len(session["relevant"]), dtype=int)) +
              list(ones(len(session["irrelevant"]), dtype=int) * 2)
              )
