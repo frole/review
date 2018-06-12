@@ -107,21 +107,17 @@ def topic_modeling_active_learning():
     from numpy import ones, argsort
     from pandas import DataFrame
     from sklearn.svm import LinearSVC
+    from utils.embed_utils import get_doc_from_tag, kv_indices_to_doctags
     from utils.web_utils import create_doc_display_areas, create_radio_group
 
-    # placeholder : Further down the line, this method should be an
-    # interface for active learning. Maybe make a page specifically
-    # for the doc embeddings and then one to access previously
-    # created embeddings in order to redirect the user to something
-    # else while the computing is happening.
+    # proceeding to next page
     if "proceed" in request.form:
-        from utils.embed_utils import get_doc_from_tag, kv_indices_to_doctags
-        from utils.topic_utils import get_top_and_flop_docs_top_sim, get_docs_in_topic_space
         # redirecting with code 307 to ensure redirect uses POST
-        return redirect('/biomed/topicmodeling/use/docsim', code=307)
+        return redirect('/biomed/topicmodeling/active/results', code=307)
     # In this case, we come from /topicmodeling/use and clicked on the
     # "Active Learning" button, so initialization phase
     if "active" in request.form:
+        from utils.topic_utils import get_top_and_flop_docs_top_sim, get_docs_in_topic_space
         docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
                                                   extra_doc=session['document'])
         # predicted relevant and irrelevant tags
@@ -167,8 +163,7 @@ def topic_modeling_active_learning():
         proportion_classified = len(classified) / session["docs_as_topics"].shape[0]
         # all docs have been classified
         if proportion_classified == 1:
-            # # # TODO: redirect towards next page # # #
-            pass
+            return redirect('/biomed/topicmodeling/active/results', code=307)
 
         X = session["docs_as_topics"].loc[classified, ]
         # The order of `classified` is preserved by `loc`, which means X is
@@ -238,6 +233,20 @@ def topic_modeling_active_learning():
                       contents=contents,
                       sidebar=sidebar,
                       backtarget="/biomed/topicmodeling")
+
+
+def topic_modeling_active_results():
+    from utils.embed_utils import get_doc_from_tag
+    from utils.embed_utils import kv_indices_to_doctags
+    relevant = kv_indices_to_doctags(session["relevant"])
+    documents = [('Corpus: ' + d.split("+")[0] +
+                  ', Doc #' + d.split("+")[1],  # head
+                  get_doc_from_tag(d),  # doc
+                  '')  # footer
+                 for d in relevant]
+
+    return build_page(contents=create_doc_display_areas(documents),
+                      backtarget="/biomed/topicmodeling/use")
 
 
 def topic_modeling_use():

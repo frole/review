@@ -75,6 +75,11 @@ def topic_modeling_active_learning():
     return topicmodeling.topic_modeling_active_learning()
 
 
+@app.route("/biomed/topicmodeling/active/results", methods=['POST'])
+def topic_modeling_active_results():
+    return topicmodeling.topic_modeling_active_results()
+
+
 @app.route("/biomed/topicmodeling/use", methods=['GET', 'POST'])
 def topic_modeling_use():
     return topicmodeling.topic_modeling_use()
