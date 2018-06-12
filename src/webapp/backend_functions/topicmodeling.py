@@ -1,11 +1,12 @@
 import sys; sys.path += ['../../']  # used to import modules from grandparent directory
-import random
 
 from flask import redirect, request, session
 from utils.embed_utils import create_doc_embeddings
 from utils.web_utils import TEST_STRING, build_page, corpus_selector, create_doc_display_areas, make_btn_group, make_submit_group
 
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
+userdata_topicspace = {}
+userdata_models = {}
 
 
 def topic_modeling():
@@ -103,8 +104,8 @@ def topic_modeling_active_learning():
        |   svm.fit(X=docs, y=relevant)
         -- predicted relevant = svm.predict()
     """
-    # express documents as a function of topics
-    # {tag: dv[tag] for tag in dv.doctags.keys()}
+    # from io import StringIO
+    import random
     from numpy import ones, argsort
     from pandas import DataFrame
     from sklearn.svm import LinearSVC
@@ -130,14 +131,23 @@ def topic_modeling_active_learning():
                                           xtra_doc_proj=input_doc)
 
         # use docs.loc[r, c] to access values
+
+        userid = random.randint(0, 65535)
+        session['user'] = userid
         docs = DataFrame(docs)
-        session["docs_as_topics"] = docs
-        session["svm"] = LinearSVC(dual=False)
+        userdata_topicspace[userid] = docs
+        userdata_models[userid] = LinearSVC(dual=False)
+        # # needs to be as CSV because session hashes data
+        # session["docs_as_topics"] = docs.to_csv()
+        # session["svm"] = LinearSVC(dual=False)
         session["relevant"] = []
         session["irrelevant"] = []
         proportion_classified = 0
     # case where we're looping
     else:
+        # loading data from CSV
+        # docs = DataFrame.from_csv(StringIO(session["docs_as_topics"]))
+        docs = userdata_topicspace[session['user']]
         for elmt in request.form:
             # if the element is a radio button
             if "radio" in elmt:
@@ -162,24 +172,24 @@ def topic_modeling_active_learning():
         # avoiding joining lists every time
         classified = session["relevant"] + session["irrelevant"]
 
-        proportion_classified = len(classified) / session["docs_as_topics"].shape[0]
+        proportion_classified = len(classified) / docs.shape[0]
         # all docs have been classified
         if proportion_classified == 1:
             return redirect('/biomed/topicmodeling/active/results', code=307)
 
-        X = session["docs_as_topics"].loc[classified, ]
+        X = docs.loc[classified, ]
         # The order of `classified` is preserved by `loc`, which means X is
         # split in relevant and irrelevant texts like `classifies` is
         y = (list(ones(len(session["relevant"]), dtype=int)) +
              list(ones(len(session["irrelevant"]), dtype=int) * 2)
              )
-        session["svm"].fit(X=X, y=y)
+        userdata_models[session['user']].fit(X=X, y=y)
 
         # Confidence scores for class "2" where > 0 means this class would
         # be predicted. This is actually the distance to the separation
         # hyperplane, i.e. the farther away a point is form the decision
         # boundary, the more condfident we are.
-        prediction = session["svm"].decision_function(session["docs_as_topics"])
+        prediction = userdata_models[session['user']].decision_function(docs)
 
         # indices of sorted prediction
         idx_sorted_pred = argsort(prediction)
