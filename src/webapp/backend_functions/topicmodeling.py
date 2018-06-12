@@ -5,6 +5,9 @@ from utils.embed_utils import create_doc_embeddings
 from utils.web_utils import TEST_STRING, build_page, corpus_selector, create_doc_display_areas, make_btn_group, make_submit_group
 
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
+
+# these dicts are used to save user-specific
+# things that can't be stored in sessions
 userdata_topicspace = {}
 userdata_models = {}
 
@@ -132,21 +135,21 @@ def topic_modeling_active_learning():
 
         # use docs.loc[r, c] to access values
 
+        # creating a user id and putting it in the session to be able to
+        # store things on a per-user basis even when not serializable
+        # like datasets and models
         userid = random.randint(0, 65535)
         session['user'] = userid
+
         docs = DataFrame(docs)
         userdata_topicspace[userid] = docs
         userdata_models[userid] = LinearSVC(dual=False)
-        # # needs to be as CSV because session hashes data
-        # session["docs_as_topics"] = docs.to_csv()
-        # session["svm"] = LinearSVC(dual=False)
+
         session["relevant"] = []
         session["irrelevant"] = []
         proportion_classified = 0
     # case where we're looping
     else:
-        # loading data from CSV
-        # docs = DataFrame.from_csv(StringIO(session["docs_as_topics"]))
         docs = userdata_topicspace[session['user']]
         for elmt in request.form:
             # if the element is a radio button
@@ -198,8 +201,12 @@ def topic_modeling_active_learning():
                            if index not in classified]
 
         nsamples = min(len(idx_sorted_pred) / 2, 10)
-        pred_rlvnt_docs_tags = kv_indices_to_doctags(idx_sorted_pred[::-1][:nsamples])
-        pred_irlvnt_docs_tags = kv_indices_to_doctags(idx_sorted_pred[:nsamples])
+        pred_rlvnt_docs_tags =\
+            kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                                  indexlist=idx_sorted_pred[::-1][:nsamples])
+        pred_irlvnt_docs_tags =\
+            kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                                  indexlist=idx_sorted_pred[:nsamples])
 
     # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
@@ -250,7 +257,8 @@ def topic_modeling_active_learning():
 def topic_modeling_active_results():
     from utils.embed_utils import get_doc_from_tag
     from utils.embed_utils import kv_indices_to_doctags
-    relevant = kv_indices_to_doctags(session["relevant"])
+    relevant = kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                                     indexlist=session["relevant"])
     documents = [('Corpus: ' + d.split("+")[0] +
                   ', Doc #' + d.split("+")[1],  # head
                   get_doc_from_tag(d),  # doc
