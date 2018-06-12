@@ -189,8 +189,9 @@ def get_doc_topic_sim(model=None,
                       xtra_doc_proj=None):
     """ This function returns the cosine similarity between a set of doc
         vectors and an extra document, all projected in the topic space
-        Either `model` AND `extra_doc_str` should be passed XOR
+        Either `model` AND `extra_doc_str` should be passed OR
         `docs_proj` AND `xtra_doc_proj` should be passed.
+        If all are passed, `model` & `extra_doc_str` will be ignored.
         Arguments:
             - (gensim.models.doc2vec.Doc2Vec) model: the document embeddings
                 model.
@@ -209,7 +210,6 @@ def get_doc_topic_sim(model=None,
     """
     import numpy as np
     from numpy import matrix as m
-    from utils.embed_utils import get_docs_in_topic_space
 
     case1 = (model is not None and extra_doc_str is not None)
     case2 = (docs_proj is not None and xtra_doc_proj is not None)
@@ -219,7 +219,8 @@ def get_doc_topic_sim(model=None,
         docs = docs_proj
         input_doc = xtra_doc_proj
     else:
-        docs, input_doc = get_docs_in_topic_space(model, extra_doc=extra_doc_str)
+        docs, input_doc = get_docs_in_topic_space(model,
+                                                  extra_doc=extra_doc_str)
 
     # we want the cosine similarity between each document and the input
     # document therefore, we want (u.v)/(|u|*|v|) for all u in docs and
@@ -248,8 +249,9 @@ def get_top_docs_by_topic_sim(n,
         vectors and an extra document, all projected in the topic space,
         and returns the top `n` similarities in decreasing order as well
         as the corresponding doc tags.
-        Either `model` AND `extra_doc_str` should be passed XOR
+        Either `model` AND `extra_doc_str` should be passed OR
         `docs_proj` AND `xtra_doc_proj` should be passed.
+        If all are passed, `model` & `extra_doc_str` will be ignored.
         Arguments:
             - (int) n: number of top documents to return
             - (gensim.models.doc2vec.Doc2Vec) model: the document embeddings
@@ -269,7 +271,10 @@ def get_top_docs_by_topic_sim(n,
     """
     from utils.embed_utils import kv_indices_to_doctags
     import numpy as np
-    doc_similarities = get_doc_topic_sim()
+    doc_similarities = get_doc_topic_sim(model,
+                                         docs_proj,
+                                         extra_doc_str,
+                                         xtra_doc_proj)
     # argsort yields the original indices of the values in the sorted array
     # [::-1] reverses the array
     # [:n] slices off the top n values
@@ -290,7 +295,10 @@ def get_flop_docs_by_topic_sim(n,
     """
     from utils.embed_utils import kv_indices_to_doctags
     import numpy as np
-    doc_similarities = get_doc_topic_sim()
+    doc_similarities = get_doc_topic_sim(model,
+                                         docs_proj,
+                                         extra_doc_str,
+                                         xtra_doc_proj)
     # argsort yields the original indices of the values in the sorted array
     # [:n] slices off the n first values
     flop_indices = np.argsort(list(doc_similarities.flat))[:n]
@@ -318,7 +326,10 @@ def get_top_and_flop_docs_top_sim(n,
     """
     from utils.embed_utils import kv_indices_to_doctags
     import numpy as np
-    doc_similarities = get_doc_topic_sim()
+    doc_similarities = get_doc_topic_sim(model,
+                                         docs_proj,
+                                         extra_doc_str,
+                                         xtra_doc_proj)
     sim = np.argsort(list(doc_similarities.flat))
     flop_indices = sim[:m]
     top_indices = sim[::-1][:n]
