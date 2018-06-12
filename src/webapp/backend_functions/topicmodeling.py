@@ -170,9 +170,9 @@ def topic_modeling_active_learning():
             # # # TODO: redirect towards next page # # #
             pass
 
-        # # # TODO: figure out of order of `classified` is taken into account # # #
-        # # #  (if it's not, the relevant/irrelevant tags won't make sense)   # # #
         X = session["docs_as_topics"].loc[classified, ]
+        # The order of `classified` is preserved by `loc`, which means X is
+        # split in relevant and irrelevant texts like `classifies` is
         y = (list(ones(len(session["relevant"]), dtype=int)) +
              list(ones(len(session["irrelevant"]), dtype=int) * 2)
              )
