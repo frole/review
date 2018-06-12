@@ -91,7 +91,8 @@ def topic_modeling_top_words():
                          targets=["/biomed/topicmodeling/use"])
 
     return build_page(title="Top words per topic",
-                      contents=contents)
+                      contents=contents,
+                      backtarget='/biomed/topicmodeling')
 
 
 def topic_modeling_active_learning():
