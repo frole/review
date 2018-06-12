@@ -125,6 +125,7 @@ def topic_modeling_active_learning():
         pred_rlvnt_docs_tags, pred_irlvnt_docs_tags =\
             get_top_and_flop_docs_top_sim(n=10,
                                           m=10,
+                                          model=doc_vec_model,
                                           docs_proj=docs,
                                           xtra_doc_proj=input_doc)
 

@@ -241,7 +241,7 @@ def get_doc_topic_sim(model=None,
 
 
 def get_top_docs_by_topic_sim(n,
-                              model=None,
+                              model,
                               docs_proj=None,
                               extra_doc_str=None,
                               xtra_doc_proj=None):
@@ -249,9 +249,11 @@ def get_top_docs_by_topic_sim(n,
         vectors and an extra document, all projected in the topic space,
         and returns the top `n` similarities in decreasing order as well
         as the corresponding doc tags.
-        Either `model` AND `extra_doc_str` should be passed OR
-        `docs_proj` AND `xtra_doc_proj` should be passed.
-        If all are passed, `model` & `extra_doc_str` will be ignored.
+        Either `extra_doc_str` or `xtra_doc_proj` should be passed.
+        If `xtra_doc_proj` is passed, `docs_proj` must be passed as well
+        or else `xtra_doc_proj` will be ignored.
+        Passing `docs_proj` and `xtra_doc_proj` is computationally cheaper.
+        If all are passed, `extra_doc_str` will be ignored.
         Arguments:
             - (int) n: number of top documents to return
             - (gensim.models.doc2vec.Doc2Vec) model: the document embeddings
@@ -286,7 +288,7 @@ def get_top_docs_by_topic_sim(n,
 
 
 def get_flop_docs_by_topic_sim(n,
-                               model=None,
+                               model,
                                docs_proj=None,
                                extra_doc_str=None,
                                xtra_doc_proj=None):
@@ -310,7 +312,7 @@ def get_flop_docs_by_topic_sim(n,
 
 def get_top_and_flop_docs_top_sim(n,
                                   m,
-                                  model=None,
+                                  model,
                                   docs_proj=None,
                                   extra_doc_str=None,
                                   xtra_doc_proj=None):
