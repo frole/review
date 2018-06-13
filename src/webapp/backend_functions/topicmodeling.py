@@ -107,7 +107,6 @@ def topic_modeling_active_learning():
        |   svm.fit(X=docs, y=relevant)
         -- predicted relevant = svm.predict()
     """
-    # from io import StringIO
     import random
     from numpy import ones, argsort
     from pandas import DataFrame
@@ -182,6 +181,13 @@ def topic_modeling_active_learning():
                             elmt.split('-')[1]
                         ]
                     )
+        # Marking session as modified or else changes are not recorded.
+        # (it only registers modifications a key is set or deleted)
+        # From the documentation:
+        #   Be advised that modifications on mutable structures are not
+        #   picked up automatically, in that situation you have to
+        #   explicitly set the [modified attribute] to True yourself.
+        session.modified = True
         relevant = session["relevant"]
         irrelevant = session["irrelevant"]
 
