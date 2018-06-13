@@ -165,7 +165,7 @@ def topic_modeling_active_learning():
             # if the element is a radio button
             if "radio" in elmt:
                 # if the button was checked as "relevant"
-                if elmt == 'relevant':
+                if request.form[elmt] == 'relevant':
                     # elmt structure is "radio-<DOCTAG>"
                     # elmt.split('-')[1] returns the corresponding doctag
                     # which we add to either the list of relevant or
