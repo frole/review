@@ -9,7 +9,7 @@ doc_vec_model = create_doc_embeddings(corporanames=["test1"])
 # these dicts are used to save user-specific
 # things that can't be stored in sessions
 userdata_topicspace = {}
-userdata_models = {}
+userdata_svm = {}
 
 
 def topic_modeling():
@@ -126,20 +126,12 @@ def topic_modeling_active_learning():
                                                   extra_doc=session['document'])
 
         # predicted relevant and irrelevant tags
-        # names may not reflect the fact that this is merely
-        # a prediction, but they make sense later
-        relevant, irrelevant =\
+        pred_rlvnt_docs_tags, pred_irlvnt_docs_tags =\
             get_top_and_flop_docs_top_sim(n=10,
                                           m=10,
                                           model=doc_vec_model,
                                           docs_proj=docs,
                                           xtra_doc_proj=input_doc)
-
-        # converting to indices because they are doctags
-        relevant = [doc_vec_model.doctag2index[i] for i in relevant]
-        irrelevant = [doc_vec_model.doctag2index[i] for i in irrelevant]
-
-        # use docs.loc[r, c] to access values
 
         # creating a user id and putting it in the session to be able to
         # store things on a per-user basis even when not serializable
@@ -147,9 +139,10 @@ def topic_modeling_active_learning():
         userid = random.randint(0, 65535)
         session['user'] = userid
 
+        # use docs.loc[r, c] to access values
         docs = DataFrame(docs)
         userdata_topicspace[userid] = docs
-        userdata_models[userid] = LinearSVC(dual=False)
+        userdata_svm[userid] = LinearSVC(dual=False)
 
         session["relevant"] = []
         session["irrelevant"] = []
@@ -188,50 +181,60 @@ def topic_modeling_active_learning():
         #   picked up automatically, in that situation you have to
         #   explicitly set the [modified attribute] to True yourself.
         session.modified = True
-        relevant = session["relevant"]
-        irrelevant = session["irrelevant"]
 
-    # avoiding joining lists every time
-    # `relevant` and `irrelevant` may be the prediction made by the topic
-    # space model if this is the first iteration or the documents classified
-    # manually if this is any other iteration
-    classified = relevant + irrelevant
+        # avoiding joining lists every time
+        # `relevant` and `irrelevant` may be the prediction made by the topic
+        # space model if this is the first iteration or the documents classified
+        # manually if this is any other iteration
+        classified = session["relevant"] + session["irrelevant"]
 
-    # the proportion of classified documents will be displayed and is
-    # used to determine if all documents have already been classified
-    proportion_classified = len(classified) / docs.shape[0]
-    # if all docs have been classified
-    if proportion_classified == 1:
-        return redirect('/biomed/topicmodeling/active/results', code=307)
+        # the proportion of classified documents will be displayed and is
+        # used to determine if all documents have already been classified
+        proportion_classified = len(classified) / docs.shape[0]
+        # if all docs have been classified
+        if proportion_classified == 1:
+            return redirect('/biomed/topicmodeling/active/results', code=307)
 
-    # # # TODO : we want to bootstrap X
-    X = docs.loc[classified, ]
-    # The order of `classified` is preserved by `loc`, which means X is
-    # split in relevant and irrelevant texts like `classifies` is
-    y = (list(ones(len(relevant), dtype=int)) +
-         list(ones(len(irrelevant), dtype=int) * 2)
-         )
-    userdata_models[session['user']].fit(X=X, y=y)
+        X = docs.loc[classified, ]
+        # The order of `classified` is preserved by `loc`, which means X is
+        # split in relevant and irrelevant texts like `classifies` is
+        y = (list(ones(len(session["relevant"]), dtype=int)) +
+             list(ones(len(session["irrelevant"]), dtype=int) * 2)
+             )
+        # fitting this user's SVM for the ongoing query
+        userdata_svm[session['user']].fit(X=X, y=y)
 
-    # Confidence scores for class "2" where > 0 means this class would
-    # be predicted. This is actually the distance to the separation
-    # hyperplane, i.e. the farther away a point is form the decision
-    # boundary, the more condfident we are.
-    prediction = userdata_models[session['user']].decision_function(docs)
+        # Confidence scores for class "2" where > 0 means this class would
+        # be predicted. This is actually the distance to the separation
+        # hyperplane, i.e. the farther away a point is form the decision
+        # boundary, the more condfident we are.
+        prediction = userdata_svm[session['user']].decision_function(docs)
 
-    # indices of sorted prediction
-    idx_sorted_pred = argsort(prediction)
-    # removing documents previously classified
-    idx_sorted_pred = [index for index in idx_sorted_pred
-                       if index not in classified]
+        # indices of sorted prediction
+        idx_sorted_pred = argsort(abs(prediction))[::-1]
+        # removing documents previously classified
+        idx_sorted_pred = [index for index in idx_sorted_pred
+                           if index not in classified]
 
-    nsamples = min(len(idx_sorted_pred) / 2, 10)
-    pred_rlvnt_docs_tags =\
-        kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                              indexlist=idx_sorted_pred[::-1][:nsamples])
-    pred_irlvnt_docs_tags =\
-        kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                              indexlist=idx_sorted_pred[:nsamples])
+        # keeping only the top 20 most certain or
+        # whatever's left if there are less than 20
+        nsamples = min(len(idx_sorted_pred), 20)
+        idx_sorted_pred = idx_sorted_pred[:nsamples]
+
+        # predicted relevant docs are the ones in idx_sorted_pred
+        # such that their distance to the decision frontier is
+        # positive ("right side" of the frontier)
+        pred_rlvnt_docs_tags =\
+            kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                                  indexlist=[i for i in idx_sorted_pred
+                                             if prediction[i] > 0])
+        # predicted irrelevant docs are the ones in idx_sorted_pred
+        # such that their distance to the decision frontier is
+        # negative ("wrong side" of the frontier)
+        pred_irlvnt_docs_tags =\
+            kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                                  indexlist=[i for i in idx_sorted_pred
+                                             if prediction[i] < 0])
 
     # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
