@@ -125,13 +125,20 @@ def topic_modeling_active_learning():
         from utils.topic_utils import get_top_and_flop_docs_top_sim, get_docs_in_topic_space
         docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
                                                   extra_doc=session['document'])
+
         # predicted relevant and irrelevant tags
-        pred_rlvnt_docs_tags, pred_irlvnt_docs_tags =\
+        # names may not reflect the fact that this is merely
+        # a prediction, but they make sense later
+        relevant, irrelevant =\
             get_top_and_flop_docs_top_sim(n=10,
                                           m=10,
                                           model=doc_vec_model,
                                           docs_proj=docs,
                                           xtra_doc_proj=input_doc)
+
+        # converting to indices because they are doctags
+        relevant = [doc_vec_model.doctag2index[i] for i in relevant]
+        irrelevant = [doc_vec_model.doctag2index[i] for i in irrelevant]
 
         # use docs.loc[r, c] to access values
 
@@ -148,9 +155,12 @@ def topic_modeling_active_learning():
         session["relevant"] = []
         session["irrelevant"] = []
         proportion_classified = 0
+
     # case where we're looping
     else:
+        # loading user-specific topic space
         docs = userdata_topicspace[session['user']]
+
         for elmt in request.form:
             # if the element is a radio button
             if "radio" in elmt:
@@ -161,52 +171,61 @@ def topic_modeling_active_learning():
                     # which we add to either the list of relevant or
                     # irrelevant documents as an index
                     session["relevant"].append(
-                        doc_vec_model.doctag2index(
+                        doc_vec_model.doctag2index[
                             elmt.split('-')[1]
-                        )
+                        ]
                     )
                 # if the button was checked as "irrelevant"
                 else:
                     session["irrelevant"].append(
-                        doc_vec_model.doctag2index(
+                        doc_vec_model.doctag2index[
                             elmt.split('-')[1]
-                        )
+                        ]
                     )
-        # avoiding joining lists every time
-        classified = session["relevant"] + session["irrelevant"]
+        relevant = session["relevant"]
+        irrelevant = session["irrelevant"]
 
-        proportion_classified = len(classified) / docs.shape[0]
-        # all docs have been classified
-        if proportion_classified == 1:
-            return redirect('/biomed/topicmodeling/active/results', code=307)
+    # avoiding joining lists every time
+    # `relevant` and `irrelevant` may be the prediction made by the topic
+    # space model if this is the first iteration or the documents classified
+    # manually if this is any other iteration
+    classified = relevant + irrelevant
 
-        X = docs.loc[classified, ]
-        # The order of `classified` is preserved by `loc`, which means X is
-        # split in relevant and irrelevant texts like `classifies` is
-        y = (list(ones(len(session["relevant"]), dtype=int)) +
-             list(ones(len(session["irrelevant"]), dtype=int) * 2)
-             )
-        userdata_models[session['user']].fit(X=X, y=y)
+    # the proportion of classified documents will be displayed and is
+    # used to determine if all documents have already been classified
+    proportion_classified = len(classified) / docs.shape[0]
+    # if all docs have been classified
+    if proportion_classified == 1:
+        return redirect('/biomed/topicmodeling/active/results', code=307)
 
-        # Confidence scores for class "2" where > 0 means this class would
-        # be predicted. This is actually the distance to the separation
-        # hyperplane, i.e. the farther away a point is form the decision
-        # boundary, the more condfident we are.
-        prediction = userdata_models[session['user']].decision_function(docs)
+    # # # TODO : we want to bootstrap X
+    X = docs.loc[classified, ]
+    # The order of `classified` is preserved by `loc`, which means X is
+    # split in relevant and irrelevant texts like `classifies` is
+    y = (list(ones(len(relevant), dtype=int)) +
+         list(ones(len(irrelevant), dtype=int) * 2)
+         )
+    userdata_models[session['user']].fit(X=X, y=y)
 
-        # indices of sorted prediction
-        idx_sorted_pred = argsort(prediction)
-        # removing documents previously classified
-        idx_sorted_pred = [index for index in idx_sorted_pred
-                           if index not in classified]
+    # Confidence scores for class "2" where > 0 means this class would
+    # be predicted. This is actually the distance to the separation
+    # hyperplane, i.e. the farther away a point is form the decision
+    # boundary, the more condfident we are.
+    prediction = userdata_models[session['user']].decision_function(docs)
 
-        nsamples = min(len(idx_sorted_pred) / 2, 10)
-        pred_rlvnt_docs_tags =\
-            kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                                  indexlist=idx_sorted_pred[::-1][:nsamples])
-        pred_irlvnt_docs_tags =\
-            kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                                  indexlist=idx_sorted_pred[:nsamples])
+    # indices of sorted prediction
+    idx_sorted_pred = argsort(prediction)
+    # removing documents previously classified
+    idx_sorted_pred = [index for index in idx_sorted_pred
+                       if index not in classified]
+
+    nsamples = min(len(idx_sorted_pred) / 2, 10)
+    pred_rlvnt_docs_tags =\
+        kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                              indexlist=idx_sorted_pred[::-1][:nsamples])
+    pred_irlvnt_docs_tags =\
+        kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                              indexlist=idx_sorted_pred[:nsamples])
 
     # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
@@ -255,6 +274,9 @@ def topic_modeling_active_learning():
 
 
 def topic_modeling_active_results():
+    """ TODO: figure out why this never displays anything
+        because the model doesn't predict anything before this is called
+    """
     from utils.embed_utils import get_doc_from_tag
     from utils.embed_utils import kv_indices_to_doctags
     relevant = kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
