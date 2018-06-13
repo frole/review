@@ -109,7 +109,7 @@ def create_radio_group(name, labels, values, checked=None, form_id=None):
 
     group = ['<span>']
     group += ['<input type="radio" name="' + name + '" value="' +
-              str(value) + form + chkstate + '> ' + label
+              str(value) + '"' + form + chkstate + '> ' + label
               for label, value, chkstate in
               zip(labels, values, checked_btns)]
     group += ['</span>']

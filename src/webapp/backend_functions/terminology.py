@@ -53,8 +53,10 @@ def terminology_tagged_text():
                 whitelist += [category]
         except Exception:  # do nothing if some category isn't listed
             pass
-    content = create_doc_display_areas({'Results of text tagging':
-                                        (tag_text.tag(text, whitelist), '')},
+    content = create_doc_display_areas([('Results of text tagging',  # head
+                                         tag_text.tag(text, whitelist),  # doc
+                                         '')  # footer
+                                        ],
                                        classes=["document-display-area",
                                                 "container"])
     return build_page(contents=content, backtarget="/biomed/terminology")
