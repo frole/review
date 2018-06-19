@@ -33,10 +33,12 @@ def topic_modeling():
                                   '<option value="1">Concatenation</option>',
                                   '</select>',
                                   '</label>']
+        epoch_selector = ['<label># epochs: <input type="text" size="3" form="topic-form" name="epochs"/></label>']
         options = (['<div class="checkbox-form">', ''] +
                    algorithm + separator +
                    train_wv + separator +
-                   context_representation + ['</div>'])
+                   context_representation +
+                   epoch_selector + ['</div>'])
         return build_page(title="Topic Modeling",
                           contents=selector,
                           sidebar=options,
@@ -47,6 +49,10 @@ def topic_modeling():
 
         # getting all form elements to send as arguments to doc2vec
         corpus = request.form['corpus']
+        try:
+            epochs = int(request.form['epochs'])
+        except ValueError:
+            epochs = 5
         # saving corpus in session for later
         session['corpora'] = [corpus]
         dm = int(request.form['dm'])
@@ -58,6 +64,7 @@ def topic_modeling():
 
         # creating doc2vec model
         doc_vec_model = create_doc_embeddings(corporanames=[corpus],
+                                              epochs=epochs,
                                               dm=dm,
                                               dbow_words=dbow_words,
                                               dm_concat=dm_concat)

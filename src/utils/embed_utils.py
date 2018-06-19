@@ -5,6 +5,7 @@ import sys; sys.path += ['../']
 
 
 def create_doc_embeddings(corporanames,
+                          epochs=5,
                           dm=1,
                           dbow_words=0,
                           dm_concat=0,
@@ -42,7 +43,7 @@ def create_doc_embeddings(corporanames,
     model.build_vocab(train_corpus)
     model.train(train_corpus,
                 total_examples=model.corpus_count,
-                epochs=model.epochs)
+                epochs=epochs)
     # for some reason the model doesn't include a way to get the index
     # of an embedding by its tag so we're adding it here
     model.doctag2index = {model.docvecs.index2entity[i]: i
