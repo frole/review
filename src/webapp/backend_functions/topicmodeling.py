@@ -295,8 +295,28 @@ def topic_modeling_active_results():
     """
     from utils.embed_utils import get_doc_from_tag
     from utils.embed_utils import kv_indices_to_doctags
+    from numpy import ones, argsort
+
+    # performing last prediction to add to relevant documents
+    docs = userdata_topicspace[session['user']]
+    classified = session["relevant"] + session["irrelevant"]
+    X = docs.loc[classified, ]
+    y = (list(ones(len(session["relevant"]), dtype=int)) +
+         list(ones(len(session["irrelevant"]), dtype=int) * 2)
+         )
+    userdata_svm[session['user']].fit(X=X, y=y)
+
+    prediction = userdata_svm[session['user']].decision_function(docs)
+    idx_sorted_pred = argsort(prediction)[::-1]
+    predrelevant =\
+        kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                              indexlist=[i for i in idx_sorted_pred
+                                         if prediction[i] > 0])
+
     relevant = kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                                     indexlist=session["relevant"])
+                                     indexlist=session["relevant"]
+                                     ) + predrelevant
+
     documents = [('Corpus: ' + d.split("+")[0] +
                   ', Doc #' + d.split("+")[1],  # head
                   get_doc_from_tag(d),  # doc
