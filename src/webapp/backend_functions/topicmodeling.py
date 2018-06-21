@@ -298,21 +298,28 @@ def topic_modeling_active_results():
     from numpy import ones, argsort
 
     # performing last prediction to add to relevant documents
+    # getting document embeddings matrix and previously classified documents
     docs = userdata_topicspace[session['user']]
     classified = session["relevant"] + session["irrelevant"]
+    # training classifier on known data
     X = docs.loc[classified, ]
     y = (list(ones(len(session["relevant"]), dtype=int)) +
          list(ones(len(session["irrelevant"]), dtype=int) * 2)
          )
     userdata_svm[session['user']].fit(X=X, y=y)
 
+    # making prediction
     prediction = userdata_svm[session['user']].decision_function(docs)
+    # getting row indices of predictions in decreasing order of confidence
     idx_sorted_pred = argsort(prediction)[::-1]
+    # getting tags of positive predictions
     predrelevant =\
         kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
                               indexlist=[i for i in idx_sorted_pred
                                          if prediction[i] > 0])
 
+    # getting tags of known relevant documents
+    # and concatenating with prediction
     relevant = kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
                                      indexlist=session["relevant"]
                                      ) + predrelevant
