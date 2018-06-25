@@ -293,6 +293,7 @@ def topic_modeling_active_results():
     """ TODO: figure out why this never displays anything
         because the model doesn't predict anything before this is called
     """
+    from itertools import chain
     from utils.embed_utils import get_doc_from_tag
     from utils.embed_utils import kv_indices_to_doctags
     from numpy import ones, argsort
@@ -319,10 +320,10 @@ def topic_modeling_active_results():
                                          if prediction[i] > 0])
 
     # getting tags of known relevant documents
-    # and concatenating with prediction
-    relevant = kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                                     indexlist=session["relevant"]
-                                     ) + predrelevant
+    # and concatenating with prediction (with `chain` since these are generators)
+    relevant = chain(kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                                           indexlist=session["relevant"]),
+                     predrelevant)
 
     documents = [('Corpus: ' + d.split("+")[0] +
                   ', Doc #' + d.split("+")[1],  # head
