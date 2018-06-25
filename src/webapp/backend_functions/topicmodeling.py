@@ -33,10 +33,12 @@ def topic_modeling():
                                   '<option value="1">Concatenation</option>',
                                   '</select>',
                                   '</label>']
+        epoch_selector = ['<label># epochs: <input type="text" size="3" form="topic-form" name="epochs"/></label>']
         options = (['<div class="checkbox-form">', ''] +
                    algorithm + separator +
                    train_wv + separator +
-                   context_representation + ['</div>'])
+                   context_representation +
+                   epoch_selector + ['</div>'])
         return build_page(title="Topic Modeling",
                           contents=selector,
                           sidebar=options,
@@ -47,6 +49,10 @@ def topic_modeling():
 
         # getting all form elements to send as arguments to doc2vec
         corpus = request.form['corpus']
+        try:
+            epochs = int(request.form['epochs'])
+        except ValueError:
+            epochs = 5
         # saving corpus in session for later
         session['corpora'] = [corpus]
         dm = int(request.form['dm'])
@@ -58,6 +64,7 @@ def topic_modeling():
 
         # creating doc2vec model
         doc_vec_model = create_doc_embeddings(corporanames=[corpus],
+                                              epochs=epochs,
                                               dm=dm,
                                               dbow_words=dbow_words,
                                               dm_concat=dm_concat)
@@ -286,10 +293,38 @@ def topic_modeling_active_results():
     """ TODO: figure out why this never displays anything
         because the model doesn't predict anything before this is called
     """
+    from itertools import chain
     from utils.embed_utils import get_doc_from_tag
     from utils.embed_utils import kv_indices_to_doctags
-    relevant = kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                                     indexlist=session["relevant"])
+    from numpy import ones, argsort
+
+    # performing last prediction to add to relevant documents
+    # getting document embeddings matrix and previously classified documents
+    docs = userdata_topicspace[session['user']]
+    classified = session["relevant"] + session["irrelevant"]
+    # training classifier on known data
+    X = docs.loc[classified, ]
+    y = (list(ones(len(session["relevant"]), dtype=int)) +
+         list(ones(len(session["irrelevant"]), dtype=int) * 2)
+         )
+    userdata_svm[session['user']].fit(X=X, y=y)
+
+    # making prediction
+    prediction = userdata_svm[session['user']].decision_function(docs)
+    # getting row indices of predictions in decreasing order of confidence
+    idx_sorted_pred = argsort(prediction)[::-1]
+    # getting tags of positive predictions
+    predrelevant =\
+        kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                              indexlist=[i for i in idx_sorted_pred
+                                         if prediction[i] > 0])
+
+    # getting tags of known relevant documents
+    # and concatenating with prediction (with `chain` since these are generators)
+    relevant = chain(kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                                           indexlist=session["relevant"]),
+                     predrelevant)
+
     documents = [('Corpus: ' + d.split("+")[0] +
                   ', Doc #' + d.split("+")[1],  # head
                   get_doc_from_tag(d),  # doc
