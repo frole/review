@@ -16,13 +16,14 @@ def get_topic_vecs(model, n_topics=20):
         Returns:
             - (numpy.ndarray) topics: The topic vectors of the model
     """
-    from sklearn.cluster import KMeans
+    from spherecluster import SphericalKMeans
+    skm = SphericalKMeans(n_clusters=n_topics)
     # getting the data as a numpy array
     dv = model.docvecs.vectors_docs
     # carrying out K-means to group documents by topic
-    km_model = KMeans(n_clusters=n_topics, random_state=0).fit(dv)
+    skm.fit(dv)
     # extracting topic vectors (centroids of the groups)
-    return km_model.cluster_centers_
+    return skm.cluster_centers_
 
 
 def get_topic_word_prob(model, cutoff=5):
