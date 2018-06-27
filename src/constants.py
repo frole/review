@@ -50,6 +50,18 @@ CLASSIC4_TXT_DIR = CLASSIC4_DATA_DIR + "text/"
 CLASSIC4_JSON_DIR = CLASSIC4_DATA_DIR + "json/"
 CLASSIC4_JSON_DS = CLASSIC4_JSON_DIR + "classic4.json"  # file conatining the dataset as JSON
 
+
+# Reuters
+REUTERS_DIR = cwd + "/reuters/"
+
+REUTERS_DATA_DIR = DATA_DIR + "reuters/"
+REUTERS_TXT_DIR = REUTERS_DATA_DIR + "txt/"
+REUTERS_TXT_FILE = REUTERS_TXT_DIR + "reuters.txt"
+REUTERS_LABELS = REUTERS_TXT_DIR + "reuters_labels.txt"
+REUTERS_JSON_DIR = REUTERS_DATA_DIR + "json/"
+REUTERS_JSON_DS = REUTERS_JSON_DIR + "reuters.json"  # file conatining the dataset as JSON
+
+
 # TEST
 TEST_DATA_DIR = DATA_DIR + "test/"
 TEST1_JSON_DS = TEST_DATA_DIR + "test1.json"
