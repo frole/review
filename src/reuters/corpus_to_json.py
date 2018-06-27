@@ -1,15 +1,31 @@
+"""This module creates a JSON file containing the reuters dataset"""
 import sys; sys.path += ['../']
-from sklearn.datasets import fetch_20newsgroups
+from constants import REUTERS_JSON_DS, REUTERS_TXT_FILE, REUTERS_LABELS
+import re
+import json
 
-ng = fetch_20newsgroups()
-"""
-et ensuite ng.data et ng.target
 
-et NG5, sous-ensemble de NG20 correspondant aux classes :
+def get_labels():
+    with open(REUTERS_LABELS) as labels:
+        for label in labels:
+            # strip() is necessary or else the labels
+            # contain a newline character
+            yield label.strip()
 
-             'rec.motorcycles',
-             'rec.sport.baseball',
-             'comp.graphics',
-             'sci.space',
-             'talk.politics.mideast'
-"""
+
+def corpus_to_json(outfilename, infilename):
+    labels = get_labels()
+
+    with open(outfilename, 'w') as outfile:
+        with open(infilename, 'r') as infile:
+            for doc in infile:
+                doc_label = next(labels)
+                raw_text = re.sub(" +", " ", doc).strip()
+
+                json_dict = {"raw": raw_text, "label": doc_label}
+                json.dump(json_dict, outfile)
+                print('', file=outfile)
+
+
+if __name__ == '__main__':
+    corpus_to_json(REUTERS_JSON_DS, REUTERS_TXT_FILE)
