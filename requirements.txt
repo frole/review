@@ -7,3 +7,6 @@ Flask==0.12.2
 gensim==3.4.0
 ahocorasick==0.9
 scikit_learn==0.19.1
+biopython==1.71
+python-Levenshtein==0.12.0
+spherecluster==0.1.5
