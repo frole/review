@@ -1,6 +1,6 @@
 """This script loads XML PMC articles and outputs a file containing stripped down JSON representations of the articles."""
 import sys; sys.path += ['../']
-from util import xml_to_json
+from utils.json_xml_utils import xml_to_json
 from constants import AUTISM_JSON_DIR, AUTISM_XML_DIR, AUTISM_JSON_DS, EMAIL
 from Bio import Entrez
 
