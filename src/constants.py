@@ -38,7 +38,6 @@ LEUKEMIA_JSON_DS = LEUKEMIA_JSON_DIR + "pmc_leukemia.json"
 
 
 # Classic
-CLASSIC_DIR = cwd + "/classic/"
 
 CLASSIC3_DATA_DIR = DATA_DIR + "classic3/"
 CLASSIC3_TXT_DIR = CLASSIC3_DATA_DIR + "text/"
@@ -52,7 +51,6 @@ CLASSIC4_JSON_DS = CLASSIC4_JSON_DIR + "classic4.json"  # file conatining the da
 
 
 # Reuters
-REUTERS_DIR = cwd + "/reuters/"
 
 REUTERS_DATA_DIR = DATA_DIR + "reuters/"
 REUTERS_TXT_DIR = REUTERS_DATA_DIR + "txt/"

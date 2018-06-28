@@ -27,6 +27,34 @@ def dichotomy(ls, v, _i=0):
         return _i + midvalue
 
 
+def count_titles_containing(terms=['asthma', 'leukemia', 'cardiac', 'autism'],
+                            corpus='asthma'):
+    """ Given a corpus and a set of terms, counts how many articles in the
+        corpus contain each term in their title.
+        Arguments:
+            - (list<str>) terms: a list of terms to search for
+            - (str) corpus: name of the corpus in which to look for terms
+        Returns:
+            - (dict): A dictionary with terms as keys and number of
+                    occurrences found as values, as well as an entry for
+                    the number of documents with no title in the corpus
+    """
+    import json
+
+    occurrences = {term: 0 for term in terms}
+    occurrences['no title'] = 0
+    with open(get_json_dataset_by_name(corpus)) as f:
+        for line in f:
+            article = json.loads(line)
+            try:
+                for term in terms:
+                    if article['title'].lower().find(term) != -1:
+                        occurrences[term] += 1
+            except AttributeError:
+                occurrences['no title'] += 1
+    return occurrences
+
+
 def file_len(fname):
     """ returns the length of the file corresponding to the filename given as argument
         Code by SilentGhost on StackOverflow at https://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python
