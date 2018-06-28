@@ -27,11 +27,8 @@ def tag(text, whitelist=tag_whitelist):
                                   if tags_that_start_at_same_index[j][2] <
                                   max([tag[2] for tag in tags_that_start_at_same_index])]
             except IndexError:
+                print("There has been an index error for tags_that_start_at_same_index")
                 print(tags_that_start_at_same_index)
-                print(tags_that_start_at_same_index[:])
-                print(tags_that_start_at_same_index[:][0])
-                print(tags_that_start_at_same_index[:][1])
-                print(tags_that_start_at_same_index[:][2])
             finally:
                 break
 
