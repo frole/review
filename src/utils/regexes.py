@@ -4,16 +4,16 @@
 # Garbage matcher
 # matches any string consisting of only |, <, >, +, *, ^, #, =, and hyphen chains.
 # this is to identify patterns like ++<===> ######## <---->^^ which serve no purpose but to clutter the text
-PAT_GARBAGE = r"((\||(--+)|<|>|\+|\*|\^|#|=)+)"
+PAT_GARBAGE = r"((\||(--+)|(__+)|<|>|\+|\*|\^|#|=|~)+|(\\|_|/){2,})"
 # layout hyphenation matcher, typically matches hyphens used as bullet points
 PAT_BULLET_HYPHENS = r"(\ -\ )"
 # e-mail address matcher
 # the theoretical character limit for top-level domains is 63 characters
-PAT_EMAIL = r"(([A-z]|[0-9]|\.|\+)+@([A-z]|[0-9]|\.|-)+\.[a-z]{2,63})"
+PAT_EMAIL = r"(([A-z]|[0-9]|\.|\+)+@([A-z]|[0-9]|\.|-)+\.[A-z]{2,63})"
 # phone number matcher
 PAT_PHONE = r"(\+?([0-9](-|\ )?){8,10}[0-9])"
 # URL matcher
-PAT_URL = r"(https?\://(www\.)?([A-z]|[0-9]|\.|-|%)+\.[a-z]{2,63}(/([A-z]|[0-9]|-|\.|_|#)+)*/?(\?([A-z]|[0-9]|\.|-|%|=|&|_|#|\:|\+)+)?)"
+PAT_URL = r"(https?\://(www\.)?([A-z]|[0-9]|\.|-|%)+\.[A-z]{2,63}(/([A-z]|[0-9]|-|\.|_|#)+)*/?(\?([A-z]|[0-9]|\.|-|%|=|&|_|#|\:|\+)+)?)"
 
 # https?\://(www\.)?                            # pretty self explanatory
 # ([A-z]|[0-9]|\.|-|%)+                         # adress
