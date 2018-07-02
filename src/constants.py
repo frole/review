@@ -60,6 +60,12 @@ REUTERS_JSON_DIR = REUTERS_DATA_DIR + "json/"
 REUTERS_JSON_DS = REUTERS_JSON_DIR + "reuters.json"  # file conatining the dataset as JSON
 
 
+# NG20
+NG20_DATA_DIR = DATA_DIR + "ng20/"
+NG20_JSON_DIR = NG20_DATA_DIR + "json/"
+NG20_JSON_DS = NG20_JSON_DIR + "ng20.json"  # file conatining the dataset as JSON
+
+
 # TEST
 TEST_DATA_DIR = DATA_DIR + "test/"
 TEST1_JSON_DS = TEST_DATA_DIR + "test1.json"
