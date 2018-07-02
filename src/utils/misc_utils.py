@@ -132,7 +132,8 @@ def get_json_dataset_by_name(name):
         similar to "~/Documents/textmining/data/asthma/json/pmc_asthma.json"
     """
     from constants import ASTHMA_JSON_DS, AUTISM_JSON_DS, LEUKEMIA_JSON_DS,\
-        CLASSIC3_JSON_DS, CLASSIC4_JSON_DS, TEST1_JSON_DS, TEST2_JSON_DS
+        CLASSIC3_JSON_DS, CLASSIC4_JSON_DS, TEST1_JSON_DS, TEST2_JSON_DS,\
+        NG20_JSON_DS
     corpus_name = name.lower().strip()
     name_to_dataset = {"asthma": ASTHMA_JSON_DS,
                        "autism": AUTISM_JSON_DS,
@@ -141,7 +142,9 @@ def get_json_dataset_by_name(name):
                        "classic4": CLASSIC4_JSON_DS,
                        "classic": CLASSIC4_JSON_DS,
                        "test1": TEST1_JSON_DS,
-                       "test2": TEST2_JSON_DS
+                       "test2": TEST2_JSON_DS,
+                       "ng20": NG20_JSON_DS,
+                       "20newsgroups": NG20_JSON_DS
                        }
     return name_to_dataset[corpus_name]
 
