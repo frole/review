@@ -37,12 +37,12 @@ with open(NG20_JSON_DS, 'w') as fout:
 
         article_dict = {"raw": raw_text_str,
                         "label": str(label)}
-        for in_key, out_key in [("ab", 'Summary'),
+        for out_key, in_key in [("ab", 'Summary'),
                                 ("title", 'Subject'),
                                 ("kwds", 'Keywords')]:
             try:
-                article_dict[out_key] = metadata_d[in_key]
-            except IndexError:
+                article_dict[out_key] = metadata[in_key]
+            except KeyError:
                 # case where a field didn't exist in the metadata
                 # typically "summary" and "Keywords"
                 article_dict[out_key] = ''
