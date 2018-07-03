@@ -90,18 +90,19 @@ def get_stopwords(datasetname):
     """ TODO : returns the stopwords associated to the dataset
                name passed as argument.
     """
-    if datasetname.lower() == "asthma":
+    datasetname = datasetname.lower()
+    if datasetname == "asthma":
         pass
-    elif datasetname.lower() == "classic3":
+    elif datasetname == "classic3":
         pass
-    elif datasetname.lower() == "classic4":
+    elif datasetname == "classic4":
         pass
-    elif datasetname.lower() == "reuters":
+    elif datasetname == "reuters":
         pass
-    elif datasetname.lower() == "20newsgroups"\
-            or datasetname.lower() == "ng20":
+    elif datasetname == "20newsgroups"\
+            or datasetname == "ng20":
         pass
-    elif datasetname.lower() == "ng5":
+    elif datasetname == "ng5":
         pass
 
 
