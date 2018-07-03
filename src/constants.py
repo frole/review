@@ -4,9 +4,6 @@ cwd = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = cwd + "/../data/"
 
 EMAIL = "guilhem.piat@etu.parisdescartes.fr"
-KNOWN_DATASETS = ["asthma", "autism", "leukemia", "classic3", "classic4",
-                  "20newsgroups", "ng5", "test1", "test2"]
-
 
 # Asthma
 ASTHMA_DATA_DIR = DATA_DIR + "asthma/"
@@ -64,6 +61,7 @@ REUTERS_JSON_DS = REUTERS_JSON_DIR + "reuters.json"  # file conatining the datas
 NG20_DATA_DIR = DATA_DIR + "ng20/"
 NG20_JSON_DIR = NG20_DATA_DIR + "json/"
 NG20_JSON_DS = NG20_JSON_DIR + "ng20.json"  # file conatining the dataset as JSON
+NG5_JSON_DS = NG20_JSON_DIR + "ng5.json"
 
 
 # TEST
@@ -95,3 +93,19 @@ PLOT_FILES_WRITE = [WEBAPP_DIR + plot for plot in PLOT_FILES_READ]
 
 # Open Targets
 TAG_CATEGORIES = ['ORGANISM', 'DISEASE', 'DISEASEALT', 'GENE', 'DRUG', 'ANATOMY', 'LOC', 'PHENOTYPE', 'HEALTHCARE', 'PROCESS', 'DIAGNOSTICS']
+
+
+KNOWN_DATASETS = ["asthma", "autism", "leukemia", "classic3", "classic4",
+                  "20newsgroups", "ng20", "ng5", "test1", "test2"]
+NAME_TO_DATASET = {"asthma": ASTHMA_JSON_DS,
+                   "autism": AUTISM_JSON_DS,
+                   "leukemia": LEUKEMIA_JSON_DS,
+                   "classic3": CLASSIC3_JSON_DS,
+                   "classic4": CLASSIC4_JSON_DS,
+                   "classic": CLASSIC4_JSON_DS,
+                   "test1": TEST1_JSON_DS,
+                   "test2": TEST2_JSON_DS,
+                   "ng20": NG20_JSON_DS,
+                   "20newsgroups": NG20_JSON_DS,
+                   "ng5": NG5_JSON_DS
+                   }
