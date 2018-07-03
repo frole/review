@@ -81,27 +81,6 @@ def get_raw_texts(datasetname):
     except KeyError:
         if datasetname.lower() == "reuters":
             pass
-
-        elif datasetname.lower() == "20newsgroups"\
-                or datasetname.lower() == "ng20":
-            from sklearn.datasets import fetch_20newsgroups
-            import re
-            newsgroups = fetch_20newsgroups(subset='all')
-            for email in newsgroups.data:
-                yield re.sub(" +", " ", email.replace('\n', ' ').strip())
-
-        elif datasetname.lower() == "ng5":
-            from sklearn.datasets import fetch_20newsgroups
-            import re
-            categories = ['rec.motorcycles',
-                          'rec.sport.baseball',
-                          'comp.graphics',
-                          'sci.space',
-                          'talk.politics.mideast']
-            newsgroups = fetch_20newsgroups(subset='all', categories=categories)
-            for email in newsgroups.data:
-                yield re.sub(" +", " ", email.replace('\n', ' ').strip())
-
     else:
         raise ValueError("No such known dataset. Known datasets are " +
                          ", ".join(KNOWN_DATASETS))
@@ -131,22 +110,9 @@ def get_json_dataset_by_name(name):
         For example, `get_json_dataset_by_name("asthma")` may return something
         similar to "~/Documents/textmining/data/asthma/json/pmc_asthma.json"
     """
-    from constants import ASTHMA_JSON_DS, AUTISM_JSON_DS, LEUKEMIA_JSON_DS,\
-        CLASSIC3_JSON_DS, CLASSIC4_JSON_DS, TEST1_JSON_DS, TEST2_JSON_DS,\
-        NG20_JSON_DS
+    from constants import NAME_TO_DATASET
     corpus_name = name.lower().strip()
-    name_to_dataset = {"asthma": ASTHMA_JSON_DS,
-                       "autism": AUTISM_JSON_DS,
-                       "leukemia": LEUKEMIA_JSON_DS,
-                       "classic3": CLASSIC3_JSON_DS,
-                       "classic4": CLASSIC4_JSON_DS,
-                       "classic": CLASSIC4_JSON_DS,
-                       "test1": TEST1_JSON_DS,
-                       "test2": TEST2_JSON_DS,
-                       "ng20": NG20_JSON_DS,
-                       "20newsgroups": NG20_JSON_DS
-                       }
-    return name_to_dataset[corpus_name]
+    return NAME_TO_DATASET[corpus_name]
 
 
 def get_w2v_model_by_name(name):
