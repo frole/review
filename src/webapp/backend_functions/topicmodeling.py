@@ -131,11 +131,12 @@ def topic_modeling_active_learning():
         from utils.topic_utils import get_top_and_flop_docs_top_sim, get_docs_in_topic_space
         docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
                                                   extra_doc=session['document'])
-
+        n_docs_per_page = int(request.form['n_docs_per_page'])
         # predicted relevant and irrelevant tags
         pred_rlvnt_docs_tags, pred_irlvnt_docs_tags =\
-            get_top_and_flop_docs_top_sim(n=10,
-                                          m=10,
+            get_top_and_flop_docs_top_sim(n=(n_docs_per_page // 2 +
+                                             n_docs_per_page % 2),
+                                          m=n_docs_per_page // 2,
                                           model=doc_vec_model,
                                           docs_proj=docs,
                                           xtra_doc_proj=input_doc)
@@ -153,6 +154,7 @@ def topic_modeling_active_learning():
 
         session["relevant"] = []
         session["irrelevant"] = []
+        session["n_docs_per_page"] = n_docs_per_page
         proportion_classified = 0
 
     # case where we're looping
@@ -223,9 +225,9 @@ def topic_modeling_active_learning():
         idx_sorted_pred = [index for index in idx_sorted_pred
                            if index not in classified]
 
-        # keeping only the top 20 most certain or
-        # whatever's left if there are less than 20
-        nsamples = min(len(idx_sorted_pred), 20)
+        # keeping only the top n_docs_per_page most certain or
+        # whatever's left if there are less than n_docs_per_page
+        nsamples = min(len(idx_sorted_pred), session["n_docs_per_page"])
         idx_sorted_pred = idx_sorted_pred[:nsamples]
 
         # predicted relevant docs are the ones in idx_sorted_pred
@@ -362,7 +364,8 @@ def topic_modeling_use():
                                             "active"],
                                      form_id="text-area-form")
     # options allow users to select the number of documents they want
-        options = ['<label>Number of documents to retrieve: <input type="text" name="topn" form="text-area-form" value="3" size="2"/></label>']
+        options = ['<label>Number of documents to retrieve: <input type="text" name="topn" form="text-area-form" value="3" size="2"/></label>',
+                   '<label>For active screening -- Number of documents per page to verify: <input type="text" name="n_docs_per_page" form="text-area-form" value="15" size="2"/></label>']
         return build_page(title="Topic Modeling",
                           contents=content,
                           sidebar=options,
