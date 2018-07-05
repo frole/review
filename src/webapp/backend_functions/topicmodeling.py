@@ -346,6 +346,8 @@ def topic_modeling_active_results():
 
 
 def topic_modeling_use():
+    from utils.web_utils import create_selector
+
     if "back" in request.form or "proceed" in request.form or request.method == 'GET':
         # content is a textarea in which one enters the text to infer
         content = ['<form method="POST" class="text-area-form" id="text-area-form">'
@@ -365,7 +367,10 @@ def topic_modeling_use():
                                      form_id="text-area-form")
     # options allow users to select the number of documents they want
         options = ['<label>Number of documents to retrieve: <input type="text" name="topn" form="text-area-form" value="3" size="2"/></label>',
-                   '<label>For active screening -- Number of documents per page to verify: <input type="text" name="n_docs_per_page" form="text-area-form" value="15" size="2"/></label>']
+                   '<label>===For active screening===</label>',
+                   '<label>Number of documents per page to verify: <input type="text" name="n_docs_per_page" form="text-area-form" value="15" size="2"/></label>'] +\
+            create_selector(entries=[("svm", "SVM")], name="classifier") +\
+            create_selector(entries=[("topic", "Topic Space")], name="vectorspace")
         return build_page(title="Topic Modeling",
                           contents=content,
                           sidebar=options,
