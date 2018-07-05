@@ -269,9 +269,17 @@ def topic_modeling_active_learning():
     doc_display_areas = create_doc_display_areas(documents=docs)
     # the contents of the webpage are the documents in their display areas
     # each followed by the radio buttons for each document
-    contents = doc_display_areas
+    contents = ["<p>These are the articles in the corpus that we are most\
+ confident you will find relevant or irrelevant. Please go through them and\
+ select for each one whether you find it relevant or not with the radio\
+ buttons. The option we expect to be the right one is already checked. Then,\
+ you may repeat this process with the next batch of documents in order to\
+ improve the screening process or you may let the documents you haven't\
+ verified be screened automatically and view the documents we predict you\
+ will find relevant.</p>"]
+    contents += doc_display_areas
     contents += ['<form method="POST" class="" id="active-form">']
-    contents += make_submit_group(labels=["Submit", "Submit & Proceed"],
+    contents += make_submit_group(labels=["Next batch", "Go to results"],
                                   names=["submit", "proceed"])
     contents += ['</form>']
 
