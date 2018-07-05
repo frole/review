@@ -30,28 +30,40 @@ def build_page(title='Title', contents=[], sidebar=[], backtarget="/"):
 
 
 def corpus_selector(classes, form_id=None):
-    """ returns a corpus selector form
-        Arguments:form_id
-            - (list<str>) classes: list of classes that the form hould have
+    """ returns a corpus selector form (dropdown menu)
+        Arguments:
+            - (list<str>) classes: list of classes that the form should have
             - (str) form_id: value of the id field of the form (optional)
     """
     formheader = '<form method="POST" class="' + ' '.join(classes) + '"'
     if form_id is not None:
         formheader += (' id="' + form_id + '"')
     formheader += '>'
-    options = [formheader,
-               '<select name="corpus">',
-               '<option value="test2">Test 2</option>',
-               '<option value="test1">Test 1</option>',
-               '<option value="asthma">Asthma</option>',
-               '<option value="leukemia">Leukemia</option>',
-               '<option value="autism">Autism</option>',
-               '<option value="classic3">Classic3</option>',
-               '<option value="classic4">Classic4</option>',
-               '</select>',
-               '<input type="submit" class="btn btn-dark submit" value="Submit"/>',
-               '</form>']
+    options = [formheader] +\
+        create_selector(entries=[("test2", "Test 2"),
+                                 ("test1", "Test 1"),
+                                 ("asthma", "Asthma"),
+                                 ("leukemia", "Leukemia"),
+                                 ("autism", "Autism"),
+                                 ("classic3", "Classic3"),
+                                 ("classic4", "Classic4")], name="corpus") +\
+        ['<input type="submit" class="btn btn-dark submit" value="Submit"/>',
+         '</form>']
     return options
+
+
+def create_selector(entries, name):
+    """ returns a selector form (dropdown menu)
+        Arguments:
+            - (list<(str, str)>) entries: list of the form [(value, Text)] for
+                each entry where `value` is the internal value for the entry
+                and `Text` is the on-screen text for the entry
+            - (str) name: name of the element for retrieving values
+    """
+    return ['<select name="' + name + '">'] +\
+        ['<option value="' + key + '">' + value + '</option>'
+         for key, value in entries] +\
+        ['</select>']
 
 
 def create_doc_display_areas(documents, classes=[]):
