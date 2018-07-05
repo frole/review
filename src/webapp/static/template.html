@@ -5,7 +5,7 @@
   <meta charset="utf-8">
 
   <title>
-    [TITLE]
+    {{ title }}
   </title>
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
@@ -19,7 +19,7 @@
 <body class="container-fluid">
   <div class="page">
     <div class="top-bar">
-      [BACKARROW]
+      {{ backarrow }}
       <div class="burger btn" onclick="document.getElementsByClassName('sidepanel')[0].classList.remove('init-collapse');document.getElementsByClassName('sidepanel')[0].classList.toggle('collapsed');document.getElementsByClassName('sidepanel')[0].classList.toggle('uncollapsed');this.classList.toggle('burger-x')">
         <div class="bar1"></div>
         <div class="bar2"></div>
@@ -28,11 +28,11 @@
     </div>
     <div class="main-view">  
       <div class="contents">
-        [CONTENTS]
+        {{contents}}
       
       </div>
       <div class="sidepanel collapsed init-collapse">
-        [SIDEPANEL]
+        {{ sidepanel }}
       </div>
     </div>
   </div>

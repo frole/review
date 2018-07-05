@@ -1,3 +1,4 @@
+from jinja2 import Template
 TEST_STRING = 'Manifesto on small airway involvement and management in asthma and chronic obstructive pulmonary disease: an Interasma (Global Asthma Association - GAA) and World Allergy Organization (WAO) document endorsed by Allergic Rhinitis and its Impact on Asthma (ARIA) and Global Allergy and Asthma European Network'
 
 
@@ -19,20 +20,12 @@ def build_page(title='Title', contents=[], sidebar=[], backtarget="/"):
     # this function simply iterates over lines in the template, replacing the
     # containing a marker with the intended content.
     backarrow = '<a class="btn btn-dark btn-back" href="' + backtarget + '">➡</a>'
-    with open('./static/template.html') as template:
-        page_lines = []
-        for line in template:
-            if "[CONTENTS]" in line:
-                page_lines += '\n'.join(contents)
-            elif "[SIDEPANEL]" in line:
-                page_lines += '\n'.join(sidebar)
-            elif "[TITLE]" in line:
-                page_lines += title
-            elif "[BACKARROW]" in line:
-                page_lines += backarrow
-            else:
-                page_lines += line
-    page = ''.join(page_lines)
+    with open('./static/template.html', 'r') as templatefile:
+        template = Template(templatefile.read())
+    page = template.render(contents='\n'.join(contents),
+                           sidepanel='\n'.join(sidebar),
+                           title=title,
+                           backarrow=backarrow)
     return page
 
 
