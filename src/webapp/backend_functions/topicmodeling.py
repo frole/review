@@ -8,8 +8,8 @@ doc_vec_model = create_doc_embeddings(corporanames=["test1"])
 
 # these dicts are used to save user-specific
 # things that can't be stored in sessions
-userdata_topicspace = {}
-userdata_svm = {}
+userdata_vectorspace = {}
+userdata_classif = {}
 
 
 def topic_modeling():
@@ -128,6 +128,8 @@ def topic_modeling_active_learning():
     # In this case, we come from /topicmodeling/use and clicked on the
     # "Active Learning" button, so initialization phase
     if "active" in request.form:
+        session["classifier"] = request.form["classifier"]
+        session["vectorspace"] = request.form["vectorspace"]
         from utils.topic_utils import get_top_and_flop_docs_top_sim, get_docs_in_topic_space
         docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
                                                   extra_doc=session['document'])
@@ -149,8 +151,8 @@ def topic_modeling_active_learning():
 
         # use docs.loc[r, c] to access values
         docs = DataFrame(docs)
-        userdata_topicspace[userid] = docs
-        userdata_svm[userid] = LinearSVC(dual=False)
+        userdata_vectorspace[userid] = docs
+        userdata_classif[userid] = LinearSVC(dual=False)
 
         session["relevant"] = []
         session["irrelevant"] = []
@@ -160,7 +162,7 @@ def topic_modeling_active_learning():
     # case where we're looping
     else:
         # loading user-specific topic space
-        docs = userdata_topicspace[session['user']]
+        docs = userdata_vectorspace[session['user']]
 
         for elmt in request.form:
             # if the element is a radio button
@@ -211,13 +213,13 @@ def topic_modeling_active_learning():
              list(ones(len(session["irrelevant"]), dtype=int) * 2)
              )
         # fitting this user's SVM for the ongoing query
-        userdata_svm[session['user']].fit(X=X, y=y)
+        userdata_classif[session['user']].fit(X=X, y=y)
 
         # Confidence scores for class "2" where > 0 means this class would
         # be predicted. This is actually the distance to the separation
         # hyperplane, i.e. the farther away a point is form the decision
         # boundary, the more condfident we are.
-        prediction = userdata_svm[session['user']].decision_function(docs)
+        prediction = userdata_classif[session['user']].decision_function(docs)
 
         # indices of sorted prediction
         idx_sorted_pred = argsort(abs(prediction))[::-1]
@@ -310,17 +312,17 @@ def topic_modeling_active_results():
 
     # performing last prediction to add to relevant documents
     # getting document embeddings matrix and previously classified documents
-    docs = userdata_topicspace[session['user']]
+    docs = userdata_vectorspace[session['user']]
     classified = session["relevant"] + session["irrelevant"]
     # training classifier on known data
     X = docs.loc[classified, ]
     y = (list(ones(len(session["relevant"]), dtype=int)) +
          list(ones(len(session["irrelevant"]), dtype=int) * 2)
          )
-    userdata_svm[session['user']].fit(X=X, y=y)
+    userdata_classif[session['user']].fit(X=X, y=y)
 
     # making prediction
-    prediction = userdata_svm[session['user']].decision_function(docs)
+    prediction = userdata_classif[session['user']].decision_function(docs)
     # getting row indices of predictions in decreasing order of confidence
     idx_sorted_pred = argsort(prediction)[::-1]
     # getting tags of positive predictions
