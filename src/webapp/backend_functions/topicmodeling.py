@@ -115,7 +115,8 @@ def topic_modeling_active_learning():
         -- predicted relevant = svm.predict()
     """
     import random
-    from numpy import ones, argsort
+    from numpy import ones, argsort, mat
+    from numpy.linalg import norm
     from pandas import DataFrame
     from sklearn.svm import LinearSVC
     from utils.embed_utils import get_doc_from_tag, kv_indices_to_doctags
@@ -130,19 +131,44 @@ def topic_modeling_active_learning():
     if "active" in request.form:
         session["classifier"] = request.form["classifier"]
         session["vectorspace"] = request.form["vectorspace"]
-        from utils.topic_utils import get_top_and_flop_docs_top_sim, get_docs_in_topic_space
-        docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
-                                                  extra_doc=session['document'])
         n_docs_per_page = int(request.form['n_docs_per_page'])
-        # predicted relevant and irrelevant tags
-        pred_rlvnt_docs_tags, pred_irlvnt_docs_tags =\
-            get_top_and_flop_docs_top_sim(n=(n_docs_per_page // 2 +
-                                             n_docs_per_page % 2),
-                                          m=n_docs_per_page // 2,
-                                          model=doc_vec_model,
-                                          docs_proj=docs,
-                                          xtra_doc_proj=input_doc)
+        # number of relevant and irrelevant documents to
+        # display at first iteration of active learning
+        n_rlvnt = n_docs_per_page // 2 + n_docs_per_page % 2
+        n_irlvnt = n_docs_per_page // 2
 
+        # ==== finding most and least relevant documents ==== #
+        # if user selected to represent documents in topic space
+        if session["vectorspace"] == "topic":
+            from utils.topic_utils import get_top_and_flop_docs_top_sim, get_docs_in_topic_space
+            docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
+                                                      extra_doc=session['document'])
+            # predicted relevant and irrelevant tags
+            pred_rlvnt_docs_tags, pred_irlvnt_docs_tags =\
+                get_top_and_flop_docs_top_sim(n=n_rlvnt,
+                                              m=n_irlvnt,
+                                              model=doc_vec_model,
+                                              docs_proj=docs,
+                                              xtra_doc_proj=input_doc)
+        # if user selected to represent documents in document space
+        elif session["vectorspace"] == "document":
+            docs = doc_vec_model.docvecs.vectors_docs
+            input_doc = doc_vec_model.infer_vector(session['document'])
+
+            # As a refresher: cosine similarity of u, v is (u/|u|).(v.|v|)
+            # so here we normalize all the doc vectors and then do dot product
+            docs_norm = docs / (mat([norm(d) for d in docs]).T)
+            input_doc_norm = input_doc / norm(input_doc)
+            # doing all dot products at once, we get a vector of
+            # all the cosine similarities, but argsorted
+            cos_sim = argsort(list(docs_norm.dot(input_doc_norm).T.flat))
+            pred_rlvnt_docs_tags = kv_indices_to_doctags(cos_sim[::-1][:n_rlvnt])
+            pred_irlvnt_docs_tags = kv_indices_to_doctags(cos_sim[:n_irlvnt])
+        else:
+            raise ValueError('vectorspace should be "topic" or "document" but is ' +
+                             session["vectorspace"])
+
+        # ==== Setting up session ==== #
         # creating a user id and putting it in the session to be able to
         # store things on a per-user basis even when not serializable
         # like datasets and models
