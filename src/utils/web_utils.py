@@ -59,6 +59,8 @@ def create_selector(entries, name, form=None):
                 each entry where `value` is the internal value for the entry
                 and `Text` is the on-screen text for the entry
             - (str) name: name of the element for retrieving values
+            - (str) form: optional, name of the form the selector should be
+                bound to. Should be specified if selector is outside of form.
     """
     if form is not None:
         form_attr = '" form="' + form
