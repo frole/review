@@ -52,7 +52,7 @@ def corpus_selector(classes, form_id=None):
     return options
 
 
-def create_selector(entries, name):
+def create_selector(entries, name, form=None):
     """ returns a selector form (dropdown menu)
         Arguments:
             - (list<(str, str)>) entries: list of the form [(value, Text)] for
@@ -60,7 +60,11 @@ def create_selector(entries, name):
                 and `Text` is the on-screen text for the entry
             - (str) name: name of the element for retrieving values
     """
-    return ['<select name="' + name + '">'] +\
+    if form is not None:
+        form_attr = '" form="' + form
+    else:
+        form_attr = ""
+    return ['<select name="' + name + form_attr + '">'] +\
         ['<option value="' + key + '">' + value + '</option>'
          for key, value in entries] +\
         ['</select>']
