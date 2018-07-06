@@ -33,12 +33,12 @@ def topic_modeling():
                                   '<option value="1">Concatenation</option>',
                                   '</select>',
                                   '</label>']
-        epoch_selector = ['<label># epochs: <input type="text" size="3" form="topic-form" name="epochs"/></label>']
+        epoch_field = ['<label># epochs: <input type="text" size="3" form="topic-form" name="epochs"/></label>']
         options = (['<div class="checkbox-form">', ''] +
                    algorithm + separator +
                    train_wv + separator +
                    context_representation +
-                   epoch_selector + ['</div>'])
+                   epoch_field + ['</div>'])
         return build_page(title="Topic Modeling",
                           contents=selector,
                           sidebar=options,
@@ -162,8 +162,12 @@ def topic_modeling_active_learning():
             # doing all dot products at once, we get a vector of
             # all the cosine similarities, but argsorted
             cos_sim = argsort(list(docs_norm.dot(input_doc_norm).T.flat))
-            pred_rlvnt_docs_tags = kv_indices_to_doctags(cos_sim[::-1][:n_rlvnt])
-            pred_irlvnt_docs_tags = kv_indices_to_doctags(cos_sim[:n_irlvnt])
+            pred_rlvnt_docs_tags =\
+                kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                                      indexlist=cos_sim[::-1][:n_rlvnt])
+            pred_irlvnt_docs_tags =\
+                kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
+                                      indexlist=cos_sim[:n_irlvnt])
         else:
             raise ValueError('vectorspace should be "topic" or "document" but is ' +
                              session["vectorspace"])
@@ -397,8 +401,13 @@ def topic_modeling_use():
         options = ['<label>Number of documents to retrieve: <input type="text" name="topn" form="text-area-form" value="3" size="2"/></label>',
                    '<label>===For active screening===</label>',
                    '<label>Number of documents per page to verify: <input type="text" name="n_docs_per_page" form="text-area-form" value="15" size="2"/></label>'] +\
-            create_selector(entries=[("svm", "SVM")], name="classifier") +\
-            create_selector(entries=[("topic", "Topic Space")], name="vectorspace")
+            create_selector(entries=[("svm", "SVM")],
+                            name="classifier",
+                            form="text-area-form") +\
+            create_selector(entries=[("topic", "Topic Space"),
+                                     ("document", "Document Space")],
+                            name="vectorspace",
+                            form="text-area-form")
         return build_page(title="Topic Modeling",
                           contents=content,
                           sidebar=options,
