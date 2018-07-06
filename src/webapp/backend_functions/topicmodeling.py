@@ -2,7 +2,7 @@ import sys; sys.path += ['../../']  # used to import modules from grandparent di
 
 from flask import redirect, request, session
 from utils.embed_utils import create_doc_embeddings
-from utils.web_utils import TEST_STRING, build_page, corpus_selector, create_doc_display_areas, make_btn_group, make_submit_group
+from utils.web_utils import TEST_STRING, build_page, create_doc_display_areas, make_btn_group, make_submit_group
 
 doc_vec_model = create_doc_embeddings(corporanames=["test1"])
 
@@ -15,24 +15,26 @@ userdata_classif = {}
 def topic_modeling():
     """ Returns the webpage at <host URL>/biomed/topicmodeling
     """
+    from utils.web_utils import corpus_selector, create_selector
+
     if request.method == 'GET':
         selector = corpus_selector(classes=["topic-form"], form_id="topic-form")
         # selector for the algorithm DM vs. DBOW (dm argument for doc2vec)
         separator = ['<div style="width:100%;height:15px;"></div>']
-        algorithm = ['<label>Algorithm:',
-                     '<select name="dm" form="topic-form">',
-                     '<option value="1">Distributed Memory</option>',
-                     '<option value="0">Distributed Bag of Words</option>',
-                     '</select>',
-                     '</label>']
+        algorithm = ['<label>Algorithm:'] +\
+            create_selector(entries=[("1", "Distributed Memory"),
+                                     ("0", "Distributed Bag of Words")],
+                            name="dm",
+                            form="topic-form") +\
+            ['</label>']
         # checkbox for whether or not to train word vectors (dbow_words)
         train_wv = ['<label><input type="checkbox" form="topic-form" name="dbow_words"/> Train word vectors?</label>']
-        context_representation = ['<label>Context vector representation:',
-                                  '<select name="dm_concat" form="topic-form">',
-                                  '<option value="0">Sum / average (faster)</option>',
-                                  '<option value="1">Concatenation</option>',
-                                  '</select>',
-                                  '</label>']
+        context_representation = ['<label>Context vector representation:'] +\
+            create_selector(entries=[("0", "Sum / average (faster)"),
+                                     ("1", "Concatenation")],
+                            name="dm_concat",
+                            form="topic-form") +\
+            ['</label>']
         epoch_field = ['<label># epochs: <input type="text" size="3" form="topic-form" name="epochs"/></label>']
         options = (['<div class="checkbox-form">', ''] +
                    algorithm + separator +
