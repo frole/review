@@ -209,8 +209,8 @@ def get_doc_topic_sim(model=None,
             - (list<float>) top_similarities: cosine similarity of the
                 docs most similar to extra_doc_str.
     """
-    import numpy as np
     from numpy import matrix as m
+    from numpy.linalg import norm
 
     case1 = (model is not None and extra_doc_str is not None)
     case2 = (docs_proj is not None and xtra_doc_proj is not None)
@@ -236,8 +236,8 @@ def get_doc_topic_sim(model=None,
     # for numpy vector representation reasons, we have to transpose one
     # side of the division
     doc_similarities = (docs.dot(m(input_doc).T) /
-                        (np.linalg.norm(input_doc) *
-                            m(np.linalg.norm(docs, axis=1))).T)
+                        (norm(input_doc) *
+                            m(norm(docs, axis=1))).T)
     return doc_similarities
 
 
