@@ -3,7 +3,7 @@ import sys; sys.path += ['../']  # used to import modules from parent directory
 import hashlib
 import time
 
-from backend_functions import terminology, topicmodeling, clustering
+from backend_functions import clustering, terminology, topicmodeling, topicmodeling_active
 from flask import Flask
 from utils.web_utils import build_page, make_btn_group
 
@@ -72,12 +72,12 @@ def topic_modeling_top_words():
 
 @app.route("/biomed/topicmodeling/active", methods=['POST'])
 def topic_modeling_active_learning():
-    return topicmodeling.topic_modeling_active_learning()
+    return topicmodeling_active.topic_modeling_active_learning()
 
 
 @app.route("/biomed/topicmodeling/active/results", methods=['POST'])
 def topic_modeling_active_results():
-    return topicmodeling.topic_modeling_active_results()
+    return topicmodeling_active.topic_modeling_active_results()
 
 
 @app.route("/biomed/topicmodeling/use", methods=['GET', 'POST'])
