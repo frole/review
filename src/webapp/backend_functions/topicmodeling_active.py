@@ -1,13 +1,65 @@
 import sys; sys.path += ['../../']  # used to import modules from grandparent directory
 
-from flask import redirect, request, session
-from utils.web_utils import build_page, create_doc_display_areas, make_submit_group
 from backend_functions.topicmodeling import doc_vec_model
+from flask import redirect, request, session
+from numpy import argsort
+from sklearn.svm import LinearSVC
+from utils.web_utils import build_page, create_doc_display_areas, make_submit_group
 
 # these dicts are used to save user-specific
 # things that can't be stored in sessions
 userdata_vectorspace = {}
 userdata_classif = {}
+
+
+class SVMClassifier:
+    def __init__(self):
+        self.model = LinearSVC(dual=False)
+
+    def fit(self, X, y):
+        """ Fits the model to the given data
+            Arguments:
+                - (np matrix) X: the dataset used for fitting
+                - (list<int>) y: list of labels for the points in X. Length
+                    should be equal to height of X
+        """
+        self.model.fit(X=X, y=y)
+
+    def top_n_predictions(self, X, n, ignore=[]):
+        """ Predicts the class of a set of points and returns the n
+            predictions with highest confidence level
+            Arguments:
+                - (np matrix) X: the dataset on which to perform the
+                    prediction
+                - (int) n: number of results to return. Is IndexError safe.
+                - (list<int>) classified: list of indexes of points in X
+                    to ignore
+            Returns:
+                - (generator<(int, float)>): A generator on the top n
+                    predictions, each element being a tuple of the form
+                    `(index, confidence)` where `index` is the roe number of
+                    the point in X and `confidence` is such that:
+                        - confidence > 0 means `index` is in class 1
+                        - confidence < 0 means `index` is in class 2
+                        - the larger abs(confidence), the higher the certainty
+        """
+        # Confidence scores for class "2" where > 0 means this class would
+        # be predicted. This is actually the distance to the separation
+        # hyperplane, i.e. the farther away a point is form the decision
+        # boundary, the more condfident we are.
+        prediction = self.model.decision_function(X)
+
+        # indices of sorted prediction
+        indices = argsort(abs(prediction))[::-1]
+        # removing documents previously classified
+        indices = [index for index in indices
+                   if index not in ignore]
+
+        # keeping only the top n_docs_per_page most certain or
+        # whatever's left if there are less than n_docs_per_page
+        n = min(len(indices), n)
+        indices = indices[:n]
+        return zip(indices, prediction[indices])
 
 
 def topic_modeling_active_learning():
@@ -19,11 +71,10 @@ def topic_modeling_active_learning():
        +-- predicted relevant = svm.predict()
     """
     import random
-    from numpy import ones, argsort
+    from numpy import ones
     from pandas import DataFrame
-    from sklearn.svm import LinearSVC
     from utils.embed_utils import get_doc_from_tag, kv_indices_to_doctags
-    from utils.topic_utils import get_cos_sim, get_top_docs_by_sim
+    from utils.topic_utils import get_cos_sim, get_top_docs_by_sim, get_docs_in_topic_space
     from utils.web_utils import create_doc_display_areas, create_radio_group
 
     # proceeding to next page
@@ -44,7 +95,6 @@ def topic_modeling_active_learning():
         # ==== finding most and least relevant documents ==== #
         # if user selected to represent documents in topic space
         if session["vectorspace"] == "topic":
-            from utils.topic_utils import get_docs_in_topic_space
             docs, input_doc = get_docs_in_topic_space(model=doc_vec_model,
                                                       extra_doc=session['document'])
         # if user selected to represent documents in document space
@@ -77,7 +127,7 @@ def topic_modeling_active_learning():
         # use docs.loc[r, c] to access values
         docs = DataFrame(docs)
         userdata_vectorspace[userid] = docs
-        userdata_classif[userid] = LinearSVC(dual=False)
+        userdata_classif[userid] = SVMClassifier()
 
         session["relevant"] = []
         session["irrelevant"] = []
@@ -144,33 +194,26 @@ def topic_modeling_active_learning():
         # be predicted. This is actually the distance to the separation
         # hyperplane, i.e. the farther away a point is form the decision
         # boundary, the more condfident we are.
-        prediction = userdata_classif[session['user']].decision_function(docs)
+        prediction = userdata_classif[
+            session['user']
+        ].top_n_predictions(X=docs,
+                            n=session["n_docs_per_page"],
+                            ignore=classified)
 
-        # indices of sorted prediction
-        idx_sorted_pred = argsort(abs(prediction))[::-1]
-        # removing documents previously classified
-        idx_sorted_pred = [index for index in idx_sorted_pred
-                           if index not in classified]
-
-        # keeping only the top n_docs_per_page most certain or
-        # whatever's left if there are less than n_docs_per_page
-        nsamples = min(len(idx_sorted_pred), session["n_docs_per_page"])
-        idx_sorted_pred = idx_sorted_pred[:nsamples]
-
-        # predicted relevant docs are the ones in idx_sorted_pred
+        # predicted relevant docs are the ones in prediction
         # such that their distance to the decision frontier is
         # positive ("right side" of the frontier)
         pred_rlvnt_docs_tags =\
             kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                                  indexlist=[i for i in idx_sorted_pred
-                                             if prediction[i] > 0])
-        # predicted irrelevant docs are the ones in idx_sorted_pred
+                                  indexlist=[i for i, score in prediction
+                                             if score > 0])
+        # predicted irrelevant docs are the ones in prediction
         # such that their distance to the decision frontier is
         # negative ("wrong side" of the frontier)
         pred_irlvnt_docs_tags =\
             kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                                  indexlist=[i for i in idx_sorted_pred
-                                             if prediction[i] < 0])
+                                  indexlist=[i for i, score in prediction
+                                             if score < 0])
 
     # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
