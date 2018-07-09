@@ -10,14 +10,6 @@ userdata_vectorspace = {}
 userdata_classif = {}
 
 
-class Docvectorspace:
-    def __init__(self):
-        pass
-
-    def get_docvec_matrix():
-        pass
-
-
 def topic_modeling_active_learning():
     """ Generates the page for human input for active learning
         at /biomed/topicmodeling/active
