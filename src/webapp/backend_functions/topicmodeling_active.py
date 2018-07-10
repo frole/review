@@ -25,6 +25,9 @@ class SVMClassifier:
         """
         self.model.fit(X=X, y=y)
 
+    def predict(self, X):
+        return self.model.predict(X)
+
     def top_n_predictions(self, X, n, ignore=[]):
         """ Predicts the class of a set of points and returns the n
             predictions with highest confidence level
@@ -278,7 +281,7 @@ def topic_modeling_active_results():
     from itertools import chain
     from utils.embed_utils import get_doc_from_tag
     from utils.embed_utils import kv_indices_to_doctags
-    from numpy import ones, argsort
+    from numpy import ones
 
     # performing last prediction to add to relevant documents
     # getting document embeddings matrix and previously classified documents
@@ -292,14 +295,12 @@ def topic_modeling_active_results():
     userdata_classif[session['user']].fit(X=X, y=y)
 
     # making prediction
-    prediction = userdata_classif[session['user']].decision_function(docs)
-    # getting row indices of predictions in decreasing order of confidence
-    idx_sorted_pred = argsort(prediction)[::-1]
+    prediction = userdata_classif[session['user']].predict(docs)
     # getting tags of positive predictions
     predrelevant =\
         kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
-                              indexlist=[i for i in idx_sorted_pred
-                                         if prediction[i] > 0])
+                              indexlist=[i for i in range(len(prediction))
+                                         if prediction[i] == 1])
 
     # getting tags of known relevant documents
     # and concatenating with prediction (with `chain` since these are generators)
