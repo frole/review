@@ -19,29 +19,36 @@ class SVMClassifier:
     def fit(self, X, y):
         """ Fits the model to the given data
             Arguments:
-                - (np matrix) X: the dataset used for fitting
+                - (DataFrame) X: the dataset used for fitting
                 - (list<int>) y: list of labels for the points in X. Length
                     should be equal to height of X
         """
+        print("y: ", y)
         self.model.fit(X=X, y=y)
 
     def predict(self, X):
+        """ Returns the predicted class for each row in X
+            Arguments:
+                - (DataFrame) X: the data points for which to predict a class
+            Returns:
+                - (ndarray) prediction: the predicted class for each row in X
+        """
         return self.model.predict(X)
 
     def top_n_predictions(self, X, n, ignore=[]):
         """ Predicts the class of a set of points and returns the n
             predictions with highest confidence level
             Arguments:
-                - (np matrix) X: the dataset on which to perform the
+                - (DataFrame) X: the dataset on which to perform the
                     prediction
                 - (int) n: number of results to return. Is IndexError safe.
                 - (list<int>) classified: list of indexes of points in X
                     to ignore
             Returns:
-                - (generator<(int, float)>): A generator on the top n
-                    predictions, each element being a tuple of the form
-                    `(index, confidence)` where `index` is the roe number of
-                    the point in X and `confidence` is such that:
+                - (list<(int, float)>): A list of the top n predictions, each
+                     element being a tuple of the form `(index, confidence)`
+                     where `index` is the roe number of the point in X and
+                     `confidence` is such that:
                         - confidence > 0 means `index` is in class 1
                         - confidence < 0 means `index` is in class 2
                         - the larger abs(confidence), the higher the certainty
@@ -54,6 +61,8 @@ class SVMClassifier:
 
         # indices of sorted prediction
         indices = argsort(abs(prediction))[::-1]
+        print("in top_n_predictions: ", prediction)
+        print("predicted classes: ", self.model.predict(X))
         # removing documents previously classified
         indices = [index for index in indices
                    if index not in ignore]
@@ -62,7 +71,7 @@ class SVMClassifier:
         # whatever's left if there are less than n_docs_per_page
         n = min(len(indices), n)
         indices = indices[:n]
-        return zip(indices, prediction[indices])
+        return list(zip(indices, prediction[indices]))
 
 
 def topic_modeling_active_learning():
@@ -202,7 +211,7 @@ def topic_modeling_active_learning():
         ].top_n_predictions(X=docs,
                             n=session["n_docs_per_page"],
                             ignore=classified)
-
+        print(prediction)
         # predicted relevant docs are the ones in prediction
         # such that their distance to the decision frontier is
         # positive ("right side" of the frontier)
@@ -217,33 +226,30 @@ def topic_modeling_active_learning():
             kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
                                   indexlist=[i for i, score in prediction
                                              if score < 0])
-
     # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
-    pred_rlvnt_docs_tags = list(pred_rlvnt_docs_tags)
-    print(pred_rlvnt_docs_tags)
-    docs = [("Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1],
-             get_doc_from_tag(tag),
-             create_radio_group(name="radio-" + tag,
-                                labels=["Relevant", "Irrelevant"],
-                                values=["relevant", "irrelevant"],
-                                checked="relevant",
-                                form_id="active-form")
-             )
-            for tag in pred_rlvnt_docs_tags]
+    documents = [("Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1],
+                  get_doc_from_tag(tag),
+                  create_radio_group(name="radio-" + tag,
+                                     labels=["Relevant", "Irrelevant"],
+                                     values=["relevant", "irrelevant"],
+                                     checked="relevant",
+                                     form_id="active-form")
+                  )
+                 for tag in pred_rlvnt_docs_tags]
 
-    docs += [("Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1],
-              get_doc_from_tag(tag),
-              create_radio_group(name="radio-" + tag,
-                                 labels=["Relevant", "Irrelevant"],
-                                 values=["relevant", "irrelevant"],
-                                 checked="irrelevant",
-                                 form_id="active-form")
-              )
-             for tag in pred_irlvnt_docs_tags]
+    documents += [("Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1],
+                   get_doc_from_tag(tag),
+                   create_radio_group(name="radio-" + tag,
+                                      labels=["Relevant", "Irrelevant"],
+                                      values=["relevant", "irrelevant"],
+                                      checked="irrelevant",
+                                      form_id="active-form")
+                   )
+                  for tag in pred_irlvnt_docs_tags]
 
     # transforming into display areas
-    doc_display_areas = create_doc_display_areas(documents=docs)
+    doc_display_areas = create_doc_display_areas(documents=documents)
     # the contents of the webpage are the documents in their display areas
     # each followed by the radio buttons for each document
     contents = ["<p>These are the articles in the corpus that we are most\
