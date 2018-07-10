@@ -23,7 +23,6 @@ class SVMClassifier:
                 - (list<int>) y: list of labels for the points in X. Length
                     should be equal to height of X
         """
-        print("y: ", y)
         self.model.fit(X=X, y=y)
 
     def predict(self, X):
@@ -61,8 +60,6 @@ class SVMClassifier:
 
         # indices of sorted prediction
         indices = argsort(abs(prediction))[::-1]
-        print("in top_n_predictions: ", prediction)
-        print("predicted classes: ", self.model.predict(X))
         # removing documents previously classified
         indices = [index for index in indices
                    if index not in ignore]
@@ -211,21 +208,21 @@ def topic_modeling_active_learning():
         ].top_n_predictions(X=docs,
                             n=session["n_docs_per_page"],
                             ignore=classified)
-        print(prediction)
+
         # predicted relevant docs are the ones in prediction
         # such that their distance to the decision frontier is
         # positive ("right side" of the frontier)
         pred_rlvnt_docs_tags =\
             kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
                                   indexlist=[i for i, score in prediction
-                                             if score > 0])
+                                             if score < 0])
         # predicted irrelevant docs are the ones in prediction
         # such that their distance to the decision frontier is
         # negative ("wrong side" of the frontier)
         pred_irlvnt_docs_tags =\
             kv_indices_to_doctags(keyedvectors=doc_vec_model.docvecs,
                                   indexlist=[i for i, score in prediction
-                                             if score < 0])
+                                             if score > 0])
     # getting documents from tags and putting in a list of tuples
     # for `create_doc_display_areas`
     documents = [("Corpus: " + tag.split('+')[0] + ", Doc #" + tag.split('+')[1],
