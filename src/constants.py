@@ -17,6 +17,12 @@ ASTHMA_PMID_FILE = ASTHMA_DIR + "ids.txt"  # file containing PMIDs of articles
 ASTHMA_MESH_PKL = ASTHMA_DIR + "asthma_meshterms.pkl"  # file containing pickled mesh terms
 NON_ASTHMA_MESH_PKL = ASTHMA_DIR + "non_asthma_meshterms.pkl"  # file containing pickled mesh terms
 
+# Rhinitis
+RHINITIS_DATA_DIR = DATA_DIR + "rhinitis/"
+RHINITIS_XML_DIR = RHINITIS_DATA_DIR + "xml/"
+RHINITIS_JSON_DIR = RHINITIS_DATA_DIR + "json/"
+
+RHINITIS_JSON_DS = RHINITIS_JSON_DIR + "pmc_rhinitis.json"
 
 # Autism
 AUTISM_DATA_DIR = DATA_DIR + "autism/"
