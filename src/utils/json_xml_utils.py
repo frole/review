@@ -69,7 +69,6 @@ def xml_to_json(json_dir, xml_dir, json_dataset, label=""):
     import re
     import json
     from xml.etree import ElementTree as ET
-    from util import flatten
     import traceback
     import os
     from pmc_utils import get_mesh_from_PMID

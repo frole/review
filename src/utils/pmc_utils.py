@@ -64,7 +64,7 @@ def get_mesh_from_PMID(pmid):
     """
     from Bio import Entrez
     from xml.etree import ElementTree as ET
-    from util import flatten
+    from utils.json_xml_utils import flatten
     if pmid is None or pmid == "":
         return []
     try:
