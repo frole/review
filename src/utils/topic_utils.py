@@ -62,7 +62,7 @@ def get_topic_word_prob(model, cutoff=5):
                 Returns:
                     - The value of the denominator
             """
-            if (topic != self.topic).any() or self.topic is None:
+            if self.topic is None or (topic != self.topic).any():
                 self.topic = topic
                 # model.wv.syn0: list of word vectors, access by index
                 self.value = (sum([math.exp(wv.dot(topic))
